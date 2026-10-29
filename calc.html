@@ -1,0 +1,494 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#07080a">
+<title>计算器 · 猛哥的空间站</title>
+<meta name="description" content="能算括号和百分比的网页计算器，带历史记录。">
+<style>
+  :root{
+    --bg:#07080a; --ink:#ececf1; --dim:#8b8b96; --line:rgba(255,255,255,.09);
+    --mint:#5ee0a8; --glass:rgba(20,22,28,.66);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    min-height:100svh; color:var(--ink);
+    font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    -webkit-font-smoothing:antialiased;
+    background:var(--bg) url(assets/bg.webp) center/cover no-repeat fixed;
+  }
+  body::before{
+    content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+    background:linear-gradient(180deg,rgba(7,8,10,.74),rgba(7,8,10,.9) 42%,#07080a 100%);
+  }
+  .wrap{position:relative; z-index:1; width:min(560px,92vw); margin:0 auto; padding:26px 0 64px}
+
+  .topbar{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:28px}
+  .back{display:inline-flex; align-items:center; gap:7px; text-decoration:none; color:var(--dim); font-size:13px; transition:color .25s}
+  .back:hover{color:var(--mint)}
+  .back svg{width:14px;height:14px}
+  .badge{
+    display:inline-flex; align-items:center; gap:8px; padding:6px 12px; border-radius:999px;
+    background:rgba(94,224,168,.09); border:1px solid rgba(94,224,168,.26);
+    font:600 11px/1 ui-monospace,monospace; letter-spacing:.14em; color:#a9f2d4;
+  }
+  .badge i{width:5px;height:5px;border-radius:50%;background:var(--mint);box-shadow:0 0 10px var(--mint)}
+
+  .kick{font:600 11px/1 ui-monospace,monospace; letter-spacing:.2em; text-transform:uppercase; color:var(--mint); margin-bottom:12px}
+  h1{margin:0 0 22px; font-size:clamp(30px,6vw,42px); line-height:1.1; letter-spacing:-.03em; font-weight:800}
+  h1 em{font-style:normal; background:linear-gradient(92deg,#fff 10%,#cfe4ff 45%,var(--mint) 88%);
+    -webkit-background-clip:text; background-clip:text; color:transparent}
+
+  .calc{
+    border:1px solid var(--line); border-radius:22px; overflow:hidden;
+    background:var(--glass); backdrop-filter:blur(18px) saturate(1.2); -webkit-backdrop-filter:blur(18px) saturate(1.2);
+    box-shadow:0 30px 70px -50px #000, 0 1px 0 rgba(255,255,255,.06) inset;
+  }
+  .screen{padding:20px 20px 14px; text-align:right; border-bottom:1px solid rgba(255,255,255,.06)}
+  .expr{
+    min-height:24px; font:500 14px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;
+    color:#8b95a6; letter-spacing:.02em; word-break:break-all;
+  }
+  .expr .caret{color:var(--mint)}
+  .result{
+    margin-top:6px; font-weight:700; font-size:clamp(30px,7.4vw,44px); line-height:1.15;
+    letter-spacing:-.02em; word-break:break-all; transition:color .2s;
+  }
+  .result.err{color:#ff9d9d; font-size:clamp(20px,4vw,26px)}
+  .sub{min-height:18px; margin-top:4px; font:600 11px/1.4 ui-monospace,monospace; letter-spacing:.06em; color:#5f6a79}
+
+  .keys{display:grid; grid-template-columns:repeat(4,1fr); gap:9px; padding:14px}
+  .key{
+    appearance:none; border:1px solid rgba(255,255,255,.075); background:rgba(255,255,255,.045);
+    color:#e9eef7; font:600 19px/1 inherit; padding:0; height:54px; border-radius:14px; cursor:pointer;
+    transition:background .16s ease, transform .1s ease, border-color .16s ease;
+    display:grid; place-items:center; user-select:none; -webkit-tap-highlight-color:transparent;
+  }
+  .key:hover{background:rgba(255,255,255,.09); border-color:rgba(255,255,255,.16)}
+  .key:active{transform:scale(.97)}
+  .key:focus-visible{outline:2px solid rgba(94,224,168,.7); outline-offset:2px}
+  .key.op{color:#bfe9d7; background:rgba(94,224,168,.07); border-color:rgba(94,224,168,.16)}
+  .key.op:hover{background:rgba(94,224,168,.13)}
+  .key.fn{color:#9aa5b6; font-size:15px; background:rgba(255,255,255,.03)}
+  .key.eq{
+    grid-column:span 3; background:linear-gradient(180deg,#8ff0c6,#4fd6a0); color:#04120c;
+    border-color:transparent; box-shadow:0 16px 34px -22px rgba(94,224,168,.95); font-size:21px;
+  }
+  .key.eq:hover{filter:brightness(1.05); background:linear-gradient(180deg,#9df6cf,#57dea6)}
+  .key.span2{grid-column:span 2}
+
+  .toolrow{display:flex; gap:8px; padding:0 14px 14px; flex-wrap:wrap}
+  .tbtn{
+    appearance:none; border:1px solid rgba(255,255,255,.1); background:rgba(255,255,255,.04);
+    color:#b9c2d0; font:600 12px/1 inherit; padding:9px 12px; border-radius:9px; cursor:pointer;
+    transition:all .2s ease;
+  }
+  .tbtn:hover{color:#eafff6; border-color:rgba(94,224,168,.4); background:rgba(94,224,168,.08)}
+  .tbtn:disabled{opacity:.4; cursor:not-allowed}
+  .spacer{flex:1}
+
+  .hist{margin-top:20px}
+  .hist h2{font:600 11px/1 ui-monospace,monospace; letter-spacing:.2em; text-transform:uppercase; color:#6b7484; margin:0 0 10px}
+  .hitem{
+    display:flex; align-items:center; gap:12px; width:100%; text-align:left;
+    border:1px solid rgba(255,255,255,.07); background:rgba(255,255,255,.028);
+    border-radius:12px; padding:10px 14px; margin-bottom:7px; cursor:pointer; color:inherit;
+    transition:all .18s ease; font:inherit;
+  }
+  .hitem:hover{border-color:rgba(94,224,168,.3); background:rgba(94,224,168,.05)}
+  .hitem .e{flex:1; min-width:0; color:#8b95a6; font:500 12.5px/1.4 ui-monospace,monospace; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+  .hitem .r{font-weight:700; font-size:14px; color:#dfe8f2; max-width:48%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+  .empty{color:#5f6a79; font-size:12.5px}
+
+  .note{margin-top:18px; color:#6b7484; font-size:12px; line-height:1.7}
+
+  @media(max-width:560px){
+    body{background-attachment:scroll}
+    .wrap{padding:20px 0 52px}
+    .key{height:50px; font-size:18px; border-radius:12px}
+    .keys{gap:8px; padding:12px}
+  }
+  @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <a class="back" href="/">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+      返回空间站
+    </a>
+    <span class="badge"><i></i>CALCULATOR</span>
+  </div>
+
+  <div class="kick">Number crunching</div>
+  <h1>算得<em>清清楚楚</em></h1>
+
+  <div class="calc">
+    <div class="screen">
+      <div class="expr" id="expr">&nbsp;</div>
+      <div class="result" id="result" aria-live="polite">0</div>
+      <div class="sub" id="sub"></div>
+    </div>
+
+    <div class="keys" id="keys">
+      <button class="key fn" data-k="clear" type="button">AC</button>
+      <button class="key fn" data-k="back" type="button">⌫</button>
+      <button class="key fn" data-k="(" type="button">(</button>
+      <button class="key fn" data-k=")" type="button">)</button>
+
+      <button class="key" data-k="7" type="button">7</button>
+      <button class="key" data-k="8" type="button">8</button>
+      <button class="key" data-k="9" type="button">9</button>
+      <button class="key op" data-k="/" type="button">÷</button>
+
+      <button class="key" data-k="4" type="button">4</button>
+      <button class="key" data-k="5" type="button">5</button>
+      <button class="key" data-k="6" type="button">6</button>
+      <button class="key op" data-k="*" type="button">×</button>
+
+      <button class="key" data-k="1" type="button">1</button>
+      <button class="key" data-k="2" type="button">2</button>
+      <button class="key" data-k="3" type="button">3</button>
+      <button class="key op" data-k="-" type="button">−</button>
+
+      <button class="key" data-k="0" type="button">0</button>
+      <button class="key" data-k="." type="button">.</button>
+      <button class="key fn" data-k="%" type="button">%</button>
+      <button class="key op" data-k="+" type="button">+</button>
+
+      <button class="key fn" data-k="neg" type="button">±</button>
+      <button class="key eq" data-k="=" type="button">=</button>
+    </div>
+
+    <div class="toolrow">
+      <button class="tbtn" id="copy" type="button">复制结果</button>
+      <button class="tbtn" id="useResult" type="button">用结果继续算</button>
+      <span class="spacer"></span>
+      <button class="tbtn" id="clearHist" type="button">清空历史</button>
+    </div>
+  </div>
+
+  <div class="hist">
+    <h2>History</h2>
+    <div id="histList"><div class="empty">还没有计算记录</div></div>
+  </div>
+
+  <p class="note">
+    键盘也能用：数字、<code>+ − * /</code>、括号、<code>%</code>，回车等于，退格删除，Esc 清空。
+    输入时会实时预演结果，按等号才记录到历史。
+  </p>
+</div>
+
+<script>
+(function(){
+  var exprEl = document.getElementById('expr');
+  var resEl = document.getElementById('result');
+  var subEl = document.getElementById('sub');
+  var histList = document.getElementById('histList');
+  var HKEY = 'wmv587.calc.hist';
+
+  var expr = '';        // 当前表达式
+  var shown = '0';      // 显示的结果
+  var justEq = false;   // 刚按过等号
+  var lastResult = '';
+
+  var OP = /[+\-*/()%]/;
+
+  /* ---------- 解析与求值（不用 eval） ---------- */
+  function tokenize(s){
+    var t = [], i = 0, prev = 'start';
+    while (i < s.length){
+      var c = s[i];
+      if (c === ' ') { i++; continue; }
+      if (/[0-9.]/.test(c)){
+        var j = i, seenDot = false;
+        while (j < s.length && /[0-9.]/.test(s[j])){
+          if (s[j] === '.'){
+            if (seenDot) throw new Error('数字格式不对');
+            seenDot = true;
+          }
+          j++;
+        }
+        t.push({ type:'num', v: parseFloat(s.slice(i, j)) });
+        prev = 'num'; i = j; continue;
+      }
+      if (c === '-' && (prev === 'start' || prev === 'op' || prev === '(')){
+        // 一元负号：并入后面的数字
+        var k = i + 1;
+        while (k < s.length && /[0-9.]/.test(s[k])) k++;
+        if (k === i + 1) throw new Error('减号后面缺少数字');
+        t.push({ type:'num', v: -parseFloat(s.slice(i + 1, k)) });
+        prev = 'num'; i = k; continue;
+      }
+      if ('+-*/'.indexOf(c) >= 0){ t.push({ type:'op', v:c }); prev = 'op'; i++; continue; }
+      if (c === '('){ t.push({ type:'lp' }); prev = '('; i++; continue; }
+      if (c === ')'){ t.push({ type:'rp' }); prev = ')'; i++; continue; }
+      if (c === '%'){ t.push({ type:'pct' }); prev = '%'; i++; continue; }
+      throw new Error('不认识的字符 ' + c);
+    }
+    return t;
+  }
+
+  function toRPN(tokens){
+    var out = [], stack = [];
+    var prec = { '+':1, '-':1, '*':2, '/':2 };
+    tokens.forEach(function(tk){
+      if (tk.type === 'num') out.push(tk);
+      else if (tk.type === 'pct') out.push(tk);
+      else if (tk.type === 'op'){
+        while (stack.length){
+          var top = stack[stack.length - 1];
+          if (top.type === 'op' && prec[top.v] >= prec[tk.v]) out.push(stack.pop());
+          else break;
+        }
+        stack.push(tk);
+      } else if (tk.type === 'lp') stack.push(tk);
+      else if (tk.type === 'rp'){
+        var found = false;
+        while (stack.length){
+          var top2 = stack.pop();
+          if (top2.type === 'lp'){ found = true; break; }
+          out.push(top2);
+        }
+        if (!found) throw new Error('括号不配对');
+      }
+    });
+    while (stack.length){
+      var last = stack.pop();
+      if (last.type === 'lp') throw new Error('括号不配对');
+      out.push(last);
+    }
+    return out;
+  }
+
+  function evalRPN(rpn){
+    var st = [];
+    rpn.forEach(function(tk){
+      if (tk.type === 'num') st.push(tk.v);
+      else if (tk.type === 'pct'){
+        if (!st.length) throw new Error('百分号前面没有数字');
+        st.push(st.pop() / 100);
+      } else {
+        if (st.length < 2) throw new Error('算式不完整');
+        var b = st.pop(), a = st.pop(), v;
+        if (tk.v === '+') v = a + b;
+        else if (tk.v === '-') v = a - b;
+        else if (tk.v === '*') v = a * b;
+        else {
+          if (b === 0) throw new Error('不能除以 0');
+          v = a / b;
+        }
+        st.push(v);
+      }
+    });
+    if (st.length !== 1) throw new Error('算式不完整');
+    var r = st[0];
+    if (!isFinite(r)) throw new Error('结果超出范围');
+    return r;
+  }
+
+  function calc(s){
+    if (!s.trim()) return null;
+    var r = evalRPN(toRPN(tokenize(s)));
+    // 消掉浮点噪声：保留 12 位有效数字
+    return parseFloat(r.toPrecision(12));
+  }
+
+  /* ---------- 显示格式 ---------- */
+  function fmt(n){
+    if (!isFinite(n)) return '∞';
+    var a = Math.abs(n);
+    if (a !== 0 && (a >= 1e15 || a < 1e-9)) return n.toExponential(6).replace(/\.?0+e/, 'e');
+    var s = String(n);
+    if (s.indexOf('e') >= 0) return s;
+    var neg = s[0] === '-'; if (neg) s = s.slice(1);
+    var parts = s.split('.');
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    return (neg ? '-' : '') + parts.join('.');
+  }
+
+  /* ---------- 渲染 ---------- */
+  function prettyExpr(s){
+    return s.replace(/\*/g, '×').replace(/\//g, '÷').replace(/-/g, '−').replace(/\+/g, '+');
+  }
+
+  function render(){
+    exprEl.innerHTML = expr ? prettyExpr(expr) + '<span class="caret">▏</span>' : '&nbsp;';
+    resEl.classList.remove('err');
+
+    if (justEq && shown) {
+      resEl.textContent = shown;
+      subEl.textContent = lastResult ? '按「用结果继续算」接着写' : '';
+      return;
+    }
+
+    if (!expr.trim()){ resEl.textContent = '0'; subEl.textContent = ''; return; }
+
+    try{
+      var v = calc(expr);
+      resEl.textContent = v === null ? '0' : fmt(v);
+      subEl.textContent = '';
+    } catch(e){
+      // 输入未完成时不报错，只保留上一次合法预览
+      if (e.message === '不能除以 0'){
+        resEl.textContent = '不能除以 0';
+        resEl.classList.add('err');
+        subEl.textContent = '';
+      } else {
+        subEl.textContent = '…';
+      }
+    }
+  }
+
+  function pushHistory(e, r){
+    var list = loadHist();
+    list.unshift({ e:e, r:r, at:Date.now() });
+    list = list.slice(0, 12);
+    try{ localStorage.setItem(HKEY, JSON.stringify(list)); }catch(err){}
+    renderHist();
+  }
+
+  function loadHist(){
+    try{ return JSON.parse(localStorage.getItem(HKEY) || '[]'); }catch(e){ return []; }
+  }
+
+  function renderHist(){
+    var list = loadHist();
+    histList.innerHTML = '';
+    if (!list.length){
+      histList.innerHTML = '<div class="empty">还没有计算记录</div>';
+      return;
+    }
+    list.forEach(function(x){
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'hitem';
+      var e = document.createElement('span');
+      e.className = 'e'; e.textContent = prettyExpr(x.e) + ' =';
+      var r = document.createElement('span');
+      r.className = 'r'; r.textContent = x.r;
+      b.appendChild(e); b.appendChild(r);
+      b.title = '点一下，把这个算式填回去';
+      b.addEventListener('click', function(){
+        expr = x.e; justEq = false; render(); resEl.focus && resEl.focus();
+      });
+      histList.appendChild(b);
+    });
+  }
+
+  /* ---------- 按键逻辑 ---------- */
+  function press(k){
+    if (k === 'clear'){
+      expr = ''; justEq = false; shown = '0'; lastResult = '';
+      render(); return;
+    }
+    if (k === 'back'){
+      if (justEq){ justEq = false; expr = ''; render(); return; }
+      expr = expr.slice(0, -1); render(); return;
+    }
+    if (k === '='){ doEqual(); return; }
+    if (k === 'neg'){
+      if (justEq){ expr = String(shown).replace(/,/g, ''); justEq = false; }
+      // 给当前最后一段数字取反
+      var m = expr.match(/(-?\d*\.?\d+)$/);
+      if (m){
+        var num = m[1];
+        var start = expr.length - num.length;
+        expr = expr.slice(0, start) + (num[0] === '-' ? num.slice(1) : '-' + num);
+      } else {
+        expr += '-';
+      }
+      render(); return;
+    }
+
+    if (justEq){
+      // 按了等号后再按数字/符号：等于把结果当新起点
+      justEq = false;
+      if (/[0-9.]/.test(k) || k === '(') expr = '';
+      else expr = String(shown).replace(/,/g, '');
+    }
+
+    if (k === '%'){
+      if (!expr || /[+\-*\/(.]$/.test(expr)) return;
+      expr += '%';
+    } else if (k === '.'){
+      var tail = expr.split(/[+\-*/()%]/).pop();
+      if (tail.indexOf('.') >= 0) return;
+      if (!tail) expr += '0';
+      expr += '.';
+    } else if (k === '(' || k === ')'){
+      expr += k;
+    } else {
+      expr += k;
+    }
+    render();
+  }
+
+  function doEqual(){
+    if (!expr.trim()) return;
+    try{
+      var v = calc(expr);
+      if (v === null) return;
+      shown = fmt(v);
+      lastResult = fmt(v);
+      resEl.textContent = fmt(v);
+      resEl.classList.remove('err');
+      subEl.textContent = expr.length > 18 ? '' : '';
+      justEq = true;
+      pushHistory(expr, fmt(v));
+      exprEl.innerHTML = prettyExpr(expr) + ' <span style="color:#5f6a79">=</span>';
+    } catch(e){
+      resEl.textContent = e.message || '算式有误';
+      resEl.classList.add('err');
+    }
+  }
+
+  document.getElementById('keys').addEventListener('click', function(e){
+    var b = e.target.closest('.key');
+    if (!b) return;
+    press(b.dataset.k);
+    b.blur();
+  });
+
+  document.getElementById('copy').addEventListener('click', async function(){
+    var txt = (justEq ? lastResult : resEl.textContent).replace(/,/g, '');
+    try{
+      await navigator.clipboard.writeText(txt);
+      this.textContent = '已复制';
+      var self = this;
+      setTimeout(function(){ self.textContent = '复制结果'; }, 1200);
+    }catch(e){ this.textContent = '复制不了'; }
+  });
+
+  document.getElementById('useResult').addEventListener('click', function(){
+    var v = (justEq ? lastResult : resEl.textContent).replace(/,/g, '');
+    if (!/\d/.test(v)) return;
+    expr = v; justEq = false; render();
+  });
+
+  document.getElementById('clearHist').addEventListener('click', function(){
+    try{ localStorage.removeItem(HKEY); }catch(e){}
+    renderHist();
+  });
+
+  document.addEventListener('keydown', function(e){
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    var k = e.key;
+    if (k >= '0' && k <= '9'){ e.preventDefault(); press(k); }
+    else if (k === '.' || k === ','){ e.preventDefault(); press('.'); }
+    else if (k === '+' || k === '-' || k === '*' || k === '/' || k === '(' || k === ')'){ e.preventDefault(); press(k); }
+    else if (k === '%'){ e.preventDefault(); press('%'); }
+    else if (k === 'Enter' || k === '='){ e.preventDefault(); press('='); }
+    else if (k === 'Backspace'){ e.preventDefault(); press('back'); }
+    else if (k === 'Escape'){ e.preventDefault(); press('clear'); }
+  });
+
+  renderHist();
+  render();
+})();
+</script>
+</body>
+</html>
