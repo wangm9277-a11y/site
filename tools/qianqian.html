@@ -2485,6 +2485,21 @@
     </div>
   </div>
 
+  <!-- 早绑定：整页 1.9MB 在慢网下要几十秒，先让选择按钮立刻有反应 -->
+  <script>
+  (function(){
+    var v = document.getElementById('launchVeil');
+    if (!v) return;
+    v.querySelectorAll('[data-launch-orient]').forEach(function(b){
+      b.addEventListener('click', function(){
+        window.__pendingOrient = b.getAttribute('data-launch-orient');
+        v.classList.add('closing');
+        setTimeout(function(){ if (v.parentNode) v.parentNode.removeChild(v); }, 320);
+      });
+    });
+  })();
+  </script>
+
   <div class="workspace-shell" id="workspaceShell">
     <!-- Main Adaptive / Multi-Ratio Folio Container -->
     <main class="folio-frame" id="folioFrame">
@@ -4469,6 +4484,11 @@
       initCompassOuterRing();
       initPureSheet();
       loadSavedState();
+      // 慢网下用户可能早就在遮罩上点过方向，这里补应用
+      if (window.__pendingOrient) {
+        applyLaunchPreset(window.__pendingOrient);
+        window.__pendingOrient = null;
+      }
 
       document.getElementById("btnUpperPrev").addEventListener("click", (e) => {
         if (document.getElementById("upperTrigramRow")._justDragged) return;
