@@ -1109,73 +1109,88 @@
             * Bottom: 4 Canwu buttons (without white background box) stacked vertically BELOW the 导语 & 初六 columns */
     html[data-orientation="landscape"] .folio-frame {
       display: grid;
-      grid-template-columns: 37% 63%;
+      grid-template-columns: 38% 62%;
       grid-template-rows: minmax(0, 1fr);
     }
 
     html[data-orientation="landscape"] .upper-zone {
       height: 100%;
-      padding: 10px 14px 10px;
+      padding: 10px 18px 12px;
       padding-top: calc(10px + env(safe-area-inset-top, 0px));
-      padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
-      padding-left: calc(14px + env(safe-area-inset-left, 0px));
+      padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+      padding-left: calc(18px + env(safe-area-inset-left, 0px));
       border-bottom: none;
       border-right: 1px solid var(--border-accent);
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 10px;
       overflow: hidden;
     }
 
     html[data-orientation="landscape"] .ops-workspace {
       flex: 1 1 auto;
       min-height: 0;
-      max-height: max(392px, min(62vh, 470px));
+      max-height: none;
       width: 100%;
-      margin: auto 0;
+      height: 100%;
+      margin: 0;
       display: grid;
-      grid-template-columns: minmax(0, 1fr) 104px;
-      grid-template-rows: 132px 102px minmax(104px, 1fr);
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: minmax(0, 1fr) 116px minmax(0, 1.15fr) auto;
       grid-template-areas:
-        "bagua   navzone"
-        "sliders navzone"
-        "liuyao  navzone";
-      gap: 8px 10px;
+        "bagua"
+        "sliders"
+        "liuyao"
+        "navzone";
+      gap: 10px;
       align-items: stretch;
     }
 
     html[data-orientation="landscape"] .compass-col {
-      height: 132px;
+      height: 100%;
       justify-content: center;
-      gap: 5px;
+      gap: 8px;
       background: linear-gradient(180deg, var(--bg-card) 0%, var(--bg-elevated) 100%);
       border: 1px solid var(--border-hairline);
-      border-radius: 12px;
-      padding: 6px 8px 4px;
+      border-radius: 14px;
+      padding: 12px 16px 6px;
       box-shadow: var(--shadow-card);
     }
 
     html[data-orientation="landscape"] .compass-svg-wrap {
-      width: 102px;
-      height: 102px;
+      width: auto;
+      height: calc(100% - 26px);
+      max-width: 100%;
+      aspect-ratio: 1 / 1;
+    }
+
+    html[data-orientation="landscape"] .compass-zh {
+      font-size: 16px;
+    }
+
+    html[data-orientation="landscape"] .compass-py,
+    html[data-orientation="landscape"] .compass-dot {
+      font-size: 14px;
     }
 
     html[data-orientation="landscape"] .trigram-selectors {
-      height: 102px;
-      gap: 6px;
+      height: 116px;
+      gap: 8px;
+      justify-content: center;
     }
 
     html[data-orientation="landscape"] .trigram-card {
-      height: 48px;
-      padding: 2px 5px 2px;
+      height: 54px;
+      flex: 0 0 auto;
+      padding: 3px 7px 2px;
     }
 
     html[data-orientation="landscape"] .trigram-card-main {
-      height: 24px;
+      height: 28px;
     }
 
     html[data-orientation="landscape"] .trigram-stage {
-      height: 24px;
+      height: 28px;
     }
 
     html[data-orientation="landscape"] .trigram-meta-col {
@@ -1186,78 +1201,190 @@
 
     html[data-orientation="landscape"] .hexagram-center-col {
       height: 100%;
-      min-height: 104px;
+      min-height: 0;
       flex-direction: column;
       justify-content: center;
-      gap: 6px;
-      padding: 7px 8px 5px;
-    }
-
-    html[data-orientation="landscape"] .yao-svg-wrap {
-      width: 82px;
-      height: min(86px, calc(100% - 18px));
+      gap: 0;
+      padding: 10px 14px;
     }
 
     /* Right Sub-Column in Landscape: Vertical 导语/初六 columns at top + Vertical 4 Canwu buttons below */
     html[data-orientation="landscape"] .nav-and-canwu-zone {
-      height: 100%;
+      height: auto;
       min-height: 0;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      gap: 7px;
+      justify-content: flex-start;
+      gap: 8px;
     }
 
     html[data-orientation="landscape"] .nav-group {
-      order: 1;
-      flex: 1 1 auto;
+      order: 2;
+      flex: 0 0 auto;
       min-height: 0;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4.5px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
     }
 
     html[data-orientation="landscape"] .btn-row {
-      flex-direction: column;
-      height: 100%;
-      padding: 3px;
-      gap: 2.5px;
+      flex-direction: row;
+      height: auto;
+      padding: 0;
+      gap: 8px;
     }
 
     html[data-orientation="landscape"] .text-btn {
-      width: 100%;
-      flex: 1;
-      padding: 2px 1px;
-      font-size: 11.5px;
+      flex: 1 1 0;
+      padding: 12px 4px;
+      font-size: 16.5px;
+      letter-spacing: 1px;
     }
 
     html[data-orientation="landscape"] .btn-row-yao .text-btn.yong-btn {
-      font-size: 10.5px;
+      font-size: 13.5px;
     }
 
     html[data-orientation="landscape"] .canwu-strip {
-      order: 2;
+      order: 1;
       flex: 0 0 auto;
       height: auto;
       display: flex;
-      flex-direction: column;
-      gap: 4.5px;
+      flex-direction: row;
+      gap: 8px;
     }
 
     html[data-orientation="landscape"] .relation-btn {
-      width: 100%;
+      flex: 1 1 0;
       flex-direction: row;
-      justify-content: space-between;
-      padding: 5px 7px;
-      border-radius: 7px;
+      justify-content: center;
+      gap: 8px;
+      padding: 9px 10px;
+      border-radius: 8px;
     }
 
     html[data-orientation="landscape"] .relation-type {
-      font-size: 9.5px;
+      font-size: 13px;
     }
 
     html[data-orientation="landscape"] .relation-gua {
-      font-size: 11px;
+      font-size: 15px;
+    }
+
+    html[data-orientation="landscape"] .trigram-pip-btn {
+      font-size: 11.5px;
+    }
+
+    html[data-orientation="landscape"] .trigram-nature-char {
+      font-size: 20px;
+    }
+
+    html[data-orientation="landscape"] .trigram-gua-char {
+      font-size: 13px;
+    }
+
+    html[data-orientation="landscape"] .trigram-pos-tag {
+      font-size: 10px;
+    }
+
+    /* 矮横屏（手机/小窗）回退：导航回到右侧竖列，保证罗盘与六爻仍有足够高度 */
+    @media (max-height: 620px) {
+      html[data-orientation="landscape"] .folio-frame {
+        grid-template-columns: 37% 63%;
+      }
+
+      html[data-orientation="landscape"] .ops-workspace {
+        grid-template-columns: minmax(0, 1fr) 104px;
+        grid-template-rows: minmax(0, 1fr) 102px minmax(0, 1.1fr);
+        grid-template-areas:
+          "bagua   navzone"
+          "sliders navzone"
+          "liuyao  navzone";
+        gap: 8px 10px;
+      }
+
+      html[data-orientation="landscape"] .compass-col {
+        padding: 6px 8px 4px;
+        gap: 5px;
+        border-radius: 12px;
+      }
+
+      html[data-orientation="landscape"] .compass-zh { font-size: 12px; }
+      html[data-orientation="landscape"] .compass-py,
+      html[data-orientation="landscape"] .compass-dot { font-size: 10.5px; }
+
+      html[data-orientation="landscape"] .trigram-selectors {
+        height: 102px;
+        gap: 6px;
+      }
+
+      html[data-orientation="landscape"] .trigram-card {
+        height: 48px;
+        padding: 2px 5px 2px;
+      }
+
+      html[data-orientation="landscape"] .trigram-card-main,
+      html[data-orientation="landscape"] .trigram-stage {
+        height: 24px;
+      }
+
+      html[data-orientation="landscape"] .trigram-pip-btn { font-size: 9px; }
+
+      html[data-orientation="landscape"] .hexagram-center-col {
+        padding: 7px 8px 5px;
+      }
+
+      html[data-orientation="landscape"] .nav-and-canwu-zone {
+        height: 100%;
+        justify-content: space-between;
+        gap: 5px;
+      }
+
+      html[data-orientation="landscape"] .nav-group {
+        order: 1;
+        flex: 1 1 auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4.5px;
+      }
+
+      html[data-orientation="landscape"] .btn-row {
+        flex-direction: column;
+        justify-content: center;
+        height: 100%;
+        padding: 3px;
+        gap: 2.5px;
+      }
+
+      html[data-orientation="landscape"] .text-btn {
+        width: 100%;
+        flex: 1 1 auto;
+        max-height: 84px;
+        padding: 2px 1px;
+        font-size: 11.5px;
+        letter-spacing: 0;
+      }
+
+      html[data-orientation="landscape"] .btn-row-yao .text-btn.yong-btn { font-size: 10.5px; }
+
+      html[data-orientation="landscape"] .canwu-strip {
+        order: 2;
+        flex: 0 0 auto;
+        flex-direction: column;
+        gap: 4.5px;
+      }
+
+      html[data-orientation="landscape"] .relation-btn {
+        flex: none;
+        width: 100%;
+        justify-content: space-between;
+        gap: 0;
+        padding: 5px 7px;
+        border-radius: 7px;
+      }
+
+      html[data-orientation="landscape"] .relation-type { font-size: 9.5px; }
+      html[data-orientation="landscape"] .relation-gua { font-size: 11px; }
     }
 
     /* ==================== LOWER / RIGHT CONTENT READING ZONE ==================== */
@@ -2048,90 +2175,6 @@
       height: 100%;
       display: block;
     }
-
-    /* ==================== 横屏：六爻卡内右侧索引（填补横向空白，可直接点选） ==================== */
-    .yao-facts {
-      display: none;
-    }
-
-    html[data-orientation="landscape"] .hexagram-center-col {
-      flex-direction: row;
-      align-items: stretch;
-      justify-content: flex-start;
-      gap: 12px;
-      padding: 8px 12px 8px 10px;
-    }
-
-    html[data-orientation="landscape"] .yao-svg-wrap {
-      flex: 0 0 auto;
-      width: auto;
-      max-width: 42%;
-      height: 100%;
-      min-height: 0;
-    }
-
-    html[data-orientation="landscape"] .yao-svg {
-      width: auto;
-      height: 100%;
-      max-width: 100%;
-    }
-
-    html[data-orientation="landscape"] .yao-facts {
-      display: grid;
-      flex: 1 1 auto;
-      min-width: 0;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      grid-auto-rows: 30px;
-      gap: 5px 8px;
-      align-content: center;
-    }
-
-    .yao-fact {
-      display: flex;
-      align-items: baseline;
-      gap: 6px;
-      min-width: 0;
-      padding: 3px 8px;
-      border: 1px solid rgba(168, 139, 92, 0.2);
-      border-radius: 7px;
-      background: var(--bg-elevated);
-      text-align: left;
-      cursor: pointer;
-      transition: border-color 0.18s ease, background-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
-    }
-
-    .yao-fact:hover {
-      border-color: var(--gold-bronze);
-      transform: translateY(-1px);
-    }
-
-    .yao-fact.active {
-      border-color: var(--gold-bronze);
-      background: var(--bg-paper);
-      box-shadow: inset 0 0 0 1px rgba(168, 139, 92, 0.55);
-    }
-
-    .yao-fact-label {
-      font-family: var(--font-serif);
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.4px;
-      line-height: 1.1;
-      color: var(--gold-bronze);
-      white-space: nowrap;
-      flex: 0 0 auto;
-    }
-
-    .yao-fact-text {
-      font-family: var(--font-serif);
-      font-size: 11px;
-      line-height: 1.25;
-      color: var(--ink-muted);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      min-width: 0;
-    }
   </style>
 </head>
 <body>
@@ -2412,9 +2455,7 @@
                 <g id="hexagramLinesGroup"></g>
               </svg>
             </div>
-
-            <!-- 横屏专用：六爻索引（竖屏隐藏），填补卡内横向空白 -->
-            <div class="yao-facts" id="yaoFacts" aria-label="六爻索引"></div>
+            
           </div>
 
           <!-- Area 4 (navzone): Navigation & Canwu 4-Buttons Zone
@@ -3093,30 +3134,6 @@
       });
     }
 
-    // 横屏六爻索引：爻题 + 爻辞首句，点击直达对应爻
-    function renderYaoFacts(gua) {
-      const box = document.getElementById("yaoFacts");
-      if (!box) return;
-      let html = "";
-      for (let k = 1; k <= 6; k++) {
-        const yaoKey = "Y" + k;
-        const label = (gua.yaoLabels && gua.yaoLabels[k - 1]) || ("第" + k + "爻");
-        let ci = (gua.blocks && gua.blocks["Y" + k + ".T"]) || "";
-        ci = ci.replace(/^(初[六九]|[六九][二三四五]|上[六九])[，,、]\s*/, "");
-        if (ci.length > 24) ci = ci.slice(0, 24) + "…";
-        const isActive = state.activeMode === yaoKey;
-        html += '<button type="button" class="yao-fact' + (isActive ? " active" : "") + '" data-fact-yao="' + yaoKey + '">' +
-          '<span class="yao-fact-label">' + label + '</span>' +
-          '<span class="yao-fact-text">' + escapeHtml(ci) + '</span></button>';
-      }
-      box.innerHTML = html;
-      box.querySelectorAll("button[data-fact-yao]").forEach(btn => {
-        btn.addEventListener("click", () => {
-          selectYao(btn.getAttribute("data-fact-yao"));
-        });
-      });
-    }
-
     function escapeHtml(str) {
       return str
         .replace(/&/g, "&amp;")
@@ -3449,7 +3466,6 @@
       });
 
       renderYaoButtons(gua);
-      renderYaoFacts(gua);
       updateCanwuButtons(gua);
 
       // If triggered from a finger drag/swipe, schedule the heavy scripture/commentary DOM build on the next animation frame so the drum & Bagua rotation start in <1ms with zero frame drop!
