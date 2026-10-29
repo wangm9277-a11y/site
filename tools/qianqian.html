@@ -2048,6 +2048,90 @@
       height: 100%;
       display: block;
     }
+
+    /* ==================== 横屏：六爻卡内右侧索引（填补横向空白，可直接点选） ==================== */
+    .yao-facts {
+      display: none;
+    }
+
+    html[data-orientation="landscape"] .hexagram-center-col {
+      flex-direction: row;
+      align-items: stretch;
+      justify-content: flex-start;
+      gap: 12px;
+      padding: 8px 12px 8px 10px;
+    }
+
+    html[data-orientation="landscape"] .yao-svg-wrap {
+      flex: 0 0 auto;
+      width: auto;
+      max-width: 42%;
+      height: 100%;
+      min-height: 0;
+    }
+
+    html[data-orientation="landscape"] .yao-svg {
+      width: auto;
+      height: 100%;
+      max-width: 100%;
+    }
+
+    html[data-orientation="landscape"] .yao-facts {
+      display: grid;
+      flex: 1 1 auto;
+      min-width: 0;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-auto-rows: minmax(0, 1fr);
+      gap: 5px 8px;
+      align-content: center;
+    }
+
+    .yao-fact {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      min-width: 0;
+      padding: 3px 8px;
+      border: 1px solid rgba(168, 139, 92, 0.2);
+      border-radius: 7px;
+      background: var(--bg-elevated);
+      text-align: left;
+      cursor: pointer;
+      transition: border-color 0.18s ease, background-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .yao-fact:hover {
+      border-color: var(--gold-bronze);
+      transform: translateY(-1px);
+    }
+
+    .yao-fact.active {
+      border-color: var(--gold-bronze);
+      background: var(--bg-paper);
+      box-shadow: inset 0 0 0 1px rgba(168, 139, 92, 0.55);
+    }
+
+    .yao-fact-label {
+      font-family: var(--font-serif);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      line-height: 1.1;
+      color: var(--gold-bronze);
+      white-space: nowrap;
+      flex: 0 0 auto;
+    }
+
+    .yao-fact-text {
+      font-family: var(--font-serif);
+      font-size: 11px;
+      line-height: 1.25;
+      color: var(--ink-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      min-width: 0;
+    }
   </style>
 </head>
 <body>
@@ -2328,7 +2412,9 @@
                 <g id="hexagramLinesGroup"></g>
               </svg>
             </div>
-            
+
+            <!-- 横屏专用：六爻索引（竖屏隐藏），填补卡内横向空白 -->
+            <div class="yao-facts" id="yaoFacts" aria-label="六爻索引"></div>
           </div>
 
           <!-- Area 4 (navzone): Navigation & Canwu 4-Buttons Zone
@@ -3007,6 +3093,30 @@
       });
     }
 
+    // 横屏六爻索引：爻题 + 爻辞首句，点击直达对应爻
+    function renderYaoFacts(gua) {
+      const box = document.getElementById("yaoFacts");
+      if (!box) return;
+      let html = "";
+      for (let k = 1; k <= 6; k++) {
+        const yaoKey = "Y" + k;
+        const label = (gua.yaoLabels && gua.yaoLabels[k - 1]) || ("第" + k + "爻");
+        let ci = (gua.blocks && gua.blocks["Y" + k + ".T"]) || "";
+        ci = ci.replace(/^(初[六九]|[六九][二三四五]|上[六九])[，,、]\s*/, "");
+        if (ci.length > 24) ci = ci.slice(0, 24) + "…";
+        const isActive = state.activeMode === yaoKey;
+        html += '<button type="button" class="yao-fact' + (isActive ? " active" : "") + '" data-fact-yao="' + yaoKey + '">' +
+          '<span class="yao-fact-label">' + label + '</span>' +
+          '<span class="yao-fact-text">' + escapeHtml(ci) + '</span></button>';
+      }
+      box.innerHTML = html;
+      box.querySelectorAll("button[data-fact-yao]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          selectYao(btn.getAttribute("data-fact-yao"));
+        });
+      });
+    }
+
     function escapeHtml(str) {
       return str
         .replace(/&/g, "&amp;")
@@ -3339,6 +3449,7 @@
       });
 
       renderYaoButtons(gua);
+      renderYaoFacts(gua);
       updateCanwuButtons(gua);
 
       // If triggered from a finger drag/swipe, schedule the heavy scripture/commentary DOM build on the next animation frame so the drum & Bagua rotation start in <1ms with zero frame drop!
