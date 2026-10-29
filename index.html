@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#05060a">
-<title>猛哥的太空站 · wmv587</title>
-<meta name="description" content="已抵达猛哥的太空站——wmv587 的私人小站，放点工具和入口。">
-<meta property="og:title" content="猛哥的太空站 · wmv587">
-<meta property="og:description" content="已抵达猛哥的太空站——wmv587 的私人小站。">
+<title>猛哥的空间站 · wmv587</title>
+<meta name="description" content="已抵达猛哥的空间站——wmv587 的私人小站，放点工具和入口。">
+<meta property="og:title" content="猛哥的空间站 · wmv587">
+<meta property="og:description" content="已抵达猛哥的空间站——wmv587 的私人小站。">
 <meta property="og:type" content="website">
 <link rel="preload" as="image" href="assets/bg.webp">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%235ee0a8'/%3E%3Cstop offset='1' stop-color='%237aa2ff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%2305060a'/%3E%3Ccircle cx='32' cy='32' r='13' fill='none' stroke='url(%23g)' stroke-width='4'/%3E%3C/svg%3E">
@@ -66,6 +66,13 @@
 
   main{padding:clamp(56px,12vh,120px) 0 0}
   .keep{white-space:nowrap}
+  .kick{
+    display:inline-flex; align-items:center; gap:9px; margin-bottom:16px;
+    font:600 11px/1 ui-monospace,SFMono-Regular,Menlo,monospace;
+    letter-spacing:.18em; text-transform:uppercase; color:var(--accent);
+    animation:rise .7s cubic-bezier(.2,.7,.2,1) both;
+  }
+  .kick i{width:5px;height:5px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent)}
   h1{
     font-size:clamp(38px,7.4vw,72px); line-height:1.06; letter-spacing:-.035em;
     margin:0 0 18px; font-weight:700;
@@ -182,7 +189,8 @@
   </header>
 
   <main>
-    <h1>已抵达 <span class="keep"><span class="grad" id="typed">猛哥的太空站</span><span class="caret" id="caret"></span>!</span></h1>
+    <div class="kick"><i></i>已抵达 · Welcome aboard</div>
+    <h1 class="keep">猛哥的<span class="grad" id="typed">空间站</span><span class="caret" id="caret"></span></h1>
     <p class="sub">一个私人的小站，放点工具和入口。</p>
     <div class="rule"></div>
 
@@ -248,7 +256,7 @@
   var intro = document.getElementById('intro');
   var typed = document.getElementById('typed');
   var caret = document.getElementById('caret');
-  var NAME = '猛哥的太空站';
+  var NAME = '空间站';
 
   function typeName(){
     if (!typed) return;
