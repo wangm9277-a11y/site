@@ -1529,7 +1529,7 @@
 
     .original-text {
       font-family: var(--font-serif);
-      font-size: 17.5px;
+      font-size: calc(var(--comm-font-size, 15.5px) * 1.12);
       font-weight: 600;
       line-height: 2.22;
       letter-spacing: 0.5px;
@@ -2175,9 +2175,316 @@
       height: 100%;
       display: block;
     }
+    /* ==================== 启动横竖屏选择 ==================== */
+    .launch-veil {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: max(20px, env(safe-area-inset-top)) 20px max(20px, env(safe-area-inset-bottom));
+      background:
+        radial-gradient(130% 100% at 50% -10%, rgba(94, 72, 40, 0.44) 0%, rgba(20, 18, 15, 0) 58%),
+        radial-gradient(90% 70% at 50% 110%, rgba(94, 26, 20, 0.22) 0%, rgba(10, 10, 11, 0) 60%),
+        #0C0C0D;
+      font-family: var(--font-serif);
+      opacity: 1;
+      transition: opacity 0.3s ease;
+      overscroll-behavior: contain;
+    }
+
+    .launch-veil.closing {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .launch-panel {
+      width: min(680px, 100%);
+      text-align: center;
+      color: #EFECE6;
+      animation: launchRise 0.55s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    }
+
+    @keyframes launchRise {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    .launch-seal {
+      width: 46px;
+      height: 46px;
+      margin: 0 auto;
+      display: grid;
+      place-items: center;
+      color: #FFF6E8;
+      font-size: 25px;
+      line-height: 1;
+      background: linear-gradient(160deg, #C8382E, #8E1D14);
+      border-radius: 7px;
+      box-shadow: inset 0 0 0 1px rgba(255, 246, 232, 0.28), 0 10px 26px rgba(0, 0, 0, 0.4);
+    }
+
+    .launch-title {
+      margin: 18px 0 0;
+      font-size: 30px;
+      font-weight: 500;
+      letter-spacing: 0.34em;
+      text-indent: 0.34em;
+      color: #F3EFE6;
+    }
+
+    .launch-kicker {
+      margin: 12px auto 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      font-family: var(--font-sans);
+      font-size: 11.5px;
+      letter-spacing: 0.3em;
+      text-indent: 0.3em;
+      color: #8D8578;
+    }
+
+    .launch-kicker i {
+      width: 42px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(201, 166, 107, 0.5), transparent);
+    }
+
+    .launch-options {
+      margin-top: 34px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .launch-option {
+      position: relative;
+      appearance: none;
+      -webkit-appearance: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      padding: 26px 18px 22px;
+      cursor: pointer;
+      color: #DCD5C7;
+      background: linear-gradient(180deg, rgba(32, 31, 31, 0.92), rgba(19, 19, 21, 0.94));
+      border: 1px solid rgba(212, 190, 152, 0.2);
+      border-radius: 14px;
+      overflow: hidden;
+      transition: border-color 0.22s ease, transform 0.22s ease, box-shadow 0.22s ease;
+    }
+
+    .launch-option::before {
+      content: "";
+      position: absolute;
+      inset: 7px;
+      border: 1px solid rgba(212, 190, 152, 0.1);
+      border-radius: 9px;
+      pointer-events: none;
+      transition: border-color 0.22s ease;
+    }
+
+    .launch-option:hover {
+      border-color: rgba(212, 190, 152, 0.58);
+      box-shadow: 0 18px 44px rgba(0, 0, 0, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .launch-option:hover::before {
+      border-color: rgba(212, 190, 152, 0.24);
+    }
+
+    .launch-option:active {
+      transform: translateY(0) scale(0.992);
+    }
+
+    .launch-option:focus-visible {
+      outline: 1px solid rgba(201, 166, 107, 0.85);
+      outline-offset: 3px;
+    }
+
+    .launch-glyph {
+      width: 64px;
+      height: 64px;
+      color: #C9A66B;
+    }
+
+    .launch-glyph svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .launch-copy {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .launch-orient-name {
+      font-size: 22px;
+      letter-spacing: 0.28em;
+      text-indent: 0.28em;
+      color: #F3EFE6;
+    }
+
+    .launch-spec {
+      font-family: var(--font-sans);
+      font-size: 12px;
+      line-height: 1.95;
+      letter-spacing: 0.05em;
+      color: #9A9284;
+    }
+
+    .launch-note {
+      margin-top: 24px;
+      font-family: var(--font-sans);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      color: #6B655B;
+    }
+
+    @media (max-width: 600px) {
+      .launch-options {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        margin-top: 26px;
+      }
+
+      .launch-option {
+        flex-direction: row;
+        text-align: left;
+        gap: 18px;
+        padding: 18px;
+      }
+
+      .launch-glyph {
+        width: 54px;
+        height: 54px;
+        flex: 0 0 auto;
+      }
+
+      .launch-copy {
+        align-items: flex-start;
+        gap: 5px;
+      }
+
+      .launch-orient-name {
+        font-size: 20px;
+      }
+    }
+
+    @media (max-height: 620px) {
+      .launch-veil {
+        overflow-y: auto;
+      }
+
+      .launch-panel {
+        padding: 16px 0;
+      }
+
+      .launch-seal {
+        width: 38px;
+        height: 38px;
+        font-size: 21px;
+        border-radius: 6px;
+      }
+
+      .launch-title {
+        font-size: 23px;
+        margin-top: 10px;
+      }
+
+      .launch-kicker {
+        margin-top: 7px;
+      }
+
+      .launch-options {
+        margin-top: 16px;
+      }
+
+      .launch-option {
+        flex-direction: row;
+        text-align: left;
+        gap: 16px;
+        padding: 13px 16px;
+      }
+
+      .launch-glyph {
+        width: 46px;
+        height: 46px;
+        flex: 0 0 auto;
+      }
+
+      .launch-copy {
+        align-items: flex-start;
+        gap: 4px;
+      }
+
+      .launch-orient-name {
+        font-size: 19px;
+      }
+
+      .launch-spec {
+        font-size: 10.5px;
+        line-height: 1.7;
+      }
+
+      .launch-note {
+        margin-top: 12px;
+        font-size: 10.5px;
+      }
+    }
   </style>
 </head>
 <body>
+  <div class="launch-veil" id="launchVeil" role="dialog" aria-modal="true" aria-labelledby="launchTitle">
+    <div class="launch-panel">
+      <div class="launch-seal" aria-hidden="true"><span>易</span></div>
+      <h2 class="launch-title" id="launchTitle">乾乾学易</h2>
+      <p class="launch-kicker"><i></i><span>请选择阅读方式</span><i></i></p>
+
+      <div class="launch-options">
+        <button type="button" class="launch-option" data-launch-orient="portrait"
+          aria-label="竖屏模式：自适应比例、75% 缩放、标准字号、生僻注音、深色">
+          <span class="launch-glyph" aria-hidden="true">
+            <svg viewBox="0 0 100 100" fill="none">
+              <rect x="29" y="9" width="42" height="82" rx="8" stroke="currentColor" stroke-width="1.4" />
+              <path d="M39 38h22M39 50h22M39 62h22" stroke="var(--vermilion)" stroke-width="3.4" stroke-linecap="round" />
+              <path d="M45 81h10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" opacity=".55" />
+            </svg>
+          </span>
+          <span class="launch-copy">
+            <span class="launch-orient-name">竖屏</span>
+            <span class="launch-spec">自适应 · 75% 缩放 · 标准字号<br>生僻注音 · 深色</span>
+          </span>
+        </button>
+
+        <button type="button" class="launch-option" data-launch-orient="landscape"
+          aria-label="横屏模式：自适应比例、75% 缩放、特大字号、生僻注音、深色">
+          <span class="launch-glyph" aria-hidden="true">
+            <svg viewBox="0 0 100 100" fill="none">
+              <rect x="9" y="29" width="82" height="42" rx="8" stroke="currentColor" stroke-width="1.4" />
+              <path d="M34 40h32M34 50h32M34 60h32" stroke="var(--vermilion)" stroke-width="3.4" stroke-linecap="round" />
+              <path d="M81 45v10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" opacity=".55" />
+            </svg>
+          </span>
+          <span class="launch-copy">
+            <span class="launch-orient-name">横屏</span>
+            <span class="launch-spec">自适应 · 75% 缩放 · 特大字号<br>生僻注音 · 深色</span>
+          </span>
+        </button>
+      </div>
+
+      <p class="launch-note">进入后可在右上角设置中随时调整</p>
+    </div>
+  </div>
+
   <div class="workspace-shell" id="workspaceShell">
     <!-- Main Adaptive / Multi-Ratio Folio Container -->
     <main class="folio-frame" id="folioFrame">
@@ -2675,8 +2982,8 @@
 
     // 横/竖屏各自默认预设：切换方向时恢复本方向默认（比例自适应、注音生僻）
     const ORIENT_DEFAULTS = {
-      portrait:  { aspectRatio: "auto", uiScale: "1",    fontSize: "15.5", pinyinMode: "rare" },
-      landscape: { aspectRatio: "auto", uiScale: "0.75", fontSize: "18",   pinyinMode: "rare" }
+      portrait:  { aspectRatio: "auto", uiScale: "0.75", fontSize: "15.5", pinyinMode: "rare" },
+      landscape: { aspectRatio: "auto", uiScale: "0.75", fontSize: "20.5", pinyinMode: "rare" }
     };
 
     function applyOrientationDefaults() {
@@ -2788,8 +3095,8 @@
       } catch (e) {}
       applyTheme(state.theme);
       applyOrientationDefaults();
-      applyFontSize(state.fontSize);
       applyViewportLayout();
+      applyFontSize(state.fontSize);
       updateSettingsUI();
       updateSealActionButtons();
     }
@@ -2851,8 +3158,11 @@
 
     function applyFontSize(sizeStr) {
       state.fontSize = sizeStr || "15.5";
-      const commPx = parseFloat(state.fontSize) || 15.5;
-      document.documentElement.style.setProperty("--comm-font-size", commPx + "px");
+      // 字号按“视觉像素”定义：整体缩放 s 时反向补偿，使 75% 下仍显示 100% 时的字号
+      const visualPx = parseFloat(state.fontSize) || 15.5;
+      const s = state.appliedScale || 1;
+      const commPx = visualPx / s;
+      document.documentElement.style.setProperty("--comm-font-size", commPx.toFixed(2) + "px");
       updateSettingsUI();
     }
 
@@ -4127,6 +4437,33 @@
       });
     }
 
+    // ==================== LAUNCH ORIENTATION CHOOSER ====================
+    function applyLaunchPreset(orientation) {
+      state.orientation = orientation === "landscape" ? "landscape" : "portrait";
+      state.theme = "dark";
+      applyTheme("dark");
+      applyOrientationDefaults();
+      applyViewportLayout();
+      applyFontSize(state.fontSize);
+      updateSettingsUI();
+      saveState();
+      renderContentZone(GUA_DATA[state.guaId], false);
+    }
+
+    function initLaunchChooser() {
+      const veil = document.getElementById("launchVeil");
+      if (!veil) return;
+      const firstOption = veil.querySelector("[data-launch-orient]");
+      if (firstOption) window.setTimeout(() => firstOption.focus({ preventScroll: true }), 60);
+      veil.querySelectorAll("[data-launch-orient]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          applyLaunchPreset(btn.getAttribute("data-launch-orient"));
+          veil.classList.add("closing");
+          window.setTimeout(() => veil.remove(), 320);
+        });
+      });
+    }
+
     // ==================== INITIALIZE EVENT LISTENERS ====================
     function initApp() {
       initCompassOuterRing();
@@ -4181,6 +4518,7 @@
         btn.addEventListener("click", () => {
           state.aspectRatio = btn.getAttribute("data-ratio");
           applyViewportLayout();
+          applyFontSize(state.fontSize);
           updateSettingsUI();
           saveState();
         });
@@ -4203,6 +4541,7 @@
         btn.addEventListener("click", () => {
           state.uiScale = btn.getAttribute("data-scale");
           applyViewportLayout();
+          applyFontSize(state.fontSize);
           updateSettingsUI();
           saveState();
         });
@@ -4270,6 +4609,7 @@
 
       window.addEventListener("resize", () => {
         applyViewportLayout();
+        applyFontSize(state.fontSize);
       });
 
       document.querySelectorAll("#guaTabRow .text-btn").forEach(btn => {
@@ -4415,6 +4755,7 @@
       });
 
       window.addEventListener("keydown", (e) => {
+        if (document.getElementById("launchVeil")) return;
         if (settingsPopover.classList.contains("open") && e.key === "Escape") {
           settingsPopover.classList.remove("open");
           btnSettings.classList.remove("active");
@@ -4443,6 +4784,7 @@
         }
       });
 
+      initLaunchChooser();
       initPwaAppIconAndManifest();
       renderAll(true);
     }
