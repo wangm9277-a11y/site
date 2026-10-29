@@ -243,7 +243,7 @@
   }
 
   /* ---------- 空岛场景 ---------- */
-  .scene{position:relative; flex:1 1 480px; max-width:620px; height:clamp(330px,44vh,470px); z-index:2}
+  .scene{position:relative; flex:1 1 480px; max-width:620px; height:clamp(330px,44vh,470px); z-index:1; transform:translateY(clamp(140px,19vh,220px))}
   .island{position:absolute; left:50%; bottom:0; width:100%; transform:translateX(-50%); animation:islandBob 9s ease-in-out infinite}
   .island svg{display:block; width:100%; height:auto; filter:saturate(1.3) contrast(1.05) brightness(.98) drop-shadow(0 30px 60px rgba(0,0,0,.55))}
   @keyframes islandBob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-10px)}}
@@ -277,7 +277,7 @@
   .scene .bot{width:clamp(124px,13vw,192px); bottom:41.5%}
   @media(max-width:900px){
     .hero{flex-direction:column; align-items:stretch; padding-bottom:16px}
-    .scene{flex:1 1 auto; width:100%; max-width:none; height:300px; margin:18px 0 6px}
+    .scene{flex:1 1 auto; width:100%; max-width:none; height:250px; margin:6px 0 2px; transform:translateY(10px)}
     .scene .bot{width:clamp(104px,26vw,132px); bottom:46%}
     .deck-wrap{position:relative; padding:14px 0 6px}
     .card{width:min(62vw,240px)}
