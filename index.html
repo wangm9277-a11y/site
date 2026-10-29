@@ -170,22 +170,31 @@
   .caret.on{opacity:1; animation:caretBlink 1.05s steps(1,end) infinite}
   @keyframes caretBlink{0%,55%{opacity:1}56%,100%{opacity:.12}}
 
-  /* 开场 */
-  #intro{position:fixed; inset:0; z-index:60; display:grid; place-items:center; overflow:hidden;
-    background:radial-gradient(70% 60% at 50% 48%,#0a1120 0%,#05060a 62%);
-    transition:opacity .75s ease, visibility .75s ease}
-  #intro.done{opacity:0; visibility:hidden}
-  #intro .core{width:52px; height:52px; border-radius:50%;
-    background:radial-gradient(circle at 38% 32%,#d8ffef,#5ee0a8 46%,rgba(94,224,168,.05) 74%);
-    box-shadow:0 0 60px 18px rgba(94,224,168,.28); animation:coreIn 1.15s cubic-bezier(.2,.7,.2,1) both}
-  #intro .ring{position:absolute; width:110px; height:110px; border-radius:50%;
-    border:1px solid rgba(94,224,168,.5); animation:ringOut 1.5s cubic-bezier(.2,.7,.2,1) both}
-  #intro .ring.b{animation-delay:.18s; border-color:rgba(122,162,255,.45)}
-  #intro .word{position:absolute; bottom:27vh; color:#93a0b5; font-size:11px; letter-spacing:.52em;
-    text-transform:uppercase; opacity:0; animation:introWord .8s ease .3s both}
-  @keyframes coreIn{0%{transform:scale(.35); opacity:0}45%{opacity:1}100%{transform:scale(1); opacity:1}}
-  @keyframes ringOut{0%{transform:scale(.25); opacity:0}35%{opacity:.9}100%{transform:scale(3.1); opacity:0}}
-  @keyframes introWord{to{opacity:1}}
+  /* 开场：加载计数器 */
+  #intro{position:fixed; inset:0; z-index:60; display:grid; place-items:center; overflow:hidden; background:#000}
+  #intro::before{content:""; position:absolute; width:min(80vmin,660px); aspect-ratio:1; border-radius:50%;
+    background:radial-gradient(circle,rgba(154,204,36,.10) 0%,rgba(70,96,12,.045) 44%,transparent 70%);
+    filter:blur(6px)}
+  #intro .center{position:relative; text-align:center}
+  #intro .label{font:600 10px/1 ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:.44em;
+    color:rgba(255,255,255,.5); text-indent:.44em; margin-bottom:14px}
+  #intro .num{font:900 clamp(68px,13.5vw,158px)/.9 "Arial Black","Segoe UI Black",Impact,sans-serif;
+    color:#c8f830; letter-spacing:-.045em; font-variant-numeric:tabular-nums;
+    text-shadow:0 0 26px rgba(200,248,48,.18),0 0 90px rgba(200,248,48,.07)}
+  #intro .num i{font-style:normal; font-size:.46em; vertical-align:.46em; letter-spacing:0; margin-left:.02em}
+  #intro .spark{position:absolute; left:calc(50% + 96px); top:calc(50% + 30px); width:5px; height:5px;
+    border-radius:50%; background:#fff; box-shadow:0 0 9px rgba(255,255,255,.95);
+    animation:sparkDrift 2.6s ease-in-out infinite}
+  #intro .cap{position:absolute; left:0; right:0; bottom:12vh; margin:0 auto; padding:0 24px; text-align:center;
+    color:#fff; font:700 clamp(20px,3.2vw,42px)/1.18 "Arial Narrow","Helvetica Neue",Arial,sans-serif;
+    font-style:italic; letter-spacing:.015em; text-shadow:0 2px 24px rgba(0,0,0,.6);
+    transition:opacity .2s linear}
+  #intro.cut{opacity:0; transition:opacity .12s linear}
+  @keyframes sparkDrift{0%,100%{transform:translate(0,0); opacity:.3}50%{transform:translate(7px,-11px); opacity:.95}}
+  @media (max-width:640px){
+    #intro .label{font-size:8.5px; letter-spacing:.3em; text-indent:.3em}
+    #intro .spark{left:calc(50% + 66px); top:calc(50% + 18px)}
+  }
 
   /* 页面切换 */
   @view-transition{navigation:auto}
@@ -219,7 +228,14 @@
 </style>
 </head>
 <body>
-<div id="intro" aria-hidden="true"><span class="ring"></span><span class="ring b"></span><span class="core"></span><span class="word">wmv587</span></div>
+<div id="intro" aria-hidden="true">
+  <div class="center">
+    <div class="label">LOADING SPACE STATION</div>
+    <div class="num"><span id="pct">0</span><i>%</i></div>
+    <span class="spark"></span>
+  </div>
+  <div class="cap" id="cap">AI 时代</div>
+</div>
 <canvas id="stars"></canvas>
 <div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
 <div class="cursor-glow" id="glow" aria-hidden="true"></div>
@@ -404,16 +420,40 @@
   }
 
   if (intro){
-    var skip = reduce || innerWidth < 640 || sessionStorage.getItem('wmv-intro') === '1';
+    var pctEl = document.getElementById('pct');
+    var capEl = document.getElementById('cap');
+    var force = /[?&]intro/.test(location.search);
+    var skip = reduce || (sessionStorage.getItem('wmv-intro') === '1' && !force);
     if (skip){
       intro.remove();
       typeName();
     } else {
       sessionStorage.setItem('wmv-intro', '1');
-      setTimeout(function(){
-        intro.classList.add('done');
-        setTimeout(function(){ intro.remove(); typeName(); }, 300);
-      }, 1200);
+      var CURVE = [[0,0],[.18,22],[.36,55],[.54,80],[.72,88],[.88,96],[1,100]];
+      var DUR = 1080, t0 = performance.now();
+      var LONG = '把喜欢的东西，都放进自己的空间站';
+      function value(t){
+        for (var i = 1; i < CURVE.length; i++){
+          if (t <= CURVE[i][0]){
+            var a = CURVE[i-1], b = CURVE[i];
+            var k = (t - a[0]) / (b[0] - a[0]);
+            return a[1] + (b[1] - a[1]) * k;
+          }
+        }
+        return 100;
+      }
+      (function frame(now){
+        var t = Math.min(1, (now - t0) / DUR);
+        pctEl.textContent = Math.round(value(t));
+        if (t > .62 && capEl.textContent !== LONG) capEl.textContent = LONG;
+        if (t < 1) requestAnimationFrame(frame);
+        else {
+          setTimeout(function(){
+            intro.classList.add('cut');
+            setTimeout(function(){ intro.remove(); typeName(); }, 130);
+          }, 200);
+        }
+      })(t0);
     }
   } else {
     typeName();
