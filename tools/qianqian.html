@@ -1130,7 +1130,7 @@
     html[data-orientation="landscape"] .ops-workspace {
       flex: 1 1 auto;
       min-height: 0;
-      max-height: 392px;
+      max-height: max(392px, min(62vh, 470px));
       width: 100%;
       margin: auto 0;
       display: grid;
@@ -2081,7 +2081,7 @@
       flex: 1 1 auto;
       min-width: 0;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      grid-auto-rows: minmax(0, 1fr);
+      grid-auto-rows: 30px;
       gap: 5px 8px;
       align-content: center;
     }
