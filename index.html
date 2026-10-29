@@ -74,27 +74,26 @@
     font:600 11px/1.4 ui-monospace,monospace; letter-spacing:.14em}
   .hero-meta b{color:#fff; font-weight:700}
 
-  /* 纸飞机 */
-  .plane{position:absolute; right:5%; top:9%; z-index:3; width:clamp(96px,9.6vw,138px);
-    animation:planeFly 2.4s cubic-bezier(.16,.84,.3,1) 1.45s both}
-  .plane svg{display:block; width:100%; height:auto; overflow:visible; transform:rotate(-6deg);
-    filter:drop-shadow(0 14px 26px rgba(0,0,0,.45)) drop-shadow(0 0 24px rgba(127,227,255,.22))}
-  .plane-glide{animation:planeGlide 6.5s ease-in-out 3.9s infinite}
-  /* 从远处斜着飞进来：极小、带虚焦，落到岛上方 */
-  @keyframes planeFly{
-    0%{opacity:0; transform:translate(34%,-64%) scale(.08) rotate(-30deg); filter:blur(5px)}
-    38%{opacity:.7; filter:blur(2px)}
-    72%{opacity:1; filter:blur(.4px); transform:translate(-3%,5%) scale(1.05) rotate(4deg)}
-    100%{opacity:1; filter:blur(0); transform:translate(0,0) scale(1) rotate(0deg)}
-  }
-  /* 落定之后的滑翔 */
-  @keyframes planeGlide{
-    0%,100%{transform:translateY(0) rotate(-2.5deg)}
-    50%{transform:translateY(-10px) rotate(2deg)}
-  }
+  /* ---------- 小机器人 ---------- */
+  .bot{position:absolute; left:0; right:0; margin:0 auto; bottom:43%; width:clamp(124px,12.6vw,182px);
+    z-index:3; cursor:pointer; outline:none; -webkit-tap-highlight-color:transparent;
+    animation:botIn .9s cubic-bezier(.2,.7,.2,1) .15s both}
+  .bot-float{animation:botFloat 7s ease-in-out 1.05s infinite}
+  .bot svg{display:block; width:100%; height:auto; overflow:visible;
+    filter:drop-shadow(0 20px 34px rgba(0,0,0,.5)) drop-shadow(0 0 26px rgba(127,227,255,.16))}
+  .bot .rig{transform-box:fill-box; transform-origin:50% 100%; transition:transform .3s ease}
+  .bot.boop .rig{animation:botBoop .7s cubic-bezier(.3,1.5,.4,1)}
+  .bot .eye{transform-box:fill-box; transform-origin:center; transition:transform .12s ease}
+  .bot.blink .eye{transform:scaleY(.08)}
+  .bot .pupil{transition:transform .12s linear}
+  .bot .ant-tip{transform-box:fill-box; transform-origin:center; opacity:0}
+  .bot.pulse .ant-tip{animation:antPulse .8s ease-out}
+  @keyframes botIn{from{opacity:0; transform:translateY(18px) scale(.9)}to{opacity:1; transform:none}}
+  @keyframes botFloat{0%,100%{transform:translateY(0) rotate(-1.2deg)}50%{transform:translateY(-9px) rotate(1.2deg)}}
+  @keyframes botBoop{0%{transform:scale(1)}30%{transform:scale(1.06,.93)}62%{transform:scale(.97,1.03)}100%{transform:scale(1)}}
+  @keyframes antPulse{0%{opacity:.9; transform:scale(1)}100%{opacity:0; transform:scale(3.4)}}
   @media (prefers-reduced-motion:reduce){
-    .plane{animation:none}
-    .plane-glide{animation:none}
+    .bot,.bot-float{animation:none}
   }
 
   /* 胶片条 */
@@ -258,7 +257,7 @@
   @media(max-width:900px){
     .hero{flex-direction:column; align-items:stretch; padding-bottom:16px}
     .scene{flex:1 1 auto; width:100%; max-width:none; height:250px; margin:6px 0 2px; transform:translateY(10px)}
-    .plane{top:39%; right:4%; width:clamp(74px,18vw,92px)}
+    .bot{bottom:45%; width:clamp(96px,25vw,126px)}
     .deck-wrap{position:relative; padding:14px 0 6px}
     .card{width:min(62vw,240px)}
     .card.on{width:min(70vw,270px)}
@@ -300,7 +299,7 @@
       <p class="lede">一个私人的小站。工具、作品、还有点没想好放哪儿的念头，都在这儿。</p>
       <div class="hero-meta">
         <span><b>5</b> 个工具</span>
-        <span><b>1</b> 架纸飞机</span>
+        <span><b>1</b> 个小机器人</span>
         <span><b>0</b> 个广告</span>
       </div>
     </div>
@@ -394,47 +393,117 @@
   </g>
 </svg>
       </div>
-    </div>
+      <div class="bot" id="bot" tabindex="0" role="button" aria-label="空间站小机器人，点它会动">
+        <div class="bot-float">
+          <svg viewBox="0 0 220 300" aria-hidden="true">
+            <defs>
+              <linearGradient id="bShell" x1="28%" y1="0%" x2="82%" y2="100%">
+                <stop offset="0" stop-color="#ffffff"/>
+                <stop offset="46%" stop-color="#f2f6fc"/>
+                <stop offset="100%" stop-color="#cfdae9"/>
+              </linearGradient>
+              <linearGradient id="bShell2" x1="20%" y1="0%" x2="85%" y2="100%">
+                <stop offset="0" stop-color="#ffffff"/>
+                <stop offset="55%" stop-color="#eef3fa"/>
+                <stop offset="100%" stop-color="#c8d5e6"/>
+              </linearGradient>
+              <radialGradient id="bVisor" cx="36%" cy="26%" r="82%">
+                <stop offset="0" stop-color="#2a3542"/>
+                <stop offset="55%" stop-color="#0c1219"/>
+                <stop offset="100%" stop-color="#04070b"/>
+              </radialGradient>
+              <radialGradient id="bEyeIn" cx="48%" cy="42%" r="60%">
+                <stop offset="0" stop-color="#0b1a24"/>
+                <stop offset="100%" stop-color="#050d13"/>
+              </radialGradient>
+              <radialGradient id="bGlow" cx="50%" cy="50%" r="50%">
+                <stop offset="0" stop-color="#8ff4ff" stop-opacity=".55"/>
+                <stop offset="60%" stop-color="#4fe3ff" stop-opacity=".16"/>
+                <stop offset="100%" stop-color="#4fe3ff" stop-opacity="0"/>
+              </radialGradient>
+              <filter id="bSoft" x="-40%" y="-40%" width="180%" height="180%">
+                <feGaussianBlur stdDeviation="7"/>
+              </filter>
+              <filter id="bGlowF" x="-70%" y="-70%" width="240%" height="240%">
+                <feGaussianBlur stdDeviation="3.4"/>
+              </filter>
+            </defs>
 
-    <div class="plane" id="plane" aria-hidden="true">
-      <div class="plane-glide">
-        <svg viewBox="0 0 220 190">
-          <defs>
-            <linearGradient id="pw1" x1="8%" y1="0%" x2="80%" y2="95%">
-              <stop offset="0" stop-color="#ffffff"/>
-              <stop offset="52%" stop-color="#eaf1f9"/>
-              <stop offset="100%" stop-color="#ccd8e7"/>
-            </linearGradient>
-            <linearGradient id="pw2" x1="15%" y1="5%" x2="85%" y2="100%">
-              <stop offset="0" stop-color="#dde7f2"/>
-              <stop offset="60%" stop-color="#bccbdc"/>
-              <stop offset="100%" stop-color="#9dadc2"/>
-            </linearGradient>
-            <linearGradient id="pw3" x1="10%" y1="0%" x2="90%" y2="100%">
-              <stop offset="0" stop-color="#b6c5d8"/>
-              <stop offset="70%" stop-color="#93a3ba"/>
-              <stop offset="100%" stop-color="#7b8ba2"/>
-            </linearGradient>
-            <filter id="pSoft" x="-30%" y="-30%" width="160%" height="160%">
-              <feGaussianBlur stdDeviation="2.4" result="b"/>
-              <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-            </filter>
-          </defs>
-          <g filter="url(#pSoft)">
-            <path d="M202 64 156 100 158 156Z" fill="url(#pw3)"/>
-            <path d="M26 100 202 64 156 100Z" fill="url(#pw1)"/>
-            <path d="M26 100 156 100 158 156Z" fill="url(#pw2)"/>
-            <path d="M26 100 202 64 158 156Z" fill="none" stroke="rgba(32,48,68,.24)" stroke-width="1.2" stroke-linejoin="round"/>
-            <path d="M26 100 156 100" stroke="rgba(255,255,255,.8)" stroke-width="1.3" fill="none" stroke-linecap="round"/>
-            <path d="M202 64 156 100 158 156" stroke="rgba(58,76,102,.28)" stroke-width="1" fill="none" stroke-linejoin="round"/>
-          </g>
-        </svg>
+            <!-- 悬浮投影 -->
+            <ellipse cx="110" cy="288" rx="44" ry="7.5" fill="#05090f" opacity=".45" filter="url(#bSoft)"/>
+
+            <g class="rig">
+              <!-- 手臂 -->
+              <path d="M66 200c-11 9-16 22-16 35" stroke="#b9c8dc" stroke-width="16" stroke-linecap="round" fill="none" opacity=".55"/>
+              <path d="M66 200c-11 9-16 22-16 35" stroke="url(#bShell2)" stroke-width="14.4" stroke-linecap="round" fill="none"/>
+              <ellipse cx="55" cy="240" rx="9.5" ry="11" fill="#ffffff" stroke="#e4ecf7"/>
+              <circle cx="55" cy="243" r="2.4" fill="#4fe3ff"/>
+              <path d="M152 202c9 9 13 21 13 33" stroke="url(#bShell2)" stroke-width="14" stroke-linecap="round" fill="none"/>
+              <ellipse cx="165" cy="240" rx="9.5" ry="11" fill="#ffffff" stroke="#e4ecf7"/>
+              <circle cx="165" cy="243" r="2.4" fill="#4fe3ff"/>
+
+              <!-- 身体 -->
+              <path d="M110 152c-25 0-45 21-45 52 0 15 4 28 11 38 8 12 20 19 34 19s26-7 34-19c7-10 11-23 11-38 0-31-20-52-45-52z"
+                    fill="url(#bShell)" stroke="#e3ebf6" stroke-width="1"/>
+
+              <!-- 胸口接缝 + 核心 -->
+              <g stroke="#a8e6e0" stroke-width="1.8" fill="none" opacity=".8" filter="url(#bGlowF)">
+                <path d="M110 168v80"/>
+                <path d="M110 184c-7 5-14 8-21 10"/>
+                <path d="M110 184c7 5 14 8 21 10"/>
+              </g>
+              <circle cx="110" cy="212" r="22" fill="url(#bGlow)"/>
+              <circle cx="110" cy="212" r="10.5" fill="none" stroke="#7fe8f7" stroke-width="1.6" opacity=".75"/>
+              <circle cx="110" cy="212" r="5.6" fill="#bdf7ff"/>
+              <circle cx="110" cy="212" r="2.4" fill="#ffffff"/>
+
+              <!-- 头（先把阴影压在身体上，再画头） -->
+              <ellipse cx="110" cy="152" rx="38" ry="9" fill="#93a7c0" opacity=".3" filter="url(#bSoft)"/>
+              <ellipse cx="110" cy="96" rx="54" ry="50" fill="url(#bShell)" stroke="#e3ebf6" stroke-width="1"/>
+              <ellipse cx="110" cy="96" rx="54" ry="50" fill="none" stroke="#ffffff" stroke-opacity=".5" stroke-width="1.4"/>
+              <ellipse cx="56" cy="100" rx="9.5" ry="15" fill="url(#bShell2)" stroke="#dbe5f2"/>
+              <ellipse cx="164" cy="100" rx="9.5" ry="15" fill="url(#bShell2)" stroke="#dbe5f2"/>
+
+              <!-- 天线 -->
+              <g stroke="#eef4fb" stroke-width="3.4" stroke-linecap="round">
+                <path d="M92 52 85 24"/><path d="M128 52 135 24"/>
+              </g>
+              <circle cx="84" cy="21" r="5" fill="#ffffff" stroke="#e2eaf5"/>
+              <circle cx="136" cy="21" r="5" fill="#ffffff" stroke="#e2eaf5"/>
+              <circle class="ant-tip" cx="84" cy="21" r="6" fill="#8ff4ff"/>
+              <circle class="ant-tip" cx="136" cy="21" r="6" fill="#8ff4ff"/>
+
+              <!-- 面罩 -->
+              <rect x="66" y="62" width="88" height="64" rx="30" fill="url(#bVisor)"/>
+              <path d="M78 76c13-8 30-10 45-10" stroke="#5c7086" stroke-opacity=".5" stroke-width="6" stroke-linecap="round" fill="none"/>
+
+              <!-- 眼睛 -->
+              <g class="eye">
+                <circle cx="94" cy="94" r="13" fill="url(#bEyeIn)"/>
+                <circle cx="94" cy="94" r="12.4" fill="none" stroke="#4fe3ff" stroke-width="4.6" opacity=".95" filter="url(#bGlowF)"/>
+                <circle cx="94" cy="94" r="11" fill="none" stroke="#bff4ff" stroke-width="2.6"/>
+              </g>
+              <g class="eye">
+                <circle cx="126" cy="94" r="13" fill="url(#bEyeIn)"/>
+                <circle cx="126" cy="94" r="12.4" fill="none" stroke="#4fe3ff" stroke-width="4.6" opacity=".95" filter="url(#bGlowF)"/>
+                <circle cx="126" cy="94" r="11" fill="none" stroke="#bff4ff" stroke-width="2.6"/>
+              </g>
+              <circle class="pupil" cx="89" cy="89" r="2.6" fill="#ffffff" opacity=".95"/>
+              <circle class="pupil" cx="121" cy="89" r="2.6" fill="#ffffff" opacity=".95"/>
+
+              <!-- 状态灯 -->
+              <circle cx="110" cy="136" r="3.6" fill="#4fe3ff" filter="url(#bGlowF)" opacity=".9"/>
+              <circle cx="110" cy="136" r="1.9" fill="#e6fdff"/>
+
+            </g>
+          </svg>
+        </div>
       </div>
     </div>
 
     <div class="deck-wrap">
       <div class="deck" id="deck">
-        <a class="card" href="/tools/qianqian.html" data-bg="#120e1c" data-ac="#b9a4ff" data-tint="rgba(150,120,255,.46)">
+        <a class="card" href="/tools/qianqian.html" data-ext="qianqian" data-bg="#120e1c" data-ac="#b9a4ff" data-tint="rgba(150,120,255,.46)">
           <img src="assets/thumb-qian.webp" alt="乾乾学易"><span class="cap">乾乾学易</span>
         </a>
         <a class="card" href="/ktv.html" data-bg="#0b120c" data-ac="#c8f830" data-tint="rgba(200,248,48,.34)">
@@ -457,7 +526,7 @@
     <div class="wrap">
       <div class="sec-head rise"><span class="mark">✦</span><h2>精选作品</h2><span class="en">selected works</span></div>
       <div class="works-grid">
-        <a class="work rise wide" href="/tools/qianqian.html">
+        <a class="work rise wide" href="/tools/qianqian.html" data-ext="qianqian">
           <img src="assets/thumb-qian.webp" alt="">
           <div class="wb"><div><h3>乾乾学易</h3><p>六十四卦经传精研与上下卦推演 · 主要作品</p></div><span class="go">打开 →</span></div>
         </a>
@@ -570,6 +639,20 @@
     }
   }
 
+  /* ---------- 外链开关 ---------- */
+  /* 乾乾学易想独立成一个站点时，把地址填进 qianqian，卡片自动改成新窗口打开；
+     留空就还是走本站 /tools/qianqian.html */
+  var EXT = {
+    qianqian: ''
+  };
+  [].slice.call(document.querySelectorAll('[data-ext]')).forEach(function(el){
+    var u = EXT[el.getAttribute('data-ext')];
+    if (!u) return;
+    el.setAttribute('href', u);
+    el.setAttribute('target', '_blank');
+    el.setAttribute('rel', 'noopener');
+  });
+
   /* ---------- 作品切换驱动主题 ---------- */
   var theme = document.getElementById('theme');
   var sky = document.getElementById('sky');
@@ -663,14 +746,43 @@
   tickClock(); setInterval(tickClock, 20000);
 
 (function(){
-  var plane = document.getElementById('plane');
-  if (!plane || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  /* 点一下，再飞一次 */
-  plane.addEventListener('click', function(){
-    plane.style.animation = 'none';
-    void plane.offsetWidth;
-    plane.style.animation = '';
+  var bot = document.getElementById('bot');
+  if (!bot) return;
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var pupils = [].slice.call(bot.querySelectorAll('.pupil'));
+  var t;
+  /* 点一下：挤压回弹 + 天线闪一下 */
+  function boop(){
+    bot.classList.remove('boop', 'pulse');
+    void bot.offsetWidth;
+    bot.classList.add('boop', 'pulse');
+    clearTimeout(t);
+    t = setTimeout(function(){ bot.classList.remove('boop', 'pulse'); }, 840);
+  }
+  bot.addEventListener('click', boop);
+  bot.addEventListener('keydown', function(e){
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); boop(); }
   });
+  if (reduce) return;
+  /* 眨眼：随机间隔 */
+  (function blinkLoop(){
+    setTimeout(function(){
+      bot.classList.add('blink');
+      setTimeout(function(){ bot.classList.remove('blink'); }, 120);
+      blinkLoop();
+    }, 2600 + Math.random() * 3400);
+  })();
+  /* 眼睛跟着指针走 */
+  addEventListener('pointermove', function(e){
+    var r = bot.getBoundingClientRect();
+    var dx = (e.clientX - (r.left + r.width / 2)) / r.width;
+    var dy = (e.clientY - (r.top + r.height * 0.32)) / r.width;
+    var x = Math.max(-1, Math.min(1, dx)) * 3.4;
+    var y = Math.max(-1, Math.min(1, dy)) * 2.6;
+    for (var i = 0; i < pupils.length; i++){
+      pupils[i].style.transform = 'translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px)';
+    }
+  }, { passive: true });
 })();
 })();
 </script>
