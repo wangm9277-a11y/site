@@ -243,7 +243,7 @@
   }
 
   /* ---------- 空岛场景 ---------- */
-  .scene{position:relative; flex:1 1 480px; max-width:620px; height:clamp(330px,44vh,470px); z-index:1; transform:translateY(clamp(140px,19vh,220px))}
+  .scene{position:relative; flex:1 1 480px; max-width:620px; height:clamp(330px,44vh,470px); z-index:1; transform:translateY(clamp(104px,14.5vh,176px))}
   .island{position:absolute; left:50%; bottom:0; width:100%; transform:translateX(-50%); animation:islandBob 9s ease-in-out infinite}
   .island svg{display:block; width:100%; height:auto; filter:saturate(1.3) contrast(1.05) brightness(.98) drop-shadow(0 30px 60px rgba(0,0,0,.55))}
   @keyframes islandBob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-10px)}}
@@ -274,7 +274,7 @@
   .hero h1{letter-spacing:-.015em; font-size:clamp(40px,6.1vw,96px); line-height:.98}
   .scene{max-width:600px}
   .island{width:104%}
-  .scene .bot{width:clamp(124px,13vw,192px); bottom:41.5%}
+  .scene .bot{width:clamp(140px,14.4vw,212px); bottom:43%}
   @media(max-width:900px){
     .hero{flex-direction:column; align-items:stretch; padding-bottom:16px}
     .scene{flex:1 1 auto; width:100%; max-width:none; height:250px; margin:6px 0 2px; transform:translateY(10px)}
@@ -416,83 +416,78 @@
       </div>
       <div class="bot" id="bot" tabindex="0" role="button" aria-label="空间站小机器人，点它会动">
         <span class="bubble" id="bubble" aria-live="polite"></span>
-        <svg viewBox="0 0 240 340" aria-hidden="true">
+        <svg viewBox="0 0 240 320" aria-hidden="true">
   <defs>
-    <radialGradient id="evHead" cx=".38" cy=".28" r=".85">
-      <stop offset="0" stop-color="#ffffff"/><stop offset=".55" stop-color="#f4f7fb"/><stop offset=".85" stop-color="#e2e8f2"/><stop offset="1" stop-color="#c9d3e0"/>
+    <radialGradient id="hHead" cx=".36" cy=".26" r=".9">
+      <stop offset="0" stop-color="#ffffff"/><stop offset=".52" stop-color="#f6f9fc"/><stop offset=".82" stop-color="#e6ecf5"/><stop offset="1" stop-color="#ccd6e4"/>
     </radialGradient>
-    <linearGradient id="evBody" x1=".3" y1="0" x2=".75" y2="1">
-      <stop offset="0" stop-color="#ffffff"/><stop offset=".62" stop-color="#eef3f9"/><stop offset="1" stop-color="#cbd5e3"/>
-    </linearGradient>
-    <linearGradient id="evVisor" x1=".35" y1="0" x2=".7" y2="1">
-      <stop offset="0" stop-color="#101923"/><stop offset=".5" stop-color="#05080c"/><stop offset="1" stop-color="#0d151e"/>
-    </linearGradient>
-    <radialGradient id="evEye" cx=".5" cy=".45" r=".62">
-      <stop offset="0" stop-color="#ffffff"/><stop offset=".35" stop-color="#d8f6ff"/><stop offset=".7" stop-color="#5fc8ff"/><stop offset="1" stop-color="#1a7fc4" stop-opacity=".2"/>
+    <radialGradient id="hVisor" cx=".42" cy=".3" r=".85">
+      <stop offset="0" stop-color="#1d2a3a"/><stop offset=".45" stop-color="#080d14"/><stop offset="1" stop-color="#0f1822"/>
     </radialGradient>
-    <linearGradient id="evRim" x1="0" y1="0" x2=".7" y2="1">
-      <stop offset="0" stop-color="#ffffff" stop-opacity=".9"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    <linearGradient id="hBody" x1=".28" y1="0" x2=".8" y2="1">
+      <stop offset="0" stop-color="#ffffff"/><stop offset=".55" stop-color="#f2f6fb"/><stop offset="1" stop-color="#cfd9e7"/>
     </linearGradient>
-    <filter id="evSoft" x="-120%" y="-120%" width="340%" height="340%"><feGaussianBlur stdDeviation="7"/></filter>
-    <filter id="evSoft2" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="2.4"/></filter>
+    <radialGradient id="hEye" cx=".5" cy=".42" r=".6">
+      <stop offset="0" stop-color="#ffffff"/><stop offset=".38" stop-color="#dff8ff"/><stop offset=".72" stop-color="#59c6ff"/><stop offset="1" stop-color="#1680c6" stop-opacity=".18"/>
+    </radialGradient>
+    <linearGradient id="hRim" x1="0" y1="0" x2=".8" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity=".95"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="hSoft" x="-140%" y="-140%" width="380%" height="380%"><feGaussianBlur stdDeviation="7"/></filter>
+    <filter id="hSoft2" x="-70%" y="-70%" width="240%" height="240%"><feGaussianBlur stdDeviation="2"/></filter>
   </defs>
 
-  <ellipse cx="120" cy="318" rx="58" ry="11" fill="#bfe9ff" opacity=".16" filter="url(#evSoft)"/>
+  <ellipse cx="120" cy="300" rx="52" ry="10" fill="#bfe9ff" opacity=".14" filter="url(#hSoft)"/>
 
   <g class="part" data-act="antenna">
-    <path d="M120 30v-9" stroke="#cfdae8" stroke-width="2.2" stroke-linecap="round"/>
-    <circle class="ant-tip" cx="120" cy="19" r="4.6" fill="#cfeeff" filter="url(#evSoft2)"/>
+    <path d="M120 30v-11" stroke="#d3dde9" stroke-width="2" stroke-linecap="round"/>
+    <circle class="ant-tip" cx="120" cy="17" r="4" fill="#d6f2ff" filter="url(#hSoft2)"/>
   </g>
 
-  <g class="part" data-act="scan" transform="translate(0 10)">
-    <path d="M120 26c44 0 72 28 72 66 0 38-30 62-72 62S48 130 48 92c0-38 28-66 72-66z" fill="url(#evHead)"/>
-    <path d="M74 60c10-14 26-22 46-22" fill="none" stroke="url(#evRim)" stroke-width="2.6" stroke-linecap="round" opacity=".85"/>
-
-    <path d="M120 50c34 0 58 22 58 46v22c0 14-26 22-58 22s-58-8-58-22V96c0-24 24-46 58-46z" fill="url(#evVisor)"/>
-    <path d="M84 138c10 6 22 9 36 9s26-3 36-9" fill="none" stroke="#ffffff" stroke-opacity=".12" stroke-width="2"/>
-    <path d="M83 82c8-12 20-18 34-19" fill="none" stroke="#8fd8ff" stroke-opacity=".22" stroke-width="2" stroke-linecap="round"/>
-    <ellipse cx="120" cy="62" rx="36" ry="8" fill="#ffffff" opacity=".05"/>
+  <g class="part" data-act="scan">
+    <circle cx="120" cy="96" r="72" fill="url(#hHead)"/>
+    <path d="M70 62c10-16 27-26 48-29" fill="none" stroke="url(#hRim)" stroke-width="2.6" stroke-linecap="round" opacity=".9"/>
+    <ellipse cx="120" cy="98" rx="59" ry="55" fill="url(#hVisor)"/>
+    <ellipse cx="120" cy="60" rx="40" ry="12" fill="#ffffff" opacity=".06"/>
+    <path d="M84 62c10-8 22-12 36-12" fill="none" stroke="#9fdcff" stroke-opacity=".16" stroke-width="2" stroke-linecap="round"/>
 
     <g class="eye" data-act="wink">
-      <ellipse cx="99" cy="100" rx="11" ry="18" fill="url(#evEye)" filter="url(#evSoft2)" transform="rotate(-7 99 104)"/>
-      <ellipse cx="99" cy="100" rx="6" ry="12" fill="#f8feff" opacity=".92" transform="rotate(-7 99 104)"/>
-      <circle class="pupil" cx="99" cy="102" r="3.2" fill="#5cc8ff" opacity=".55"/>
+      <ellipse cx="93" cy="100" rx="10.5" ry="17" fill="url(#hEye)" filter="url(#hSoft2)"/>
+      <ellipse cx="93" cy="100" rx="5.5" ry="11" fill="#f9feff" opacity=".94"/>
+      <circle class="pupil" cx="93" cy="102" r="3" fill="#63c9ff" opacity=".5"/>
     </g>
     <g class="eye" data-act="wink">
-      <ellipse cx="141" cy="100" rx="11" ry="18" fill="url(#evEye)" filter="url(#evSoft2)" transform="rotate(7 141 104)"/>
-      <ellipse cx="141" cy="100" rx="6" ry="12" fill="#f8feff" opacity=".92" transform="rotate(7 141 104)"/>
-      <circle class="pupil" cx="141" cy="102" r="3.2" fill="#5cc8ff" opacity=".55"/>
+      <ellipse cx="147" cy="100" rx="10.5" ry="17" fill="url(#hEye)" filter="url(#hSoft2)"/>
+      <ellipse cx="147" cy="100" rx="5.5" ry="11" fill="#f9feff" opacity=".94"/>
+      <circle class="pupil" cx="147" cy="102" r="3" fill="#63c9ff" opacity=".5"/>
     </g>
-    <rect class="scanline" x="70" y="60" width="100" height="1.4" fill="#9fe4ff" opacity="0"/>
+    <rect class="scanline" x="70" y="54" width="100" height="1.4" fill="#a8e6ff" opacity="0"/>
   </g>
 
-  <path d="M106 158h28" stroke="#0b1118" stroke-opacity=".3" stroke-width="3" stroke-linecap="round"/>
+  <rect x="96" y="160" width="48" height="18" rx="9" fill="#e9eff7"/>
+  <rect x="104" y="164" width="32" height="10" rx="5" fill="#0c131b" opacity=".45"/>
 
-  <g transform="translate(0 -26)">
   <g class="part" data-act="core">
-    <rect x="72" y="186" width="96" height="116" rx="36" fill="url(#evBody)"/>
-    <path d="M86 204c8-10 18-15 32-17" fill="none" stroke="url(#evRim)" stroke-width="2.4" stroke-linecap="round" opacity=".9"/>
-    <path d="M80 246h80" stroke="#c6d1e0" stroke-width="1.2" opacity=".55"/>
-    <circle class="core-ring" cx="120" cy="246" r="20" fill="none" stroke="#9fe4ff" stroke-width="1.4"/>
-    <circle cx="120" cy="246" r="10" fill="#eaf8ff" opacity=".16"/>
-    <circle cx="120" cy="246" r="3.6" fill="#cfeeff" filter="url(#evSoft2)" opacity=".9"/>
-    <g fill="#9fe4ff" opacity=".32">
-      <circle cx="106" cy="272" r="1.3"/><circle cx="113" cy="272" r="1.3"/><circle cx="120" cy="272" r="1.3"/><circle cx="127" cy="272" r="1.3"/><circle cx="134" cy="272" r="1.3"/>
+    <rect x="66" y="174" width="108" height="122" rx="52" fill="url(#hBody)"/>
+    <path d="M84 198c6-14 17-22 32-25" fill="none" stroke="url(#hRim)" stroke-width="2.4" stroke-linecap="round" opacity=".85"/>
+    <circle class="core-ring" cx="120" cy="234" r="21" fill="none" stroke="#a8e6ff" stroke-width="1.4"/>
+    <circle cx="120" cy="234" r="12" fill="#eaf8ff" opacity=".16"/>
+    <circle cx="120" cy="234" r="4" fill="#d6f2ff" filter="url(#hSoft2)" opacity=".95"/>
+    <g fill="#a8e6ff" opacity=".3">
+      <circle cx="104" cy="262" r="1.3"/><circle cx="111" cy="262" r="1.3"/><circle cx="118" cy="262" r="1.3"/><circle cx="125" cy="262" r="1.3"/><circle cx="132" cy="262" r="1.3"/>
     </g>
   </g>
 
   <g class="part" data-act="wave">
-    <circle cx="72" cy="214" r="8" fill="#e7eef7"/>
-    <rect x="50" y="212" width="15" height="58" rx="7.5" fill="url(#evBody)"/>
-    <circle cx="57.5" cy="274" r="9.5" fill="#f6fafd"/>
+    <rect x="40" y="198" width="15" height="54" rx="7.5" fill="url(#hBody)"/>
+    <circle cx="47.5" cy="256" r="9" fill="#f7fbfe"/>
   </g>
   <g class="arm-r part" data-act="wave">
-    <circle cx="168" cy="214" r="8" fill="#e7eef7"/>
-    <rect x="175" y="212" width="15" height="58" rx="7.5" fill="url(#evBody)"/>
-    <circle cx="182.5" cy="274" r="9.5" fill="#f6fafd"/>
-  </g>
+    <rect x="185" y="198" width="15" height="54" rx="7.5" fill="url(#hBody)"/>
+    <circle cx="192.5" cy="256" r="9" fill="#f7fbfe"/>
   </g>
 </svg>
+      
       </div>
     </div>
 
