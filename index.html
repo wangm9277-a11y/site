@@ -121,6 +121,48 @@
   .d{color:var(--muted); font-size:13.5px; line-height:1.55; margin-top:-4px}
 
 
+  /* 专属小机器人 */
+  .hero{display:flex; align-items:center; gap:clamp(8px,2.2vw,24px)}
+  .hero-txt{flex:1 1 auto; min-width:0}
+  .bot{position:relative; flex:0 0 auto; width:clamp(96px,14vw,190px); align-self:center; margin-left:auto; margin-right:clamp(0px,1.5vw,20px);
+    animation:botIn .95s cubic-bezier(.2,.7,.2,1) .18s both}
+  .bot svg{display:block; width:100%; height:auto; overflow:visible;
+    filter:drop-shadow(0 14px 26px rgba(0,0,0,.6)) drop-shadow(0 0 24px rgba(94,224,168,.14));
+    transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+  .bot:hover svg{transform:translateY(-3px)}
+  .bot-float{animation:botFloat 6.5s ease-in-out infinite}
+  @keyframes botFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+  @keyframes botIn{from{opacity:0; transform:translateY(14px) scale(.92)}to{opacity:1; transform:none}}
+  .bot .part{cursor:pointer}
+  .bot .pupil{transition:transform .1s linear}
+  .bot .eye{transform-box:fill-box; transform-origin:center; transition:transform .15s ease}
+  .bot.blink .eye{transform:scaleY(.1)}
+  .bot .scanline{transform-box:fill-box; opacity:0}
+  .bot.scanning .scanline{animation:scanSweep .85s cubic-bezier(.4,0,.2,1)}
+  @keyframes scanSweep{0%{opacity:.95; transform:translateY(0)}100%{opacity:0; transform:translateY(56px)}}
+  .bot .core-ring{transform-box:fill-box; transform-origin:center; opacity:0}
+  .bot.charged .core-ring{animation:coreOut 1.05s ease-out}
+  @keyframes coreOut{0%{opacity:.85; transform:scale(1)}100%{opacity:0; transform:scale(2.6)}}
+  .bot .arm-r{transform-box:fill-box; transform-origin:top center}
+  .bot.waving .arm-r{animation:waveArm .9s ease-in-out}
+  @keyframes waveArm{0%,100%{transform:rotate(0)}28%{transform:rotate(-30deg)}72%{transform:rotate(12deg)}}
+  .bot .ant-tip{transform-box:fill-box; transform-origin:center}
+  .bot.pulse .ant-tip{animation:antPulse .85s ease-out}
+  @keyframes antPulse{0%{opacity:.9; transform:scale(1)}100%{opacity:0; transform:scale(3)}}
+  .bubble{position:absolute; right:0; bottom:100%; margin-bottom:2px; white-space:nowrap;
+    padding:7px 10px; border-radius:10px;
+    font:600 11px/1.3 ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:.02em;
+    color:#e2fbef; background:rgba(8,16,22,.92); border:1px solid rgba(94,224,168,.4);
+    box-shadow:0 10px 26px rgba(0,0,0,.5);
+    opacity:0; transform:translateY(5px); transition:opacity .22s ease, transform .22s ease;
+    pointer-events:none}
+  .bubble.on{opacity:1; transform:none}
+  @media(max-width:560px){
+    .hero{gap:6px}
+    .bot{width:clamp(78px,22vw,112px)}
+    .bubble{font-size:9.5px; padding:5px 7px}
+  }
+
   /* 打字光标 */
   .caret{display:inline-block; width:.11em; height:.82em; margin-left:.06em; vertical-align:-.04em;
     border-radius:2px; background:linear-gradient(180deg,#9ff5cd,#5ee0a8); box-shadow:0 0 14px rgba(94,224,168,.65);
@@ -189,46 +231,95 @@
   </header>
 
   <main>
-    <div class="kick"><i></i>已抵达 · Welcome aboard</div>
-    <h1 class="keep">猛哥的<span class="grad" id="typed">空间站</span><span class="caret" id="caret"></span></h1>
-    <p class="sub">一个私人的小站，放点工具和入口。</p>
+    <div class="hero">
+      <div class="hero-txt">
+        <div class="kick"><i></i>已抵达 · Welcome aboard</div>
+        <h1 class="keep">猛哥的<span class="grad" id="typed">空间站</span><span class="caret" id="caret"></span></h1>
+        <p class="sub">一个私人的小站，放点工具和入口。</p>
+      </div>
+
+      <div class="bot" id="bot" tabindex="0" role="button" aria-label="空间站小机器人，点它会动">
+        <span class="bubble" id="bubble" aria-live="polite"></span>
+        <svg viewBox="0 0 200 232" aria-hidden="true">
+          <defs>
+            <linearGradient id="metal" x1="0" y1="0" x2=".3" y2="1">
+              <stop offset="0" stop-color="#26334a"/><stop offset=".55" stop-color="#18202e"/><stop offset="1" stop-color="#0f141d"/>
+            </linearGradient>
+            <linearGradient id="visor" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#0a0f16"/><stop offset="1" stop-color="#152436"/>
+            </linearGradient>
+            <radialGradient id="eyeGlow">
+              <stop offset="0" stop-color="#e9fff6"/><stop offset=".5" stop-color="#5ee0a8"/><stop offset="1" stop-color="#2b9d78" stop-opacity=".15"/>
+            </radialGradient>
+            <linearGradient id="rim" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stop-color="#5ee0a8" stop-opacity=".55"/><stop offset="1" stop-color="#7aa2ff" stop-opacity=".35"/>
+            </linearGradient>
+            <filter id="soft"><feGaussianBlur stdDeviation="7"/></filter>
+          </defs>
+
+          <ellipse cx="100" cy="221" rx="44" ry="6" fill="#5ee0a8" opacity=".18" filter="url(#soft)"/>
+
+          <g class="bot-float">
+            <g class="part" data-act="antenna">
+              <path d="M100 36V19" stroke="#5a6b83" stroke-width="2.6" stroke-linecap="round"/>
+              <circle class="ant-tip" cx="100" cy="14" r="5" fill="url(#eyeGlow)"/>
+              <circle cx="100" cy="14" r="10" fill="none" stroke="#5ee0a8" stroke-opacity=".3"/>
+            </g>
+
+            <rect x="30" y="64" width="11" height="30" rx="5.5" fill="#1a2334" stroke="#2b3a50"/>
+            <rect x="159" y="64" width="11" height="30" rx="5.5" fill="#1a2334" stroke="#2b3a50"/>
+
+            <g class="part" data-act="scan">
+              <rect x="42" y="34" width="116" height="94" rx="31" fill="url(#metal)" stroke="url(#rim)" stroke-width="1.4"/>
+              <rect x="54" y="46" width="92" height="68" rx="23" fill="url(#visor)" stroke="#26364a"/>
+              <rect class="scanline" x="56" y="49" width="88" height="2.4" rx="1.2" fill="#5ee0a8"/>
+            </g>
+
+            <g class="eye" data-act="wink">
+              <ellipse cx="79" cy="80" rx="14" ry="16" fill="#5ee0a8" opacity=".1"/>
+              <ellipse cx="79" cy="80" rx="7.6" ry="9.8" fill="url(#eyeGlow)"/>
+              <circle class="pupil" cx="79" cy="80" r="3.3" fill="#04120c"/>
+            </g>
+            <g class="eye" data-act="wink">
+              <ellipse cx="121" cy="80" rx="14" ry="16" fill="#5ee0a8" opacity=".1"/>
+              <ellipse cx="121" cy="80" rx="7.6" ry="9.8" fill="url(#eyeGlow)"/>
+              <circle class="pupil" cx="121" cy="80" r="3.3" fill="#04120c"/>
+            </g>
+
+            <rect x="87" y="105" width="26" height="3" rx="1.5" fill="#3b4d66"/>
+
+            <rect x="92" y="128" width="16" height="9" rx="4" fill="#1a2334"/>
+
+            <g class="part" data-act="core">
+              <rect x="63" y="136" width="74" height="64" rx="23" fill="url(#metal)" stroke="#2c3b51"/>
+              <circle class="core-ring" cx="100" cy="164" r="15" fill="none" stroke="#5ee0a8" stroke-width="1.6"/>
+              <circle cx="100" cy="164" r="14" fill="none" stroke="#5ee0a8" stroke-opacity=".28"/>
+              <circle cx="100" cy="164" r="8.4" fill="url(#eyeGlow)"/>
+              <circle cx="100" cy="164" r="12.5" fill="none" stroke="#7aa2ff" stroke-opacity=".18"/>
+            </g>
+
+            <g class="part" data-act="wave">
+              <rect x="44" y="142" width="14" height="34" rx="7" fill="#1a2334" stroke="#2c3b51"/>
+              <circle cx="51" cy="182" r="7.5" fill="#22304a" stroke="#2c3b51"/>
+            </g>
+            <g class="arm-r part" data-act="wave">
+              <rect x="142" y="142" width="14" height="34" rx="7" fill="#1a2334" stroke="#2c3b51"/>
+              <circle cx="149" cy="182" r="7.5" fill="#22304a" stroke="#2c3b51"/>
+            </g>
+          </g>
+        </svg>
+      </div>
+    </div>
     <div class="rule"></div>
 
     <nav class="grid" aria-label="站点导航">
-      <a class="card" style="--ac:233,238,247" href="https://github.com/">
+      <a class="card" style="--ac:94,224,168" href="/ktv.html">
         <div class="top">
-          <span class="ico"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 7 4 12l5 5"/><path d="M15 7l5 5-5 5"/></svg></span>
+          <span class="ico"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V6.5l10-2V16"/><circle cx="6.4" cy="18" r="2.7"/><circle cx="16.4" cy="16" r="2.7"/></svg></span>
           <span class="arrow">→</span>
         </div>
-        <span class="t">GitHub</span>
-        <span class="d">代码与项目</span>
-      </a>
-
-      <a class="card" style="--ac:122,162,255" href="https://www.deepseek.com/">
-        <div class="top">
-          <span class="ico"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M12 3.2 13.9 10 20.8 12l-6.9 2L12 20.8 10.1 14 3.2 12 10.1 10z"/></svg></span>
-          <span class="arrow">→</span>
-        </div>
-        <span class="t">DeepSeek</span>
-        <span class="d">模型与文档</span>
-      </a>
-
-      <a class="card" style="--ac:245,190,120" href="/notes/">
-        <div class="top">
-          <span class="ico"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3.5h8.5L18 7v13.5H6z"/><path d="M9.5 11h5M9.5 14.5h5"/></svg></span>
-          <span class="arrow">→</span>
-        </div>
-        <span class="t">笔记</span>
-        <span class="d">零散的记录</span>
-      </a>
-
-      <a class="card" style="--ac:94,224,168" href="/tools/">
-        <div class="top">
-          <span class="ico"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.1"/><path d="M12 3.4v2.5M12 18.1v2.5M3.4 12h2.5M18.1 12h2.5M6 6l1.8 1.8M16.2 16.2 18 18M18 6l-1.8 1.8M7.8 16.2 6 18"/></svg></span>
-          <span class="arrow">→</span>
-        </div>
-        <span class="t">小工具</span>
-        <span class="d">随手写的小东西</span>
+        <span class="t">KTV 歌单</span>
+        <span class="d">点歌、存单，随时改</span>
       </a>
 
       <a class="card" style="--ac:170,140,255" href="/tools/qianqian.html">
@@ -238,6 +329,15 @@
         </div>
         <span class="t">乾乾学易</span>
         <span class="d">六十四卦经传精研与上下卦推演</span>
+      </a>
+
+      <a class="card" style="--ac:122,162,255" href="https://www.deepseek.com/">
+        <div class="top">
+          <span class="ico"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M12 3.2 13.9 10 20.8 12l-6.9 2L12 20.8 10.1 14 3.2 12 10.1 10z"/></svg></span>
+          <span class="arrow">→</span>
+        </div>
+        <span class="t">DeepSeek</span>
+        <span class="d">模型与文档</span>
       </a>
     </nav>
   </main>
@@ -396,6 +496,92 @@
     requestAnimationFrame(frame);
   }
   if (!reduce) requestAnimationFrame(frame);
+})();
+</script>
+<script>
+(function(){
+  var bot = document.getElementById('bot');
+  if (!bot) return;
+  var bubble = document.getElementById('bubble');
+  var pupils = [].slice.call(bot.querySelectorAll('.pupil'));
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var sayTimer, actTimer;
+
+  function say(text, ms){
+    if (!bubble) return;
+    bubble.textContent = text;
+    bubble.classList.add('on');
+    clearTimeout(sayTimer);
+    sayTimer = setTimeout(function(){ bubble.classList.remove('on'); }, ms || 1700);
+  }
+
+  var lines = {
+    scan:    ['扫描中… 帅得超出范围', '识别结果：猛哥本人', '舱内环境正常'],
+    wink:    ['看见你了', '视觉模组正常', '眨眼 0.12s'],
+    core:    ['能量 100%', '核心稳定，随时待命', '已接上空间站主电源'],
+    wave:    ['你好，猛哥', '挥手 · 收到', '欢迎回来'],
+    antenna: ['信号 +1', '正在联系地面', '链路质量 98%']
+  };
+
+  function act(name){
+    var list = lines[name];
+    if (!list) return;
+    var text = list[Math.floor(Math.random() * list.length)];
+    if (!reduce){
+      var cls = {scan:'scanning', wink:'blink', core:'charged', wave:'waving', antenna:'pulse'}[name];
+      bot.classList.remove('scanning','blink','charged','waving','pulse');
+      void bot.offsetWidth;
+      bot.classList.add(cls);
+      clearTimeout(actTimer);
+      actTimer = setTimeout(function(){
+        bot.classList.remove(cls);
+      }, name === 'wink' ? 170 : 1100);
+    }
+    say(text);
+  }
+
+  bot.addEventListener('click', function(e){
+    var p = e.target.closest ? e.target.closest('[data-act]') : null;
+    act(p && p.dataset.act ? p.dataset.act : 'scan');
+  });
+
+  bot.addEventListener('keydown', function(e){
+    if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); act('scan'); }
+  });
+
+  /* 眼睛跟着鼠标 */
+  if (!reduce){
+    var raf = 0, lastX = 0, lastY = 0;
+    function track(){
+      raf = 0;
+      var r = bot.getBoundingClientRect();
+      if (!r.width) return;
+      var cx = r.left + r.width / 2;
+      var cy = r.top + r.height * 0.34;
+      var dx = lastX - cx, dy = lastY - cy;
+      var d = Math.sqrt(dx * dx + dy * dy) || 1;
+      var m = Math.min(3.4, d / 26);
+      var x = (dx / d) * m, y = (dy / d) * m;
+      var t = 'translate(' + x.toFixed(2) + ' ' + y.toFixed(2) + ')';
+      for (var i = 0; i < pupils.length; i++) pupils[i].setAttribute('transform', t);
+    }
+    window.addEventListener('pointermove', function(e){
+      lastX = e.clientX; lastY = e.clientY;
+      if (!raf) raf = requestAnimationFrame(track);
+    }, { passive: true });
+
+    var blinkTimer;
+    (function idleBlink(){
+      blinkTimer = setTimeout(function(){
+        bot.classList.add('blink');
+        setTimeout(function(){ bot.classList.remove('blink'); }, 150);
+        idleBlink();
+      }, 3200 + Math.random() * 4200);
+    })();
+    window.addEventListener('pagehide', function(){ clearTimeout(blinkTimer); }, { once: true });
+  }
+
+  setTimeout(function(){ say('已对接空间站', 2200); }, 2400);
 })();
 </script>
 </body>

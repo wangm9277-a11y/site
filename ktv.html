@@ -1,0 +1,497 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#07080a">
+<title>KTV 歌单 · 猛哥的空间站</title>
+<meta name="description" content="猛哥的空间站 KTV 歌单，随时增删曲目。">
+<style>
+  :root{
+    --bg:#07080a; --ink:#ececf1; --dim:#8b8b96; --line:rgba(255,255,255,.09);
+    --mint:#5ee0a8; --blue:#7aa2ff; --glass:rgba(20,22,28,.62);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    min-height:100svh; color:var(--ink);
+    font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    -webkit-font-smoothing:antialiased;
+    background:var(--bg) url(assets/bg.webp) center/cover no-repeat fixed;
+  }
+  body::before{
+    content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+    background:linear-gradient(180deg,rgba(7,8,10,.78),rgba(7,8,10,.92) 42%,#07080a 100%);
+  }
+  .wrap{position:relative; z-index:1; width:min(760px,92vw); margin:0 auto; padding:26px 0 80px}
+
+  .topbar{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:34px}
+  .back{
+    display:inline-flex; align-items:center; gap:7px; text-decoration:none;
+    color:var(--dim); font-size:13px; letter-spacing:.02em; transition:color .25s ease;
+  }
+  .back:hover{color:var(--mint)}
+  .back svg{width:14px;height:14px}
+  .badge{
+    display:inline-flex; align-items:center; gap:8px; padding:6px 12px; border-radius:999px;
+    background:rgba(94,224,168,.08); border:1px solid rgba(94,224,168,.24);
+    font:600 11px/1 ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:.14em; color:#a9f3d3;
+  }
+  .badge i{width:5px;height:5px;border-radius:50%;background:var(--mint);box-shadow:0 0 10px var(--mint)}
+
+  .kick{
+    font:600 11px/1 ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:.2em;
+    text-transform:uppercase; color:var(--mint); margin-bottom:12px;
+  }
+  h1{margin:0 0 10px; font-size:clamp(32px,6vw,46px); line-height:1.1; letter-spacing:-.03em; font-weight:800}
+  h1 em{
+    font-style:normal;
+    background:linear-gradient(92deg,#fff 8%,#cfe4ff 40%,var(--mint) 82%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .lead{color:var(--dim); font-size:14px; margin:0 0 26px; max-width:38em}
+
+  .panel{
+    border:1px solid var(--line); border-radius:20px; background:var(--glass);
+    backdrop-filter:blur(16px) saturate(1.2); -webkit-backdrop-filter:blur(16px) saturate(1.2);
+    box-shadow:0 1px 0 rgba(255,255,255,.05) inset, 0 40px 80px -60px #000;
+    overflow:hidden;
+  }
+  .toolbar{
+    display:flex; align-items:center; gap:10px; padding:14px 16px;
+    border-bottom:1px solid var(--line); flex-wrap:wrap;
+  }
+  .search{
+    flex:1 1 180px; min-width:140px; display:flex; align-items:center; gap:8px;
+    padding:8px 12px; border-radius:11px; background:rgba(255,255,255,.04);
+    border:1px solid rgba(255,255,255,.08);
+  }
+  .search svg{width:14px;height:14px;color:#6c7688;flex:0 0 auto}
+  .search input{
+    flex:1; min-width:0; background:none; border:0; outline:0; color:var(--ink);
+    font:inherit; font-size:13.5px;
+  }
+  .search input::placeholder{color:#5d6675}
+  .count{
+    font:600 11px/1 ui-monospace,monospace; letter-spacing:.1em; color:#7d8798;
+    padding:0 4px; white-space:nowrap;
+  }
+  .btn{
+    appearance:none; border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.05);
+    color:#cfd6e2; font:600 12.5px/1 inherit; padding:9px 13px; border-radius:10px; cursor:pointer;
+    transition:border-color .25s ease, color .25s ease, background .25s ease, transform .15s ease;
+    white-space:nowrap;
+  }
+  .btn:hover{border-color:rgba(94,224,168,.45); color:#eafff6; background:rgba(94,224,168,.08)}
+  .btn:active{transform:translateY(1px)}
+  .btn:focus-visible{outline:2px solid rgba(94,224,168,.7); outline-offset:2px}
+  .btn.primary{background:rgba(94,224,168,.16); border-color:rgba(94,224,168,.5); color:#d9ffef}
+  .btn.primary:hover{background:rgba(94,224,168,.24)}
+  .btn[disabled]{opacity:.45; cursor:not-allowed}
+  .btn.dirty::after{content:"•"; color:#f5be78; margin-left:6px}
+
+  .adder{display:none; gap:10px; padding:14px 16px; border-bottom:1px solid var(--line); flex-wrap:wrap}
+  .panel.unlocked .adder{display:flex}
+  .field{
+    flex:1 1 150px; min-width:120px; padding:9px 12px; border-radius:10px;
+    background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.1);
+    color:var(--ink); font:inherit; font-size:13.5px; outline:0;
+  }
+  .field:focus{border-color:rgba(94,224,168,.5); background:rgba(94,224,168,.05)}
+  .field::placeholder{color:#5d6675}
+
+  ol.list{list-style:none; margin:0; padding:6px 0}
+  .row{
+    display:flex; align-items:center; gap:14px; padding:13px 18px;
+    border-bottom:1px solid rgba(255,255,255,.045); transition:background .25s ease;
+  }
+  .row:last-child{border-bottom:0}
+  .row:hover{background:rgba(255,255,255,.028)}
+  .num{
+    width:26px; flex:0 0 26px; text-align:right;
+    font:600 11px/1 ui-monospace,monospace; color:#4e5765; letter-spacing:.04em;
+  }
+  .meta{flex:1; min-width:0}
+  .title{display:block; font-weight:600; font-size:16px; letter-spacing:-.01em; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+  .artist{display:block; color:var(--dim); font-size:13px; margin-top:2px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+  .del{
+    display:none; appearance:none; border:0; background:none; cursor:pointer;
+    color:#7c6b6b; padding:6px 8px; border-radius:8px; line-height:0;
+    transition:color .2s ease, background .2s ease;
+  }
+  .panel.unlocked .del{display:inline-flex}
+  .del:hover{color:#ff9c9c; background:rgba(255,120,120,.09)}
+  .del:focus-visible{outline:2px solid rgba(255,150,150,.6); outline-offset:1px}
+  .tagvip{
+    font:600 9.5px/1 ui-monospace,monospace; letter-spacing:.08em; color:#f5be78;
+    border:1px solid rgba(245,190,120,.3); background:rgba(245,190,120,.08);
+    padding:3px 6px; border-radius:6px; margin-left:8px;
+  }
+
+  .empty{padding:44px 18px; text-align:center; color:#6c7688; font-size:13.5px}
+  .empty b{display:block; color:#9aa5b6; font-weight:600; margin-bottom:6px; font-size:14.5px}
+
+  .foot{
+    display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
+    margin-top:18px; color:#5f6877; font-size:12px;
+  }
+  .foot .hint{max-width:46em; line-height:1.7}
+  .foot .tools{display:flex; gap:8px}
+  .mini{
+    appearance:none; background:none; border:0; color:#78828f; font-size:12px; cursor:pointer;
+    padding:4px 2px; border-bottom:1px dotted rgba(255,255,255,.16);
+  }
+  .mini:hover{color:var(--mint); border-color:rgba(94,224,168,.5)}
+
+  /* 密码框 */
+  .modal{
+    position:fixed; inset:0; z-index:70; display:grid; place-items:center; padding:20px;
+    background:rgba(4,6,9,.72); backdrop-filter:blur(6px); opacity:0; visibility:hidden;
+    transition:opacity .25s ease, visibility .25s ease;
+  }
+  .modal.on{opacity:1; visibility:visible}
+  .sheet{
+    width:min(360px,92vw); padding:22px; border-radius:18px;
+    background:rgba(18,21,27,.96); border:1px solid rgba(255,255,255,.12);
+    box-shadow:0 40px 80px -40px #000; transform:translateY(8px); transition:transform .28s ease;
+  }
+  .modal.on .sheet{transform:none}
+  .sheet h2{margin:0 0 6px; font-size:16px}
+  .sheet p{margin:0 0 16px; color:var(--dim); font-size:12.5px}
+  .sheet input{
+    width:100%; padding:11px 13px; border-radius:11px; margin-bottom:14px;
+    background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.12);
+    color:var(--ink); font:inherit; letter-spacing:.12em; outline:0;
+  }
+  .sheet input:focus{border-color:rgba(94,224,168,.6)}
+  .sheet .acts{display:flex; gap:10px; justify-content:flex-end}
+  .err{color:#ff9c9c; font-size:12px; margin:-8px 0 12px; min-height:16px}
+  .shake{animation:shake .4s}
+  @keyframes shake{0%,100%{transform:none}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+
+  .toast{
+    position:fixed; left:50%; bottom:26px; transform:translate(-50%,12px); z-index:80;
+    padding:10px 16px; border-radius:11px; font-size:13px; color:#e8fff6;
+    background:rgba(12,20,26,.95); border:1px solid rgba(94,224,168,.35);
+    box-shadow:0 20px 40px -20px #000; opacity:0; pointer-events:none;
+    transition:opacity .25s ease, transform .25s ease;
+  }
+  .toast.on{opacity:1; transform:translate(-50%,0)}
+
+  @media(max-width:560px){
+    body{background-attachment:scroll}
+    .wrap{padding:20px 0 60px}
+    .toolbar{padding:12px}
+    .row{padding:12px 14px}
+    .foot{font-size:11.5px}
+  }
+  @media(prefers-reduced-motion:reduce){
+    *{animation:none!important; transition:none!important}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <a class="back" href="/">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+      返回空间站
+    </a>
+    <span class="badge"><i></i>WMV587 · KTV</span>
+  </div>
+
+  <div class="kick">Song book</div>
+  <h1>KTV <em>歌单</em></h1>
+  <p class="lead">想唱的歌先记在这。点「编辑」能加歌、删歌，改完点「保存」。</p>
+
+  <div class="panel" id="panel">
+    <div class="toolbar">
+      <label class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></svg>
+        <input id="q" type="search" placeholder="搜歌名或歌手" autocomplete="off">
+      </label>
+      <span class="count" id="count">0 首</span>
+      <button class="btn" id="lockBtn" type="button">编辑</button>
+      <button class="btn primary" id="saveBtn" type="button" disabled>保存</button>
+    </div>
+
+    <div class="adder">
+      <input class="field" id="t" placeholder="歌名" autocomplete="off">
+      <input class="field" id="a" placeholder="歌手" autocomplete="off">
+      <button class="btn primary" id="addBtn" type="button">添加</button>
+    </div>
+
+    <ol class="list" id="list"></ol>
+  </div>
+
+  <div class="foot">
+    <span class="hint">歌单存在这台设备的浏览器里，换设备请用下面的导出／导入。编辑密码只在本页校验，挡的是手滑，不是攻击。</span>
+    <span class="tools">
+      <button class="mini" id="exportBtn" type="button">导出 JSON</button>
+      <button class="mini" id="importBtn" type="button">导入</button>
+      <input id="file" type="file" accept="application/json,.json" hidden>
+    </span>
+  </div>
+</div>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+  <div class="sheet" id="sheet">
+    <h2 id="mTitle">输入密码</h2>
+    <p>解锁后才能增删歌单。</p>
+    <input id="pw" type="password" inputmode="numeric" autocomplete="off" placeholder="密码">
+    <div class="err" id="err"></div>
+    <div class="acts">
+      <button class="btn" id="cancelPw" type="button">取消</button>
+      <button class="btn primary" id="okPw" type="button">解锁</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  var KEY = 'wmv587.ktv.v1';
+  var UNLOCK = 'wmv587.ktv.unlock';
+  var PASS = '987459889';
+
+  var DEFAULT = [
+    { t: '海阔天空', a: 'Beyond' },
+    { t: '朋友', a: '周华健' },
+    { t: '后来', a: '刘若英' }
+  ];
+
+  var panel = document.getElementById('panel');
+  var listEl = document.getElementById('list');
+  var countEl = document.getElementById('count');
+  var qEl = document.getElementById('q');
+  var tEl = document.getElementById('t');
+  var aEl = document.getElementById('a');
+  var lockBtn = document.getElementById('lockBtn');
+  var saveBtn = document.getElementById('saveBtn');
+  var toastEl = document.getElementById('toast');
+
+  var songs = load();
+  var draft = null;
+  var unlocked = sessionStorage.getItem(UNLOCK) === '1';
+  var dirty = false;
+
+  function load(){
+    try{
+      var raw = localStorage.getItem(KEY);
+      if (!raw) return DEFAULT.slice();
+      var arr = JSON.parse(raw);
+      if (!Array.isArray(arr)) return DEFAULT.slice();
+      return arr.filter(function(s){ return s && typeof s.t === 'string'; })
+                .map(function(s){ return { t: s.t, a: (s.a || '').toString() }; });
+    }catch(e){ return DEFAULT.slice(); }
+  }
+
+  function persist(){
+    try{ localStorage.setItem(KEY, JSON.stringify(songs)); }
+    catch(e){ toast('保存失败：浏览器不让写本地存储'); }
+  }
+
+  function toast(msg){
+    toastEl.textContent = msg;
+    toastEl.classList.add('on');
+    clearTimeout(toast._t);
+    toast._t = setTimeout(function(){ toastEl.classList.remove('on'); }, 2000);
+  }
+
+  function setDirty(v){
+    dirty = v;
+    saveBtn.disabled = !v;
+    saveBtn.classList.toggle('dirty', v);
+    document.title = (v ? '• ' : '') + 'KTV 歌单 · 猛哥的空间站';
+  }
+
+  function view(){
+    return draft || songs;
+  }
+
+  function render(){
+    var list = view();
+    var q = (qEl.value || '').trim().toLowerCase();
+    var shown = list.filter(function(s){
+      if (!q) return true;
+      return (s.t + ' ' + s.a).toLowerCase().indexOf(q) >= 0;
+    });
+
+    countEl.textContent = shown.length + ' 首' + (q && shown.length !== list.length ? ' / ' + list.length : '');
+
+    if (!shown.length){
+      listEl.innerHTML = '<li class="empty"><b>' + (q ? '没有搜到' : '歌单还是空的') + '</b>' +
+        (q ? '换个关键词试试' : (unlocked ? '在上面加第一首吧' : '点「编辑」开始添加')) + '</li>';
+      return;
+    }
+
+    listEl.innerHTML = shown.map(function(s, i){
+      var idx = list.indexOf(s) + 1;
+      return '<li class="row">' +
+        '<span class="num">' + String(i + 1).padStart(2, '0') + '</span>' +
+        '<span class="meta"><span class="title">' + esc(s.t) + '</span>' +
+        '<span class="artist">' + (s.a ? esc(s.a) : '未知歌手') + '</span></span>' +
+        '<button class="del" type="button" data-idx="' + (idx - 1) + '" aria-label="删除 ' + esc(s.t) + '">' +
+          '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>' +
+        '</button>' +
+      '</li>';
+    }).join('');
+  }
+
+  function esc(s){
+    return String(s).replace(/[&<>"']/g, function(c){
+      return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
+    });
+  }
+
+  function enterEdit(){
+    unlocked = true;
+    draft = songs.map(function(s){ return { t: s.t, a: s.a }; });
+    panel.classList.add('unlocked');
+    lockBtn.textContent = '锁定';
+    setDirty(false);
+    render();
+    tEl.focus();
+  }
+
+  function leaveEdit(){
+    if (dirty && !confirm('还有改动没保存，确定放弃？')) return;
+    unlocked = false;
+    draft = null;
+    panel.classList.remove('unlocked');
+    lockBtn.textContent = '编辑';
+    setDirty(false);
+    sessionStorage.removeItem(UNLOCK);
+    render();
+  }
+
+  /* 密码 */
+  var modal = document.getElementById('modal');
+  var pw = document.getElementById('pw');
+  var err = document.getElementById('err');
+  var sheet = document.getElementById('sheet');
+
+  function askPassword(){
+    err.textContent = '';
+    pw.value = '';
+    modal.classList.add('on');
+    setTimeout(function(){ pw.focus(); }, 120);
+  }
+
+  function closeModal(){ modal.classList.remove('on'); }
+
+  function tryUnlock(){
+    if (pw.value === PASS){
+      sessionStorage.setItem(UNLOCK, '1');
+      closeModal();
+      enterEdit();
+      toast('已解锁，可以改了');
+    } else {
+      err.textContent = '密码不对，再试一次';
+      sheet.classList.remove('shake');
+      void sheet.offsetWidth;
+      sheet.classList.add('shake');
+      pw.select();
+    }
+  }
+
+  lockBtn.addEventListener('click', function(){
+    if (!unlocked) askPassword();
+    else leaveEdit();
+  });
+  document.getElementById('okPw').addEventListener('click', tryUnlock);
+  document.getElementById('cancelPw').addEventListener('click', closeModal);
+  pw.addEventListener('keydown', function(e){ if (e.key === 'Enter') tryUnlock(); });
+  modal.addEventListener('click', function(e){ if (e.target === modal) closeModal(); });
+
+  /* 增删 */
+  function addSong(){
+    var t = tEl.value.trim();
+    var a = aEl.value.trim();
+    if (!t){ tEl.focus(); return; }
+    view().push({ t: t, a: a });
+    tEl.value = ''; aEl.value = '';
+    tEl.focus();
+    setDirty(true);
+    render();
+  }
+
+  document.getElementById('addBtn').addEventListener('click', addSong);
+  tEl.addEventListener('keydown', function(e){ if (e.key === 'Enter') aEl.focus(); });
+  aEl.addEventListener('keydown', function(e){ if (e.key === 'Enter') addSong(); });
+
+  listEl.addEventListener('click', function(e){
+    var btn = e.target.closest('.del');
+    if (!btn || !unlocked) return;
+    var i = Number(btn.dataset.idx);
+    view().splice(i, 1);
+    setDirty(true);
+    render();
+  });
+
+  /* 保存 */
+  saveBtn.addEventListener('click', function(){
+    if (!dirty) return;
+    songs = view().map(function(s){ return { t: s.t, a: s.a }; });
+    persist();
+    setDirty(false);
+    render();
+    toast('已保存 · ' + songs.length + ' 首');
+  });
+
+  qEl.addEventListener('input', render);
+
+  /* 导出 / 导入 */
+  document.getElementById('exportBtn').addEventListener('click', function(){
+    var blob = new Blob([JSON.stringify(view(), null, 2)], { type: 'application/json' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = 'ktv-歌单.json';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 2000);
+    toast('已导出');
+  });
+
+  var file = document.getElementById('file');
+  document.getElementById('importBtn').addEventListener('click', function(){ file.click(); });
+  file.addEventListener('change', function(){
+    var f = file.files && file.files[0];
+    if (!f) return;
+    var reader = new FileReader();
+    reader.onload = function(){
+      try{
+        var arr = JSON.parse(String(reader.result));
+        if (!Array.isArray(arr)) throw new Error('not array');
+        var clean = arr.filter(function(s){ return s && typeof s.t === 'string'; })
+                       .map(function(s){ return { t: String(s.t), a: String(s.a || '') }; });
+        if (!clean.length) throw new Error('empty');
+        if (unlocked){
+          draft = clean;
+          setDirty(true);
+          render();
+          toast('已导入 ' + clean.length + ' 首，记得保存');
+        } else {
+          songs = clean;
+          persist();
+          render();
+          toast('已导入并保存 ' + clean.length + ' 首');
+        }
+      }catch(e){ toast('这个文件读不出来'); }
+      file.value = '';
+    };
+    reader.readAsText(f);
+  });
+
+  /* 初始化 */
+  if (unlocked) enterEdit();
+  else render();
+
+  window.addEventListener('beforeunload', function(e){
+    if (dirty){ e.preventDefault(); e.returnValue = ''; }
+  });
+})();
+</script>
+</body>
+</html>
