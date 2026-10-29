@@ -124,10 +124,10 @@
   /* 专属小机器人 */
   .hero{display:flex; align-items:center; gap:clamp(8px,2.2vw,24px)}
   .hero-txt{flex:1 1 auto; min-width:0}
-  .bot{position:relative; flex:0 0 auto; width:clamp(96px,14vw,190px); align-self:center; margin-left:auto; margin-right:clamp(0px,1.5vw,20px);
+  .bot{position:relative; flex:0 0 auto; width:clamp(104px,15vw,206px); align-self:center; margin-left:auto; margin-right:clamp(0px,1.5vw,20px);
     animation:botIn .95s cubic-bezier(.2,.7,.2,1) .18s both}
   .bot svg{display:block; width:100%; height:auto; overflow:visible;
-    filter:drop-shadow(0 14px 26px rgba(0,0,0,.6)) drop-shadow(0 0 24px rgba(94,224,168,.14));
+    filter:drop-shadow(0 16px 30px rgba(0,0,0,.55)) drop-shadow(0 0 30px rgba(190,225,255,.22));
     transition:transform .5s cubic-bezier(.2,.7,.2,1)}
   .bot:hover svg{transform:translateY(-3px)}
   .bot-float{animation:botFloat 6.5s ease-in-out infinite}
@@ -242,69 +242,76 @@
         <span class="bubble" id="bubble" aria-live="polite"></span>
         <svg viewBox="0 0 200 232" aria-hidden="true">
           <defs>
-            <linearGradient id="metal" x1="0" y1="0" x2=".3" y2="1">
-              <stop offset="0" stop-color="#26334a"/><stop offset=".55" stop-color="#18202e"/><stop offset="1" stop-color="#0f141d"/>
+            <linearGradient id="shell" x1=".2" y1="0" x2=".8" y2="1">
+              <stop offset="0" stop-color="#ffffff"/><stop offset=".55" stop-color="#f2f6fb"/><stop offset="1" stop-color="#d7e0ec"/>
             </linearGradient>
-            <linearGradient id="visor" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stop-color="#0a0f16"/><stop offset="1" stop-color="#152436"/>
+            <linearGradient id="face" x1="0" y1="0" x2=".6" y2="1">
+              <stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#e8eef7"/>
             </linearGradient>
-            <radialGradient id="eyeGlow">
-              <stop offset="0" stop-color="#e9fff6"/><stop offset=".5" stop-color="#5ee0a8"/><stop offset="1" stop-color="#2b9d78" stop-opacity=".15"/>
+            <linearGradient id="softrim" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#b9c6d8"/>
+            </linearGradient>
+            <linearGradient id="mint" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#b6ffe4"/><stop offset="1" stop-color="#38c995"/>
+            </linearGradient>
+            <radialGradient id="eyeDot">
+              <stop offset="0" stop-color="#33445c"/><stop offset=".6" stop-color="#16202d"/><stop offset="1" stop-color="#0a1119"/>
             </radialGradient>
-            <linearGradient id="rim" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0" stop-color="#5ee0a8" stop-opacity=".55"/><stop offset="1" stop-color="#7aa2ff" stop-opacity=".35"/>
-            </linearGradient>
+            <radialGradient id="coreGlow">
+              <stop offset="0" stop-color="#eafff7"/><stop offset=".45" stop-color="#5ee0a8"/><stop offset="1" stop-color="#2f9e77" stop-opacity=".12"/>
+            </radialGradient>
             <filter id="soft"><feGaussianBlur stdDeviation="7"/></filter>
+            <filter id="inner" x="-30%" y="-30%" width="160%" height="160%">
+              <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#8fa1b8" flood-opacity=".25"/>
+            </filter>
           </defs>
 
-          <ellipse cx="100" cy="221" rx="44" ry="6" fill="#5ee0a8" opacity=".18" filter="url(#soft)"/>
+          <ellipse cx="100" cy="221" rx="46" ry="6" fill="#9fd8ff" opacity=".22" filter="url(#soft)"/>
 
           <g class="bot-float">
             <g class="part" data-act="antenna">
-              <path d="M100 36V19" stroke="#5a6b83" stroke-width="2.6" stroke-linecap="round"/>
-              <circle class="ant-tip" cx="100" cy="14" r="5" fill="url(#eyeGlow)"/>
-              <circle cx="100" cy="14" r="10" fill="none" stroke="#5ee0a8" stroke-opacity=".3"/>
+              <path d="M100 36V19" stroke="#c3cfdf" stroke-width="3" stroke-linecap="round"/>
+              <circle class="ant-tip" cx="100" cy="14" r="5.2" fill="url(#mint)"/>
+              <circle cx="100" cy="14" r="10" fill="none" stroke="#5ee0a8" stroke-opacity=".35"/>
             </g>
 
-            <rect x="30" y="64" width="11" height="30" rx="5.5" fill="#1a2334" stroke="#2b3a50"/>
-            <rect x="159" y="64" width="11" height="30" rx="5.5" fill="#1a2334" stroke="#2b3a50"/>
+            <rect x="30" y="64" width="11" height="30" rx="5.5" fill="#eef3f9" stroke="#c9d4e2"/>
+            <rect x="159" y="64" width="11" height="30" rx="5.5" fill="#eef3f9" stroke="#c9d4e2"/>
 
-            <g class="part" data-act="scan">
-              <rect x="42" y="34" width="116" height="94" rx="31" fill="url(#metal)" stroke="url(#rim)" stroke-width="1.4"/>
-              <rect x="54" y="46" width="92" height="68" rx="23" fill="url(#visor)" stroke="#26364a"/>
-              <rect class="scanline" x="56" y="49" width="88" height="2.4" rx="1.2" fill="#5ee0a8"/>
+            <g class="part" data-act="scan" filter="url(#inner)">
+              <rect x="42" y="34" width="116" height="94" rx="34" fill="url(#shell)" stroke="#cdd8e6" stroke-width="1.4"/>
+              <rect x="55" y="47" width="90" height="68" rx="27" fill="url(#face)" stroke="#e3eaf4"/>
+              <rect class="scanline" x="57" y="50" width="86" height="2.4" rx="1.2" fill="#5ee0a8"/>
             </g>
 
             <g class="eye" data-act="wink">
-              <ellipse cx="79" cy="80" rx="14" ry="16" fill="#5ee0a8" opacity=".1"/>
-              <ellipse cx="79" cy="80" rx="7.6" ry="9.8" fill="url(#eyeGlow)"/>
-              <circle class="pupil" cx="79" cy="80" r="3.3" fill="#04120c"/>
+              <ellipse cx="79" cy="80" rx="13.5" ry="15.5" fill="#ffffff" stroke="#e2e9f3"/>
+              <g class="pupil"><circle cx="79" cy="80" r="5.4" fill="url(#eyeDot)"/><circle cx="76.8" cy="77.8" r="1.6" fill="#ffffff" opacity=".9"/></g>
             </g>
             <g class="eye" data-act="wink">
-              <ellipse cx="121" cy="80" rx="14" ry="16" fill="#5ee0a8" opacity=".1"/>
-              <ellipse cx="121" cy="80" rx="7.6" ry="9.8" fill="url(#eyeGlow)"/>
-              <circle class="pupil" cx="121" cy="80" r="3.3" fill="#04120c"/>
+              <ellipse cx="121" cy="80" rx="13.5" ry="15.5" fill="#ffffff" stroke="#e2e9f3"/>
+              <g class="pupil"><circle cx="121" cy="80" r="5.4" fill="url(#eyeDot)"/><circle cx="118.8" cy="77.8" r="1.6" fill="#ffffff" opacity=".9"/></g>
             </g>
 
-            <rect x="87" y="105" width="26" height="3" rx="1.5" fill="#3b4d66"/>
+            <path d="M90 106q10 6 20 0" fill="none" stroke="#aebccd" stroke-width="2.2" stroke-linecap="round"/>
 
-            <rect x="92" y="128" width="16" height="9" rx="4" fill="#1a2334"/>
+            <rect x="92" y="128" width="16" height="9" rx="4.5" fill="#e7eef7" stroke="#cdd8e6"/>
 
-            <g class="part" data-act="core">
-              <rect x="63" y="136" width="74" height="64" rx="23" fill="url(#metal)" stroke="#2c3b51"/>
-              <circle class="core-ring" cx="100" cy="164" r="15" fill="none" stroke="#5ee0a8" stroke-width="1.6"/>
-              <circle cx="100" cy="164" r="14" fill="none" stroke="#5ee0a8" stroke-opacity=".28"/>
-              <circle cx="100" cy="164" r="8.4" fill="url(#eyeGlow)"/>
-              <circle cx="100" cy="164" r="12.5" fill="none" stroke="#7aa2ff" stroke-opacity=".18"/>
+            <g class="part" data-act="core" filter="url(#inner)">
+              <rect x="57" y="136" width="86" height="58" rx="24" fill="url(#shell)" stroke="#cdd8e6" stroke-width="1.4"/>
+              <circle class="core-ring" cx="100" cy="165" r="14" fill="none" stroke="#5ee0a8" stroke-width="1.6"/>
+              <circle cx="100" cy="165" r="13" fill="none" stroke="#bfe9d7"/>
+              <circle cx="100" cy="165" r="8.6" fill="url(#coreGlow)"/>
+              <circle cx="100" cy="165" r="11.5" fill="none" stroke="#7aa2ff" stroke-opacity=".18"/>
             </g>
 
             <g class="part" data-act="wave">
-              <rect x="44" y="142" width="14" height="34" rx="7" fill="#1a2334" stroke="#2c3b51"/>
-              <circle cx="51" cy="182" r="7.5" fill="#22304a" stroke="#2c3b51"/>
+              <rect x="39" y="147" width="13" height="31" rx="6.5" fill="#f5f8fc" stroke="#cdd8e6"/>
+              <circle cx="45.5" cy="183" r="7" fill="#ffffff" stroke="#cdd8e6"/>
             </g>
             <g class="arm-r part" data-act="wave">
-              <rect x="142" y="142" width="14" height="34" rx="7" fill="#1a2334" stroke="#2c3b51"/>
-              <circle cx="149" cy="182" r="7.5" fill="#22304a" stroke="#2c3b51"/>
+              <rect x="148" y="147" width="13" height="31" rx="6.5" fill="#f5f8fc" stroke="#cdd8e6"/>
+              <circle cx="154.5" cy="183" r="7" fill="#ffffff" stroke="#cdd8e6"/>
             </g>
           </g>
         </svg>
@@ -320,6 +327,24 @@
         </div>
         <span class="t">KTV 歌单</span>
         <span class="d">点歌、存单，随时改</span>
+      </a>
+
+      <a class="card" style="--ac:245,190,120" href="/translate.html">
+        <div class="top">
+          <span class="ico"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 6.2h8.2M7.6 4.2v2M5 6.2c.7 3.1 2.7 5.4 5.4 6.6M3.6 12.8h6.2"/><path d="M12.4 20.2l3.6-8.6 3.6 8.6M13.7 17.4h4.6"/></svg></span>
+          <span class="arrow">→</span>
+        </div>
+        <span class="t">翻译</span>
+        <span class="d">中英日维蒙，五语互译</span>
+      </a>
+
+      <a class="card" style="--ac:120,200,255" href="/calc.html">
+        <div class="top">
+          <span class="ico"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4.6" y="3.4" width="14.8" height="17.2" rx="3"/><path d="M8.2 7.6h7.6"/><circle cx="8.6" cy="12" r=".9" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r=".9" fill="currentColor" stroke="none"/><circle cx="15.4" cy="12" r=".9" fill="currentColor" stroke="none"/><circle cx="8.6" cy="16" r=".9" fill="currentColor" stroke="none"/><circle cx="12" cy="16" r=".9" fill="currentColor" stroke="none"/><circle cx="15.4" cy="16" r=".9" fill="currentColor" stroke="none"/></svg></span>
+          <span class="arrow">→</span>
+        </div>
+        <span class="t">计算器</span>
+        <span class="d">括号、百分比、历史</span>
       </a>
 
       <a class="card" style="--ac:170,140,255" href="/tools/qianqian.html">

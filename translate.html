@@ -1,0 +1,519 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#07080a">
+<title>翻译 · 猛哥的空间站</title>
+<meta name="description" content="中文、英文、日语、维吾尔语、蒙古语互译。">
+<style>
+  :root{
+    --bg:#07080a; --ink:#ececf1; --dim:#8b8b96; --line:rgba(255,255,255,.09);
+    --mint:#5ee0a8; --blue:#7aa2ff; --amber:#f5be78; --glass:rgba(20,22,28,.62);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    min-height:100svh; color:var(--ink);
+    font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    -webkit-font-smoothing:antialiased;
+    background:var(--bg) url(assets/bg.webp) center/cover no-repeat fixed;
+  }
+  body::before{
+    content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+    background:linear-gradient(180deg,rgba(7,8,10,.76),rgba(7,8,10,.92) 40%,#07080a 100%);
+  }
+  .wrap{position:relative; z-index:1; width:min(880px,92vw); margin:0 auto; padding:26px 0 70px}
+
+  .topbar{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:30px}
+  .back{display:inline-flex; align-items:center; gap:7px; text-decoration:none; color:var(--dim); font-size:13px; transition:color .25s}
+  .back:hover{color:var(--mint)}
+  .back svg{width:14px;height:14px}
+  .badge{
+    display:inline-flex; align-items:center; gap:8px; padding:6px 12px; border-radius:999px;
+    background:rgba(122,162,255,.09); border:1px solid rgba(122,162,255,.26);
+    font:600 11px/1 ui-monospace,monospace; letter-spacing:.14em; color:#c3d4ff;
+  }
+  .badge i{width:5px;height:5px;border-radius:50%;background:var(--blue);box-shadow:0 0 10px var(--blue)}
+
+  .kick{font:600 11px/1 ui-monospace,monospace; letter-spacing:.2em; text-transform:uppercase; color:var(--mint); margin-bottom:12px}
+  h1{margin:0 0 10px; font-size:clamp(32px,6vw,46px); line-height:1.1; letter-spacing:-.03em; font-weight:800}
+  h1 em{font-style:normal; background:linear-gradient(92deg,#fff 8%,#cfe4ff 42%,var(--mint) 84%);
+    -webkit-background-clip:text; background-clip:text; color:transparent}
+  .lead{color:var(--dim); font-size:14px; margin:0 0 24px}
+
+  .langs{display:grid; gap:9px; margin-bottom:16px}
+  .langrow{display:flex; align-items:center; gap:8px; flex-wrap:wrap}
+  .langrow .side{display:flex; gap:6px; flex-wrap:wrap; align-items:center}
+  .lbl{flex:0 0 30px; font:600 10px/1 ui-monospace,monospace; letter-spacing:.16em; color:#63707f}
+  .pill{
+    appearance:none; border:1px solid rgba(255,255,255,.1); background:rgba(255,255,255,.035);
+    color:#9aa5b6; font:600 12.5px/1 inherit; padding:8px 11px; border-radius:9px; cursor:pointer;
+    transition:all .2s ease;
+  }
+  .pill:hover{color:#e8eef7; border-color:rgba(255,255,255,.2)}
+  .pill.on{color:#07120d; background:linear-gradient(180deg,#8ff0c6,#5ee0a8); border-color:#5ee0a8; box-shadow:0 6px 18px -10px #5ee0a8}
+  .pill:focus-visible{outline:2px solid rgba(94,224,168,.7); outline-offset:2px}
+  .swap{
+    appearance:none; border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.05);
+    color:#8b95a6; width:32px; height:32px; border-radius:9px; cursor:pointer; line-height:0;
+    display:grid; place-items:center; transition:all .2s ease;
+  }
+  .swap:hover{color:var(--mint); border-color:rgba(94,224,168,.4)}
+  .swap svg{width:15px;height:15px}
+  .arrow-sep{color:#4a5361; font-size:12px}
+
+  .panels{display:grid; gap:12px}
+  .pane{
+    border:1px solid var(--line); border-radius:18px; background:var(--glass);
+    backdrop-filter:blur(16px) saturate(1.2); -webkit-backdrop-filter:blur(16px) saturate(1.2);
+    box-shadow:0 1px 0 rgba(255,255,255,.05) inset; overflow:hidden;
+  }
+  .pane textarea{
+    display:block; width:100%; min-height:150px; resize:vertical; padding:16px 18px;
+    background:none; border:0; outline:0; color:var(--ink); font:inherit; font-size:15.5px; line-height:1.65;
+  }
+  .pane textarea::placeholder{color:#5b6472}
+  .pane .out{
+    min-height:150px; padding:16px 18px; white-space:pre-wrap; word-break:break-word;
+    font-size:15.5px; line-height:1.65; color:#eaf8f1;
+  }
+  .pane .out.empty{color:#5b6472}
+  .bar{
+    display:flex; align-items:center; gap:10px; padding:10px 14px;
+    border-top:1px solid rgba(255,255,255,.06); flex-wrap:wrap;
+  }
+  .bar .meta{flex:1; min-width:80px; font:600 10.5px/1 ui-monospace,monospace; letter-spacing:.1em; color:#67707f}
+  .tbtn{
+    appearance:none; border:1px solid rgba(255,255,255,.1); background:rgba(255,255,255,.04);
+    color:#b9c2d0; font:600 12px/1 inherit; padding:8px 11px; border-radius:8px; cursor:pointer;
+    transition:all .2s ease; display:inline-flex; align-items:center; gap:6px;
+  }
+  .tbtn:hover{color:#eafff6; border-color:rgba(94,224,168,.4); background:rgba(94,224,168,.08)}
+  .tbtn:disabled{opacity:.4; cursor:not-allowed}
+  .tbtn svg{width:13px;height:13px}
+  .go{
+    width:100%; margin-top:12px; padding:14px; border:0; border-radius:14px; cursor:pointer;
+    background:linear-gradient(180deg,#8ff0c6,#4fd6a0); color:#04120c;
+    font:800 15px/1 inherit; letter-spacing:.02em;
+    box-shadow:0 18px 40px -22px rgba(94,224,168,.9);
+    transition:transform .15s ease, filter .2s ease;
+  }
+  .go:hover{filter:brightness(1.05)}
+  .go:active{transform:translateY(1px)}
+  .go[disabled]{filter:grayscale(.6); opacity:.6; cursor:not-allowed}
+  .go .hint{font-weight:600; font-size:11.5px; opacity:.62; margin-left:8px}
+
+  .err{margin-top:10px; color:#ffb0b0; font-size:12.5px; min-height:18px}
+  .note{margin-top:16px; color:#6b7484; font-size:12px; line-height:1.7}
+
+  .hist{display:flex; gap:8px; margin-top:18px; flex-wrap:wrap}
+  .chip{
+    max-width:100%; appearance:none; border:1px solid rgba(255,255,255,.08); background:rgba(255,255,255,.03);
+    color:#8b95a6; font-size:12px; padding:6px 10px; border-radius:8px; cursor:pointer;
+    overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:240px;
+    transition:all .2s ease;
+  }
+  .chip:hover{color:#dfe8f2; border-color:rgba(255,255,255,.18)}
+
+  .tagline{display:inline-flex; align-items:center; gap:6px; font:600 10.5px/1 ui-monospace,monospace; letter-spacing:.08em; color:#6f7a8a}
+  .tagline b{color:var(--mint); font-weight:700}
+  .tagline i{width:4px;height:4px;border-radius:50%;background:currentColor;opacity:.6}
+
+  @media(max-width:560px){
+    body{background-attachment:scroll}
+    .wrap{padding:20px 0 56px}
+    .pill{padding:7px 9px; font-size:11.5px}
+    .pane textarea,.pane .out{min-height:120px; font-size:15px}
+  }
+  @media(prefers-reduced-motion:reduce){*{animation:none!important; transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <a class="back" href="/">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+      返回空间站
+    </a>
+    <span class="badge"><i></i>TRANSLATE</span>
+  </div>
+
+  <div class="kick">Five tongues</div>
+  <h1>五语<em>互译</em></h1>
+  <p class="lead">中文 · English · 日本語 · ئۇيغۇرچە · Монгол хэл，双向翻译。</p>
+
+  <div class="langs">
+    <div class="langrow">
+      <span class="lbl">原文</span>
+      <div class="side" id="srcPills" role="group" aria-label="原文语言"></div>
+      <button class="swap" id="swap" type="button" title="交换语言" aria-label="交换语言" style="margin-left:auto">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h13l-3.5-3.5M20 15H7l3.5 3.5"/></svg>
+      </button>
+    </div>
+    <div class="langrow">
+      <span class="lbl">译文</span>
+      <div class="side" id="tgtPills" role="group" aria-label="译文语言"></div>
+    </div>
+  </div>
+
+  <div class="panels">
+    <div class="pane">
+      <textarea id="input" placeholder="在这里输入或粘贴要翻译的内容，Ctrl/⌘ + Enter 立即翻译" spellcheck="false" maxlength="3000"></textarea>
+      <div class="bar">
+        <span class="meta" id="metaIn">0 字</span>
+        <button class="tbtn" id="clear" type="button">清空</button>
+        <button class="tbtn" id="paste" type="button">粘贴</button>
+      </div>
+    </div>
+  </div>
+
+  <button class="go" id="go" type="button">翻译<span class="hint">Ctrl + Enter</span></button>
+  <div class="err" id="err" role="alert"></div>
+
+  <div class="panels" style="margin-top:12px">
+    <div class="pane">
+      <div class="out empty" id="out" aria-live="polite">译文会出现在这里</div>
+      <div class="bar">
+        <span class="tagline" id="engine"><i></i>等待翻译</span>
+        <span class="meta" style="text-align:right" id="metaOut"></span>
+        <button class="tbtn" id="copy" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2.5"/><path d="M5.5 15V6.5A2 2 0 0 1 7.5 4.5H15"/></svg>
+          复制
+        </button>
+        <button class="tbtn" id="speak" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10v4h3l4 3.5v-11L7 10z"/><path d="M15.5 9.5a3.5 3.5 0 0 1 0 5"/><path d="M18 7a7 7 0 0 1 0 10"/></svg>
+          朗读
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="hist" id="hist"></div>
+
+  <p class="note">
+    走的是免密钥的公共翻译通道，中英日维蒙五种语言都能互译；免费额度有频率限制（大约 30 秒一次），被限流时按钮上会显示倒计时，稍等再按即可。相同内容会命中本地缓存，不会重复消耗额度。
+  </p>
+</div>
+
+<script>
+(function(){
+  var LANGS = [
+    { id:'zh', label:'中文',     prompt:'Simplified Chinese',  mm:'zh-CN', say:'zh-CN' },
+    { id:'en', label:'English',  prompt:'English',             mm:'en-US', say:'en-US' },
+    { id:'ja', label:'日本語',   prompt:'Japanese',            mm:'ja-JP', say:'ja-JP' },
+    { id:'ug', label:'ئۇيغۇرچە', prompt:'Uyghur (Arabic script, as used in Xinjiang)', mm:'', say:'' },
+    { id:'mn', label:'Монгол',   prompt:'Mongolian (Cyrillic script)', mm:'', say:'' }
+  ];
+  var byId = {};
+  LANGS.forEach(function(l){ byId[l.id] = l; });
+
+  var HKEY = 'wmv587.tr.hist';
+  var PKEY = 'wmv587.tr.pair';
+
+  var input = document.getElementById('input');
+  var out = document.getElementById('out');
+  var goBtn = document.getElementById('go');
+  var errEl = document.getElementById('err');
+  var metaIn = document.getElementById('metaIn');
+  var metaOut = document.getElementById('metaOut');
+  var engineEl = document.getElementById('engine');
+  var histEl = document.getElementById('hist');
+  var speakBtn = document.getElementById('speak');
+
+  var pair = load(PKEY) || { s:'auto', t:'en' };
+  var src = pair.s, tgt = pair.t;
+  var lastOut = '';
+  var busy = false;
+  var cooldown = 0;
+
+  function load(k){
+    try{ return JSON.parse(localStorage.getItem(k) || 'null'); }catch(e){ return null; }
+  }
+  function save(k, v){
+    try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){}
+  }
+
+  /* 语言按钮 */
+  var srcBox = document.getElementById('srcPills');
+  var tgtBox = document.getElementById('tgtPills');
+
+  function buildPills(){
+    srcBox.innerHTML = '';
+    [{ id:'auto', label:'自动' }].concat(LANGS).forEach(function(l){
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'pill' + (src === l.id ? ' on' : '');
+      b.textContent = l.label; b.dataset.id = l.id;
+      b.setAttribute('aria-pressed', src === l.id);
+      b.addEventListener('click', function(){ src = l.id; syncPair(); buildPills(); });
+      srcBox.appendChild(b);
+    });
+    tgtBox.innerHTML = '';
+    LANGS.forEach(function(l){
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'pill' + (tgt === l.id ? ' on' : '');
+      b.textContent = l.label; b.dataset.id = l.id;
+      b.setAttribute('aria-pressed', tgt === l.id);
+      b.addEventListener('click', function(){ tgt = l.id; syncPair(); buildPills(); });
+      tgtBox.appendChild(b);
+    });
+  }
+
+  function syncPair(){
+    save(PKEY, { s: src, t: tgt });
+    updateSpeak();
+  }
+
+  /* 语言自动识别 */
+  function detect(text){
+    if (/[\u0600-\u06FF]/.test(text)) return 'ug';
+    if (/[\u0400-\u04FF]/.test(text)) return 'mn';
+    if (/[\u3040-\u30ff]/.test(text)) return 'ja';
+    if (/[\u4e00-\u9fff]/.test(text)) return 'zh';
+    return 'en';
+  }
+
+  /* 翻译引擎一：免密钥 LLM 通道 */
+  async function llmTranslate(from, to, text){
+    var sys = 'You are a professional translator. Translate the user text from ' + from + ' to ' + to +
+      '. Output ONLY the translation, preserving line breaks and punctuation. Never add explanations, ' +
+      'quotes, transliterations, or notes. If the text is already in the target language, repeat it unchanged.';
+    var r = await fetch('https://text.pollinations.ai/openai', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'openai',
+        temperature: 0.2,
+        messages: [{ role:'system', content: sys }, { role:'user', content: text }]
+      })
+    });
+    if (!r.ok){
+      var raw = await r.text().catch(function(){ return ''; });
+      var m = raw.match(/"Retry after (\d+)/i) || raw.match(/Retry after (\d+)/i);
+      var e = new Error('RATE');
+      e.retry = m ? Number(m[1]) : 30;
+      e.status = r.status;
+      throw e;
+    }
+    var d = await r.json();
+    var txt = (d.choices && d.choices[0] && d.choices[0].message && d.choices[0].message.content) || '';
+    return txt.trim();
+  }
+
+  /* 翻译引擎二：MyMemory（仅中英日，限流时兜底） */
+  async function mmTranslate(from, to, text){
+    var a = byId[from], b = byId[to];
+    if (!a || !b || !a.mm || !b.mm) throw new Error('NO_FALLBACK');
+    var r = await fetch('https://api.mymemory.translated.net/get?q=' +
+      encodeURIComponent(text.slice(0, 480)) + '&langpair=' + a.mm + '|' + b.mm);
+    if (!r.ok) throw new Error('MM_HTTP');
+    var d = await r.json();
+    var t = d && d.responseData && d.responseData.translatedText;
+    if (!t) throw new Error('MM_EMPTY');
+    return t.replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, '&');
+  }
+
+  function cacheKey(f, t, text){
+    var h = 5381;
+    for (var i = 0; i < text.length; i++) h = ((h << 5) + h + text.charCodeAt(i)) | 0;
+    return 'wmv587.tr.' + f + '.' + t + '.' + (h >>> 0);
+  }
+
+  async function translate(){
+    if (busy) return;
+    var text = input.value.trim();
+    if (!text){ errEl.textContent = '先输入要翻译的内容'; input.focus(); return; }
+
+    var from = src === 'auto' ? detect(text) : src;
+    var to = tgt;
+    if (from === to){ errEl.textContent = '源语言和目标语言相同，换个方向吧'; return; }
+
+    errEl.textContent = '';
+    busy = true;
+    goBtn.disabled = true;
+    goBtn.innerHTML = '翻译中…';
+    engineEl.innerHTML = '<i></i>正在请求';
+
+    var key = cacheKey(from, to, text);
+    var cached = null;
+    try{ cached = JSON.parse(localStorage.getItem(key) || 'null'); }catch(e){}
+
+    try{
+      var result, engine;
+      if (cached && cached.v === text){
+        result = cached.r; engine = 'cache';
+      } else {
+        if (cooldown > 0){
+          result = await mmTranslate(from, to, text);
+          engine = 'fallback';
+        } else {
+          try{
+            result = await llmTranslate(byId[from].prompt, byId[to].prompt, text);
+            engine = 'llm';
+          } catch(e1){
+            if (e1.message === 'RATE'){ cooldown = e1.retry || 30; startCooldown(); }
+            result = await mmTranslate(from, to, text);
+            engine = 'fallback';
+          }
+        }
+        if (!result) throw new Error('EMPTY');
+        try{ localStorage.setItem(key, JSON.stringify({ v:text, r:result, t:Date.now() })); }catch(e){}
+      }
+
+      lastOut = result;
+      out.textContent = result;
+      out.classList.remove('empty');
+      metaOut.textContent = result.length + ' 字';
+      engineEl.innerHTML = engine === 'fallback'
+        ? '<i></i>备用引擎 · 质量一般'
+        : (engine === 'cache' ? '<i></i>本地缓存' : '<i></i>在线翻译');
+      pushHistory(text, result, from, to);
+      updateSpeak();
+    } catch(e){
+      errEl.textContent = e.message === 'NO_FALLBACK'
+        ? '通道限流中，维语/蒙古语暂时没有备用线路，稍等一会儿再试'
+        : '翻译失败，检查网络后再试一次';
+    } finally {
+      busy = false;
+      goBtn.disabled = false;
+      updateGoBtn();
+    }
+  }
+
+  function updateGoBtn(){
+    if (busy) return;
+    goBtn.innerHTML = cooldown > 0
+      ? '在线通道冷却 ' + cooldown + 's · 会用备用线路'
+      : '翻译<span class="hint">Ctrl + Enter</span>';
+  }
+
+  function startCooldown(){
+    if (startCooldown.tick) clearInterval(startCooldown.tick);
+    startCooldown.tick = setInterval(function(){
+      cooldown--;
+      if (cooldown <= 0){
+        cooldown = 0;
+        clearInterval(startCooldown.tick);
+        startCooldown.tick = null;
+      }
+      updateGoBtn();
+    }, 1000);
+    updateGoBtn();
+  }
+
+  /* 历史 */
+  function pushHistory(srcText, res, from, to){
+    var list = load(HKEY) || [];
+    list = list.filter(function(x){ return x.in !== srcText; });
+    list.unshift({ in: srcText, out: res, from: from, to: to, at: Date.now() });
+    list = list.slice(0, 8);
+    save(HKEY, list);
+    renderHistory();
+  }
+
+  function renderHistory(){
+    var list = load(HKEY) || [];
+    histEl.innerHTML = '';
+    if (!list.length) return;
+    var label = document.createElement('span');
+    label.className = 'tagline';
+    label.style.marginRight = '4px';
+    label.innerHTML = '<i></i>最近';
+    histEl.appendChild(label);
+    list.forEach(function(x){
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'chip';
+      b.textContent = x.in.replace(/\s+/g, ' ').slice(0, 28);
+      b.title = x.in;
+      b.addEventListener('click', function(){
+        input.value = x.in;
+        src = x.from; tgt = x.to;
+        syncPair(); buildPills(); updateMeta();
+        out.textContent = x.out; out.classList.remove('empty');
+        lastOut = x.out; metaOut.textContent = x.out.length + ' 字';
+        input.focus();
+      });
+      histEl.appendChild(b);
+    });
+  }
+
+  /* 朗读 */
+  function updateSpeak(){
+    var l = byId[tgt];
+    var ok = l && l.say && 'speechSynthesis' in window;
+    speakBtn.disabled = !ok;
+    speakBtn.title = ok ? '朗读译文' : '浏览器没有这个语言的语音';
+  }
+
+  function speak(){
+    if (!('speechSynthesis' in window) || !lastOut) return;
+    var l = byId[tgt];
+    if (!l || !l.say) return;
+    speechSynthesis.cancel();
+    var u = new SpeechSynthesisUtterance(lastOut);
+    u.lang = l.say;
+    var vs = speechSynthesis.getVoices();
+    var v = vs.filter(function(x){ return x.lang.replace('_', '-').indexOf(l.say) === 0; })[0];
+    if (v) u.voice = v;
+    u.rate = 0.95;
+    speechSynthesis.speak(u);
+  }
+
+  /* 交互 */
+  function updateMeta(){
+    var n = input.value.length;
+    metaIn.textContent = n + ' 字' + (src === 'auto' && n ? ' · 识别为 ' + byId[detect(input.value)].label : '');
+  }
+
+  input.addEventListener('input', updateMeta);
+  input.addEventListener('keydown', function(e){
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter'){ e.preventDefault(); translate(); }
+  });
+
+  goBtn.addEventListener('click', translate);
+
+  document.getElementById('clear').addEventListener('click', function(){
+    input.value = ''; out.textContent = '译文会出现在这里'; out.classList.add('empty');
+    lastOut = ''; metaOut.textContent = ''; errEl.textContent = '';
+    engineEl.innerHTML = '<i></i>等待翻译'; updateMeta(); input.focus();
+  });
+
+  document.getElementById('paste').addEventListener('click', async function(){
+    try{
+      var t = await navigator.clipboard.readText();
+      if (t){ input.value = t; updateMeta(); }
+    }catch(e){ errEl.textContent = '浏览器不允许直接读剪贴板，试试 Ctrl + V'; }
+  });
+
+  document.getElementById('copy').addEventListener('click', async function(){
+    if (!lastOut) return;
+    try{
+      await navigator.clipboard.writeText(lastOut);
+      var btn = document.getElementById('copy');
+      var old = btn.innerHTML; btn.textContent = '已复制';
+      setTimeout(function(){ btn.innerHTML = old; }, 1200);
+    }catch(e){ errEl.textContent = '复制失败，手动选中吧'; }
+  });
+
+  document.getElementById('swap').addEventListener('click', function(){
+    if (src === 'auto'){
+      src = detect(input.value || '中');
+      tgt = tgt === src ? 'en' : tgt;
+    } else {
+      var s = src; src = tgt; tgt = s;
+    }
+    syncPair(); buildPills(); updateMeta();
+  });
+
+  speakBtn.addEventListener('click', speak);
+  if ('speechSynthesis' in window) speechSynthesis.onvoiceschanged = function(){};
+
+  buildPills();
+  updateMeta();
+  updateSpeak();
+  renderHistory();
+})();
+</script>
+</body>
+</html>
