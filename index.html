@@ -78,6 +78,10 @@
   .bot{position:absolute; right:5.5vw; top:52%; transform:translateY(-50%); z-index:2;
     width:clamp(126px,13vw,190px); cursor:pointer; outline:none;
     animation:botIn .95s cubic-bezier(.2,.7,.2,1) .18s both}
+  .bot img{display:block; width:100%; height:auto; user-select:none; -webkit-user-drag:none;
+    transform:rotateX(var(--ty,0deg)) rotateY(var(--tx,0deg)); transition:transform .45s ease}
+  .bot.boop img{animation:boop .85s cubic-bezier(.3,1.5,.4,1)}
+  @keyframes boop{0%{transform:scale(1)}28%{transform:scale(1.07,.93)}58%{transform:scale(.97,1.02)}100%{transform:scale(1)}}
   .bot svg{display:block; width:100%; height:auto; overflow:visible;
     filter:drop-shadow(0 16px 30px rgba(0,0,0,.55)) drop-shadow(0 0 30px rgba(190,225,255,.22));
     transition:transform .5s cubic-bezier(.2,.7,.2,1)}
@@ -249,7 +253,7 @@
   @keyframes islandBob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-10px)}}
   .scene .bot{position:absolute; left:0; right:0; margin:0 auto; top:auto; bottom:45%; width:clamp(118px,12vw,172px);
     animation:botIn .95s cubic-bezier(.2,.7,.2,1) .2s both}
-  .scene .bot svg{filter:drop-shadow(0 18px 34px rgba(0,0,0,.55)) drop-shadow(0 0 34px rgba(150,240,205,.18))}
+  .scene .bot svg,.scene .bot img{filter:drop-shadow(0 18px 34px rgba(0,0,0,.55)) drop-shadow(0 0 34px rgba(150,240,205,.18))}
   .scene .bot::after{content:""; position:absolute; left:50%; bottom:-2px; width:56%; height:9px; transform:translateX(-50%);
     background:radial-gradient(ellipse at center, rgba(0,0,0,.42), rgba(0,0,0,0) 72%); filter:blur(3px)}
 
@@ -274,7 +278,7 @@
   .hero h1{letter-spacing:-.015em; font-size:clamp(40px,6.1vw,96px); line-height:.98}
   .scene{max-width:600px}
   .island{width:104%}
-  .scene .bot{width:clamp(150px,15.6vw,244px); bottom:40%}
+  .scene .bot{width:clamp(138px,14.4vw,228px); bottom:42%}
   @media(max-width:900px){
     .hero{flex-direction:column; align-items:stretch; padding-bottom:16px}
     .scene{flex:1 1 auto; width:100%; max-width:none; height:250px; margin:6px 0 2px; transform:translateY(10px)}
@@ -416,109 +420,7 @@
       </div>
       <div class="bot" id="bot" tabindex="0" role="button" aria-label="空间站小机器人，点它会动">
         <span class="bubble" id="bubble" aria-live="polite"></span>
-        <svg id="botSvg" viewBox="0 0 240 330" width="100%" aria-hidden="true">
-  <defs>
-    <linearGradient id="pShell" x1="30%" y1="0%" x2="80%" y2="100%">
-      <stop offset="0" stop-color="#ffffff"/>
-      <stop offset="45%" stop-color="#f7f9fc"/>
-      <stop offset="100%" stop-color="#dfe7f2"/>
-    </linearGradient>
-    <linearGradient id="pShell2" x1="20%" y1="0%" x2="85%" y2="100%">
-      <stop offset="0" stop-color="#ffffff"/>
-      <stop offset="55%" stop-color="#f4f8fd"/>
-      <stop offset="100%" stop-color="#d8e2ef"/>
-    </linearGradient>
-    <radialGradient id="pVisor" cx="38%" cy="28%" r="80%">
-      <stop offset="0" stop-color="#2b3542"/>
-      <stop offset="55%" stop-color="#0d131b"/>
-      <stop offset="100%" stop-color="#04070b"/>
-    </radialGradient>
-    <radialGradient id="pEye" cx="50%" cy="50%" r="50%">
-      <stop offset="0" stop-color="#0a1017"/>
-      <stop offset="70%" stop-color="#071018"/>
-      <stop offset="100%" stop-color="#0d2230"/>
-    </radialGradient>
-    <radialGradient id="pGlow" cx="50%" cy="50%" r="50%">
-      <stop offset="0" stop-color="#7ff0ff" stop-opacity=".55"/>
-      <stop offset="60%" stop-color="#4fe3ff" stop-opacity=".18"/>
-      <stop offset="100%" stop-color="#4fe3ff" stop-opacity="0"/>
-    </radialGradient>
-    <filter id="pSoft" x="-40%" y="-40%" width="180%" height="180%">
-      <feGaussianBlur stdDeviation="6"/>
-    </filter>
-    <filter id="pGlowF" x="-60%" y="-60%" width="220%" height="220%">
-      <feGaussianBlur stdDeviation="4"/>
-    </filter>
-  </defs>
-
-  <!-- ground shadow -->
-  <ellipse cx="120" cy="312" rx="58" ry="10" fill="#0b1220" opacity=".35" filter="url(#pSoft)"/>
-
-  <!-- arms -->
-  <g class="part" data-act="wave">
-    <path d="M62 196c-10 12-15 28-15 44" stroke="url(#pShell2)" stroke-width="17" stroke-linecap="round" fill="none"/>
-    <ellipse cx="47" cy="248" rx="11" ry="13" fill="#ffffff"/>
-    <circle cx="47" cy="252" r="2.6" fill="#4fe3ff"/>
-  </g>
-  <g class="part" data-act="wave2">
-    <path d="M178 196c10 12 15 28 15 44" stroke="url(#pShell2)" stroke-width="17" stroke-linecap="round" fill="none"/>
-    <ellipse cx="193" cy="248" rx="11" ry="13" fill="#ffffff"/>
-    <circle cx="193" cy="252" r="2.6" fill="#4fe3ff"/>
-  </g>
-
-  <!-- body: pear shape -->
-  <path d="M120 150c-34 0-58 26-58 62 0 22 8 40 20 52 10 10 24 16 38 16s28-6 38-16c12-12 20-30 20-52 0-36-24-62-58-62z"
-        fill="url(#pShell)" stroke="#e6edf7" stroke-width="1"/>
-
-  <!-- mint seams -->
-  <g stroke="#a8e6e0" stroke-width="2" fill="none" opacity=".85" filter="url(#pGlowF)">
-    <path d="M120 168v96"/>
-    <path d="M120 182c-8 6-16 10-24 12"/>
-    <path d="M120 182c8 6 16 10 24 12"/>
-  </g>
-
-  <!-- chest core -->
-  <g class="part" data-act="core">
-    <circle cx="120" cy="214" r="24" fill="url(#pGlow)" opacity=".9"/>
-    <circle class="core-ring" cx="120" cy="214" r="10" fill="none" stroke="#bff4ff" stroke-width="2" opacity=".7"/>
-    <circle cx="120" cy="214" r="5" fill="#8ff2ff"/>
-  </g>
-
-  <!-- head -->
-  <g class="part" data-act="scan">
-    <ellipse cx="120" cy="96" rx="62" ry="58" fill="url(#pShell)" stroke="#e6edf7" stroke-width="1"/>
-    <!-- ear pods -->
-    <ellipse cx="58" cy="100" rx="11" ry="17" fill="url(#pShell2)" stroke="#dde6f2"/>
-    <ellipse cx="182" cy="100" rx="11" ry="17" fill="url(#pShell2)" stroke="#dde6f2"/>
-    <!-- antennae -->
-    <g stroke="#eef3fa" stroke-width="4" stroke-linecap="round">
-      <path d="M103 48 92 16"/><path d="M137 48 148 16"/>
-    </g>
-    <circle cx="91" cy="13" r="4.6" fill="#ffffff" stroke="#e2eaf5"/>
-    <circle cx="149" cy="13" r="4.6" fill="#ffffff" stroke="#e2eaf5"/>
-
-    <!-- visor: wide goggle -->
-    <g class="part" data-act="wink">
-      <rect x="68" y="62" width="104" height="72" rx="34" fill="url(#pVisor)"/>
-      <path d="M80 76c14-8 32-11 48-11" stroke="#5d7186" stroke-opacity=".55" stroke-width="7" stroke-linecap="round" fill="none"/>
-      <ellipse cx="100" cy="98" rx="17" ry="18" fill="url(#pEye)"/>
-      <ellipse cx="140" cy="98" rx="17" ry="18" fill="url(#pEye)"/>
-      <circle cx="100" cy="98" r="13" fill="none" stroke="#4fe3ff" stroke-width="6" opacity=".95" filter="url(#pGlowF)"/>
-      <circle cx="140" cy="98" r="13" fill="none" stroke="#4fe3ff" stroke-width="6" opacity=".95" filter="url(#pGlowF)"/>
-      <circle cx="100" cy="98" r="12" fill="none" stroke="#bff4ff" stroke-width="3.4"/>
-      <circle cx="140" cy="98" r="12" fill="none" stroke="#bff4ff" stroke-width="3.4"/>
-      <circle class="pupil" cx="95" cy="92" r="3" fill="#ffffff" opacity=".95"/>
-      <circle class="pupil" cx="135" cy="92" r="3" fill="#ffffff" opacity=".95"/>
-    </g>
-
-    <!-- status light -->
-    <circle cx="120" cy="148" r="4.4" fill="#4fe3ff" filter="url(#pGlowF)" opacity=".9"/>
-    <circle cx="120" cy="148" r="2.4" fill="#d8fbff"/>
-  </g>
-
-  <!-- soft rim light -->
-  <path d="M172 60c8 14 11 30 10 46" stroke="#eaf6ff" stroke-opacity=".55" stroke-width="3" stroke-linecap="round" fill="none"/>
-</svg>
+        <img id="botImg" src="assets/robot.webp" alt="" draggable="false">
       
       
       
@@ -772,85 +674,28 @@
 (function(){
   var bot = document.getElementById('bot');
   if (!bot) return;
-  var bubble = document.getElementById('bubble');
-  var pupils = [].slice.call(bot.querySelectorAll('.pupil'));
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var sayTimer, actTimer;
-
-  function say(text, ms){
-    if (!bubble) return;
-    bubble.textContent = text;
-    bubble.classList.add('on');
-    clearTimeout(sayTimer);
-    sayTimer = setTimeout(function(){ bubble.classList.remove('on'); }, ms || 1700);
+  var t;
+  function boop(){
+    bot.classList.remove('boop');
+    void bot.offsetWidth;
+    bot.classList.add('boop');
+    clearTimeout(t);
+    t = setTimeout(function(){ bot.classList.remove('boop'); }, 900);
   }
-
-  var lines = {
-    scan:    ['扫描中… 帅得超出范围', '识别结果：猛哥本人', '舱内环境正常'],
-    wink:    ['看见你了', '视觉模组正常', '眨眼 0.12s'],
-    core:    ['能量 100%', '核心稳定，随时待命', '已接上空间站主电源'],
-    wave:    ['你好，猛哥', '挥手 · 收到', '欢迎回来'],
-    antenna: ['信号 +1', '正在联系地面', '链路质量 98%']
-  };
-
-  function act(name){
-    var list = lines[name];
-    if (!list) return;
-    var text = list[Math.floor(Math.random() * list.length)];
-    if (!reduce){
-      var cls = {scan:'scanning', wink:'blink', core:'charged', wave:'waving', antenna:'pulse'}[name];
-      bot.classList.remove('scanning','blink','charged','waving','pulse');
-      void bot.offsetWidth;
-      bot.classList.add(cls);
-      clearTimeout(actTimer);
-      actTimer = setTimeout(function(){
-        bot.classList.remove(cls);
-      }, name === 'wink' ? 170 : 1100);
-    }
-    say(text);
-  }
-
-  bot.addEventListener('click', function(e){
-    var p = e.target.closest ? e.target.closest('[data-act]') : null;
-    act(p && p.dataset.act ? p.dataset.act : 'scan');
-  });
-
+  bot.addEventListener('click', boop);
   bot.addEventListener('keydown', function(e){
-    if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); act('scan'); }
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); boop(); }
   });
-
-  /* 眼睛跟着鼠标 */
   if (!reduce){
-    var raf = 0, lastX = 0, lastY = 0;
-    function track(){
-      raf = 0;
+    addEventListener('pointermove', function(e){
       var r = bot.getBoundingClientRect();
-      if (!r.width) return;
-      var cx = r.left + r.width / 2;
-      var cy = r.top + r.height * 0.34;
-      var dx = lastX - cx, dy = lastY - cy;
-      var d = Math.sqrt(dx * dx + dy * dy) || 1;
-      var m = Math.min(3.4, d / 26);
-      var x = (dx / d) * m, y = (dy / d) * m;
-      var t = 'translate(' + x.toFixed(2) + ' ' + y.toFixed(2) + ')';
-      for (var i = 0; i < pupils.length; i++) pupils[i].setAttribute('transform', t);
-    }
-    window.addEventListener('pointermove', function(e){
-      lastX = e.clientX; lastY = e.clientY;
-      if (!raf) raf = requestAnimationFrame(track);
+      var dx = (e.clientX - (r.left + r.width / 2)) / innerWidth;
+      var dy = (e.clientY - (r.top + r.height / 2)) / innerHeight;
+      bot.style.setProperty('--tx', (dx * 8).toFixed(2) + 'deg');
+      bot.style.setProperty('--ty', (-dy * 6).toFixed(2) + 'deg');
     }, { passive: true });
-
-    var blinkTimer;
-    (function idleBlink(){
-      blinkTimer = setTimeout(function(){
-        bot.classList.add('blink');
-        setTimeout(function(){ bot.classList.remove('blink'); }, 150);
-        idleBlink();
-      }, 3200 + Math.random() * 4200);
-    })();
-    window.addEventListener('pagehide', function(){ clearTimeout(blinkTimer); }, { once: true });
   }
-
 })();
 })();
 </script>
