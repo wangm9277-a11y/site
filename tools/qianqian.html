@@ -2490,11 +2490,17 @@
   (function(){
     var v = document.getElementById('launchVeil');
     if (!v) return;
+    var st = document.createElement('style');
+    st.textContent =
+      '#launchVeil [data-launch-orient].is-picked{outline:2px solid rgba(255,214,150,.9);outline-offset:3px}' +
+      '#launchVeil [data-launch-orient].is-picked .launch-orient-name::after{content:" · 载入中"}';
+    document.head.appendChild(st);
     v.querySelectorAll('[data-launch-orient]').forEach(function(b){
       b.addEventListener('click', function(){
         window.__pendingOrient = b.getAttribute('data-launch-orient');
-        v.classList.add('closing');
-        setTimeout(function(){ if (v.parentNode) v.parentNode.removeChild(v); }, 320);
+        v.querySelectorAll('[data-launch-orient]').forEach(function(x){
+          x.classList.toggle('is-picked', x === b);
+        });
       });
     });
   })();
@@ -4488,6 +4494,11 @@
       if (window.__pendingOrient) {
         applyLaunchPreset(window.__pendingOrient);
         window.__pendingOrient = null;
+        var lv = document.getElementById("launchVeil");
+        if (lv) {
+          lv.classList.add("closing");
+          window.setTimeout(function(){ if (lv.parentNode) lv.parentNode.removeChild(lv); }, 320);
+        }
       }
 
       document.getElementById("btnUpperPrev").addEventListener("click", (e) => {
