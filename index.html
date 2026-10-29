@@ -274,7 +274,7 @@
   .hero h1{letter-spacing:-.015em; font-size:clamp(40px,6.1vw,96px); line-height:.98}
   .scene{max-width:600px}
   .island{width:104%}
-  .scene .bot{width:clamp(140px,14.4vw,212px); bottom:43%}
+  .scene .bot{width:clamp(168px,17.6vw,286px); bottom:40%}
   @media(max-width:900px){
     .hero{flex-direction:column; align-items:stretch; padding-bottom:16px}
     .scene{flex:1 1 auto; width:100%; max-width:none; height:250px; margin:6px 0 2px; transform:translateY(10px)}
@@ -416,77 +416,74 @@
       </div>
       <div class="bot" id="bot" tabindex="0" role="button" aria-label="空间站小机器人，点它会动">
         <span class="bubble" id="bubble" aria-live="polite"></span>
-        <svg viewBox="0 0 240 320" aria-hidden="true">
+        <svg viewBox="0 0 240 330" aria-hidden="true">
   <defs>
-    <radialGradient id="hHead" cx=".36" cy=".26" r=".9">
-      <stop offset="0" stop-color="#ffffff"/><stop offset=".52" stop-color="#f6f9fc"/><stop offset=".82" stop-color="#e6ecf5"/><stop offset="1" stop-color="#ccd6e4"/>
+    <radialGradient id="kHead" cx=".34" cy=".24" r=".95">
+      <stop offset="0" stop-color="#ffffff"/><stop offset=".45" stop-color="#f8fbfe"/><stop offset=".78" stop-color="#e8eef7"/><stop offset="1" stop-color="#cbd6e5"/>
     </radialGradient>
-    <radialGradient id="hVisor" cx=".42" cy=".3" r=".85">
-      <stop offset="0" stop-color="#1d2a3a"/><stop offset=".45" stop-color="#080d14"/><stop offset="1" stop-color="#0f1822"/>
+    <radialGradient id="kBody" cx=".36" cy=".2" r="1">
+      <stop offset="0" stop-color="#ffffff"/><stop offset=".5" stop-color="#f4f8fc"/><stop offset=".85" stop-color="#dee6f1"/><stop offset="1" stop-color="#c2cfe0"/>
     </radialGradient>
-    <linearGradient id="hBody" x1=".28" y1="0" x2=".8" y2="1">
-      <stop offset="0" stop-color="#ffffff"/><stop offset=".55" stop-color="#f2f6fb"/><stop offset="1" stop-color="#cfd9e7"/>
+    <radialGradient id="kFace" cx=".4" cy=".3" r=".9">
+      <stop offset="0" stop-color="#1e2c3d"/><stop offset=".5" stop-color="#070b11"/><stop offset="1" stop-color="#111b26"/>
+    </radialGradient>
+    <radialGradient id="kEye" cx=".5" cy=".4" r=".62">
+      <stop offset="0" stop-color="#ffffff"/><stop offset=".35" stop-color="#dff8ff"/><stop offset=".7" stop-color="#54c4ff"/><stop offset="1" stop-color="#1470b4" stop-opacity=".2"/>
+    </radialGradient>
+    <linearGradient id="kRim" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity=".95"/><stop offset=".55" stop-color="#ffffff" stop-opacity=".15"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
     </linearGradient>
-    <radialGradient id="hEye" cx=".5" cy=".42" r=".6">
-      <stop offset="0" stop-color="#ffffff"/><stop offset=".38" stop-color="#dff8ff"/><stop offset=".72" stop-color="#59c6ff"/><stop offset="1" stop-color="#1680c6" stop-opacity=".18"/>
-    </radialGradient>
-    <linearGradient id="hRim" x1="0" y1="0" x2=".8" y2="1">
-      <stop offset="0" stop-color="#ffffff" stop-opacity=".95"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
-    </linearGradient>
-    <filter id="hSoft" x="-140%" y="-140%" width="380%" height="380%"><feGaussianBlur stdDeviation="7"/></filter>
-    <filter id="hSoft2" x="-70%" y="-70%" width="240%" height="240%"><feGaussianBlur stdDeviation="2"/></filter>
+    <filter id="kGlow" x="-140%" y="-140%" width="380%" height="380%"><feGaussianBlur stdDeviation="8"/></filter>
+    <filter id="kGlow2" x="-70%" y="-70%" width="240%" height="240%"><feGaussianBlur stdDeviation="2.2"/></filter>
   </defs>
 
-  <ellipse cx="120" cy="300" rx="52" ry="10" fill="#bfe9ff" opacity=".14" filter="url(#hSoft)"/>
+  <ellipse cx="120" cy="312" rx="54" ry="10" fill="#bfe9ff" opacity=".15" filter="url(#kGlow)"/>
 
-  <g class="part" data-act="antenna">
-    <path d="M120 30v-11" stroke="#d3dde9" stroke-width="2" stroke-linecap="round"/>
-    <circle class="ant-tip" cx="120" cy="17" r="4" fill="#d6f2ff" filter="url(#hSoft2)"/>
-  </g>
+  
 
   <g class="part" data-act="scan">
-    <circle cx="120" cy="96" r="72" fill="url(#hHead)"/>
-    <path d="M70 62c10-16 27-26 48-29" fill="none" stroke="url(#hRim)" stroke-width="2.6" stroke-linecap="round" opacity=".9"/>
-    <ellipse cx="120" cy="98" rx="59" ry="55" fill="url(#hVisor)"/>
-    <ellipse cx="120" cy="60" rx="40" ry="12" fill="#ffffff" opacity=".06"/>
-    <path d="M84 62c10-8 22-12 36-12" fill="none" stroke="#9fdcff" stroke-opacity=".16" stroke-width="2" stroke-linecap="round"/>
+    <ellipse cx="120" cy="86" rx="80" ry="72" fill="url(#kHead)"/>
+    <path d="M58 62c12-20 34-32 58-34" fill="none" stroke="url(#kRim)" stroke-width="3" stroke-linecap="round"/>
+    <g transform="rotate(-8 120 88)">
+      <ellipse cx="120" cy="88" rx="62" ry="58" fill="url(#kFace)"/>
+      <ellipse cx="120" cy="46" rx="42" ry="12" fill="#ffffff" opacity=".07"/>
+      <path d="M78 56c12-9 26-13 42-13" fill="none" stroke="#a6e2ff" stroke-opacity=".16" stroke-width="2.4" stroke-linecap="round"/>
 
-    <g class="eye" data-act="wink">
-      <ellipse cx="93" cy="100" rx="10.5" ry="17" fill="url(#hEye)" filter="url(#hSoft2)"/>
-      <ellipse cx="93" cy="100" rx="5.5" ry="11" fill="#f9feff" opacity=".94"/>
-      <circle class="pupil" cx="93" cy="102" r="3" fill="#63c9ff" opacity=".5"/>
+      <g class="eye" data-act="wink">
+        <rect x="82" y="68" width="30" height="40" rx="15" fill="url(#kEye)" filter="url(#kGlow2)"/>
+        <rect x="89" y="75" width="16" height="26" rx="8" fill="#faffff" opacity=".95"/>
+        <circle class="pupil" cx="97" cy="88" r="3.8" fill="#6eceff" opacity=".45"/>
+      </g>
+      <g class="eye" data-act="wink">
+        <rect x="128" y="68" width="30" height="40" rx="15" fill="url(#kEye)" filter="url(#kGlow2)"/>
+        <rect x="135" y="75" width="16" height="26" rx="8" fill="#faffff" opacity=".95"/>
+        <circle class="pupil" cx="143" cy="88" r="3.8" fill="#6eceff" opacity=".45"/>
+      </g>
     </g>
-    <g class="eye" data-act="wink">
-      <ellipse cx="147" cy="100" rx="10.5" ry="17" fill="url(#hEye)" filter="url(#hSoft2)"/>
-      <ellipse cx="147" cy="100" rx="5.5" ry="11" fill="#f9feff" opacity=".94"/>
-      <circle class="pupil" cx="147" cy="102" r="3" fill="#63c9ff" opacity=".5"/>
-    </g>
-    <rect class="scanline" x="70" y="54" width="100" height="1.4" fill="#a8e6ff" opacity="0"/>
+    <rect class="scanline" x="64" y="46" width="112" height="1.4" fill="#a8e6ff" opacity="0"/>
   </g>
 
-  <rect x="96" y="160" width="48" height="18" rx="9" fill="#e9eff7"/>
-  <rect x="104" y="164" width="32" height="10" rx="5" fill="#0c131b" opacity=".45"/>
-
+  <ellipse cx="120" cy="172" rx="46" ry="16" fill="#0b1220" opacity=".18" filter="url(#kGlow2)"/>
   <g class="part" data-act="core">
-    <rect x="66" y="174" width="108" height="122" rx="52" fill="url(#hBody)"/>
-    <path d="M84 198c6-14 17-22 32-25" fill="none" stroke="url(#hRim)" stroke-width="2.4" stroke-linecap="round" opacity=".85"/>
-    <circle class="core-ring" cx="120" cy="234" r="21" fill="none" stroke="#a8e6ff" stroke-width="1.4"/>
-    <circle cx="120" cy="234" r="12" fill="#eaf8ff" opacity=".16"/>
-    <circle cx="120" cy="234" r="4" fill="#d6f2ff" filter="url(#hSoft2)" opacity=".95"/>
-    <g fill="#a8e6ff" opacity=".3">
-      <circle cx="104" cy="262" r="1.3"/><circle cx="111" cy="262" r="1.3"/><circle cx="118" cy="262" r="1.3"/><circle cx="125" cy="262" r="1.3"/><circle cx="132" cy="262" r="1.3"/>
-    </g>
+    <ellipse cx="120" cy="238" rx="62" ry="76" fill="url(#kBody)"/>
+    <ellipse cx="120" cy="300" rx="54" ry="14" fill="#8fa6c0" opacity=".25" filter="url(#kGlow2)"/>
+    <path d="M78 194c8-14 22-22 40-24" fill="none" stroke="url(#kRim)" stroke-width="2.6" stroke-linecap="round" opacity=".9"/>
+    <circle class="core-ring" cx="120" cy="240" r="20" fill="none" stroke="#a8e6ff" stroke-width="1.4"/>
+    <circle cx="120" cy="240" r="11" fill="#eaf8ff" opacity=".14"/>
+    <circle cx="120" cy="240" r="3.4" fill="#d6f2ff" filter="url(#kGlow2)" opacity=".9"/>
   </g>
 
+  <path d="M176 206c8 24 8 52-2 74" fill="none" stroke="#dff3ff" stroke-opacity=".55" stroke-width="3" stroke-linecap="round"/>
   <g class="part" data-act="wave">
-    <rect x="40" y="198" width="15" height="54" rx="7.5" fill="url(#hBody)"/>
-    <circle cx="47.5" cy="256" r="9" fill="#f7fbfe"/>
+    <path d="M62 198c-8 16-12 34-11 52" stroke="url(#kBody)" stroke-width="15" stroke-linecap="round" fill="none"/>
+    <circle cx="50" cy="254" r="8.5" fill="#f8fbfe"/>
   </g>
   <g class="arm-r part" data-act="wave">
-    <rect x="185" y="198" width="15" height="54" rx="7.5" fill="url(#hBody)"/>
-    <circle cx="192.5" cy="256" r="9" fill="#f7fbfe"/>
+    <path d="M178 198c8 16 12 34 11 52" stroke="url(#kBody)" stroke-width="15" stroke-linecap="round" fill="none"/>
+    <circle cx="190" cy="254" r="8.5" fill="#f8fbfe"/>
   </g>
 </svg>
+      
       
       </div>
     </div>
