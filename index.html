@@ -184,9 +184,9 @@
   .work .go{font:600 11.5px/1 ui-monospace,monospace; color:rgba(255,255,255,.7); letter-spacing:.08em;
     padding:7px 12px; border-radius:999px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.14);
     backdrop-filter:blur(8px); transition:.3s; white-space:nowrap}
-  .work:hover{border-color:var(--lime); transform:translateY(-4px); box-shadow:0 26px 54px -24px rgba(0,0,0,.9)}
-  .work:hover img{transform:scale(1.04); opacity:1}
-  .work:hover .go{background:var(--lime); border-color:var(--lime); color:#0a0d05}
+  .work:hover, .work.m-lit{border-color:var(--lime); transform:translateY(-4px); box-shadow:0 26px 54px -24px rgba(0,0,0,.9), 0 0 36px -18px var(--lime)}
+  .work:hover img, .work.m-lit img{transform:scale(1.04); opacity:1}
+  .work:hover .go, .work.m-lit .go{background:var(--lime); border-color:var(--lime); color:#0a0d05}
 
   /* ---------- 工作台列表 ---------- */
   .lab-list{border-top:1px solid var(--line)}
@@ -1040,12 +1040,15 @@
     el.setAttribute('rel', 'noopener');
   });
 
-  /* ---------- 作品切换驱动主题 + 3D 扇形卡片视差 ---------- */
+  /* ---------- 作品切换驱动主题 + 3D 扇形卡片视差 + 手机滑动实时变色 ---------- */
   var theme = document.getElementById('theme');
   var sky = document.getElementById('sky');
+  var deck = document.getElementById('deck');
   var cards = [].slice.call(document.querySelectorAll('.deck .card'));
   var root = document.documentElement;
   var current = 0;
+  var lockScrollPick = false, lockTimer = null;
+
   function pick(i, smooth){
     if (!cards[i]) return;
     current = i;
@@ -1060,14 +1063,15 @@
     root.style.setProperty('--lime', c.dataset.ac);
     root.style.setProperty('--tint', c.dataset.tint);
     theme.style.background = c.dataset.bg;
-    if (smooth && c.scrollIntoView){
-      var deck = document.getElementById('deck');
-      if (deck){
-        var left = c.offsetLeft - (deck.clientWidth - c.offsetWidth) / 2;
-        try { deck.scrollTo({ left: left, behavior: 'smooth' }); } catch (e) { deck.scrollLeft = left; }
-      }
+    if (smooth && deck){
+      lockScrollPick = true;
+      clearTimeout(lockTimer);
+      lockTimer = setTimeout(function(){ lockScrollPick = false; }, 520);
+      var left = c.offsetLeft - (deck.clientWidth - c.offsetWidth) / 2;
+      try { deck.scrollTo({ left: left, behavior: 'smooth' }); } catch (e) { deck.scrollLeft = left; }
     }
   }
+
   cards.forEach(function(c, i){
     c.addEventListener('mouseenter', function(){ if (i !== current) pick(i, false); });
     c.addEventListener('focus', function(){ if (i !== current) pick(i, false); });
@@ -1075,6 +1079,39 @@
       if (i !== current){ e.preventDefault(); pick(i, true); }
     });
   });
+
+  /* 手机端横向滑动卡带或手指划过卡片时：实时检测居中卡片并切换全站主题色 */
+  if (deck && cards.length){
+    var deckRaf = null;
+    deck.addEventListener('scroll', function(){
+      if (lockScrollPick || deckRaf) return;
+      deckRaf = requestAnimationFrame(function(){
+        deckRaf = null;
+        var center = deck.scrollLeft + deck.clientWidth / 2;
+        var best = current, minDist = 1e9;
+        for (var i = 0; i < cards.length; i++){
+          var c = cards[i];
+          if (c.classList.contains('muted-grp')) continue;
+          var cc = c.offsetLeft + c.offsetWidth / 2;
+          var dist = Math.abs(cc - center);
+          if (dist < minDist){ minDist = dist; best = i; }
+        }
+        if (best !== current) pick(best, false);
+      });
+    }, { passive: true });
+
+    /* 手指在卡带上直接横向抚过（未触发大幅滚动时）也能像鼠标悬停一样即时换色 */
+    deck.addEventListener('touchmove', function(e){
+      var t = e.touches && e.touches[0];
+      if (!t) return;
+      var el = document.elementFromPoint(t.clientX, t.clientY);
+      var card = el && el.closest && el.closest('.deck .card');
+      if (card){
+        var idx = cards.indexOf(card);
+        if (idx !== -1 && idx !== current) pick(idx, false);
+      }
+    }, { passive: true });
+  }
 
   /* ---------- 作品卡带分组切换 ---------- */
   var tabs = [].slice.call(document.querySelectorAll('#deckBar .d-tab'));
@@ -1115,25 +1152,58 @@
   }, { rootMargin: '0px 0px -2% 0px', threshold: .04 });
   document.querySelectorAll('.rise').forEach(function(el, i){ el.style.transitionDelay = (i % 4) * 70 + 'ms'; io.observe(el); });
 
-  /* ---------- 能力卡片循环高亮 + 鼠标悬停接管 ---------- */
+  /* ---------- 能力卡片 & 作品卡片：鼠标悬停 + 手机端触摸/滑动视口居中自动变色 ---------- */
   var sk = Array.prototype.slice.call(document.querySelectorAll('#stackGrid .sk'));
+  var works = Array.prototype.slice.call(document.querySelectorAll('#works .work'));
   if (sk.length){
-    var idx = 1, paused = false;
+    var idx = 1, paused = false, resumeTimer = null;
+    function litSk(k){
+      sk.forEach(function(x, i){ x.classList.toggle('lit', i === k); });
+      idx = k;
+    }
     sk.forEach(function(el, k){
-      el.addEventListener('mouseenter', function(){
-        paused = true;
-        sk.forEach(function(x){ x.classList.remove('lit'); });
-        el.classList.add('lit');
-        idx = k;
-      });
+      el.addEventListener('mouseenter', function(){ paused = true; litSk(k); });
       el.addEventListener('mouseleave', function(){ paused = false; });
+      el.addEventListener('touchstart', function(){
+        paused = true;
+        litSk(k);
+        clearTimeout(resumeTimer);
+        resumeTimer = setTimeout(function(){ paused = false; }, 3200);
+      }, { passive: true });
     });
     setInterval(function(){
       if (paused) return;
-      sk.forEach(function(el){ el.classList.remove('lit'); });
-      sk[idx % sk.length].classList.add('lit');
+      litSk(idx % sk.length);
       idx++;
     }, 2200);
+
+    /* 手机端上下滑动页面时：滑到视口中央的作品卡与能力卡自动亮起主题色 */
+    addEventListener('scroll', function(){
+      if (innerWidth > 900) return;
+      var mid = innerHeight * 0.52;
+      var bestW = -1, minW = 1e9;
+      works.forEach(function(w, i){
+        var r = w.getBoundingClientRect();
+        if (r.bottom < 80 || r.top > innerHeight - 80) return;
+        var d = Math.abs((r.top + r.bottom) / 2 - mid);
+        if (d < minW){ minW = d; bestW = i; }
+      });
+      works.forEach(function(w, i){ w.classList.toggle('m-lit', i === bestW); });
+
+      var bestS = -1, minS = 1e9;
+      sk.forEach(function(s, i){
+        var r = s.getBoundingClientRect();
+        if (r.bottom < 80 || r.top > innerHeight - 80) return;
+        var d = Math.abs((r.top + r.bottom) / 2 - mid);
+        if (d < minS){ minS = d; bestS = i; }
+      });
+      if (bestS !== -1){
+        paused = true;
+        litSk(bestS);
+        clearTimeout(resumeTimer);
+        resumeTimer = setTimeout(function(){ paused = false; }, 2400);
+      }
+    }, { passive: true });
   }
 
   /* ---------- 灯箱 ---------- */
@@ -1179,16 +1249,22 @@
         blinkLoop();
       }, 2600 + Math.random() * 3400);
     })();
-    /* 眼睛跟着指针走 */
-    addEventListener('pointermove', function(e){
+    /* 眼睛跟着鼠标指针或手机滑动手指走 */
+    function lookAt(cx, cy){
       var r = bot.getBoundingClientRect();
-      var dx = (e.clientX - (r.left + r.width / 2)) / r.width;
-      var dy = (e.clientY - (r.top + r.height * 0.32)) / r.width;
+      if (!r.width) return;
+      var dx = (cx - (r.left + r.width / 2)) / r.width;
+      var dy = (cy - (r.top + r.height * 0.32)) / r.width;
       var x = Math.max(-1, Math.min(1, dx)) * 3.4;
       var y = Math.max(-1, Math.min(1, dy)) * 2.6;
       for (var i = 0; i < pupils.length; i++){
         pupils[i].style.transform = 'translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px)';
       }
+    }
+    addEventListener('pointermove', function(e){ lookAt(e.clientX, e.clientY); }, { passive: true });
+    addEventListener('touchmove', function(e){
+      var t = e.touches && e.touches[0];
+      if (t) lookAt(t.clientX, t.clientY);
     }, { passive: true });
   })();
 })();
