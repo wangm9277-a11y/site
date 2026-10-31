@@ -4,15 +4,16 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#070912">
-<title>翻译 · WM的空间站</title>
-<meta name="description" content="支持中文、英语、日语、俄语、维吾尔语互译，默认自动转英语。">
+<title>翻译 · B612星语信箱 · WM的空间站</title>
+<meta name="description" content="小王子星空绘本风多语种翻译：支持中文、英语、日语、俄语、维吾尔语，默认自动转英语。">
 <style>
   :root{
-    --bg:#070912; --ink:#ececf1; --dim:#8b93a4; --line:rgba(255,255,255,.10);
-    --mint:#5ee0a8; --blue:#7fe3ff; --glass:rgba(16,20,30,.72);
+    --bg:#070912; --ink:#f4f6fb; --dim:#9aa5b8; --line:rgba(255,228,158,.16);
+    --gold:#ffd875; --blue:#7fe3ff; --mint:#7ef2b8;
+    --card:linear-gradient(165deg,rgba(16,22,40,.90),rgba(10,14,26,.94));
   }
   *{box-sizing:border-box}
-  html,body{margin:0; background:var(--bg)}
+  html,body{margin:0; background:var(--bg); overscroll-behavior-y:none}
   body{
     min-height:100svh; color:var(--ink);
     font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
@@ -21,110 +22,126 @@
   }
   body::before{
     content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
-    background:linear-gradient(180deg,rgba(7,9,18,.78),rgba(7,9,18,.92) 48%,#070912 100%);
+    background:radial-gradient(circle at 50% 16%, rgba(127,227,255,.12), transparent 55%),
+               linear-gradient(180deg,rgba(7,9,18,.68),rgba(7,9,18,.88) 52%,#070912 100%);
   }
-  .wrap{position:relative; z-index:1; width:min(860px,92vw); margin:0 auto; padding:24px 0 64px}
+  .wrap{position:relative; z-index:1; width:min(900px,93vw); margin:0 auto; padding:22px 0 68px}
 
-  .topbar{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:22px}
-  .back{display:inline-flex; align-items:center; gap:7px; text-decoration:none; color:var(--dim); font-size:13px; transition:color .2s}
-  .back:hover{color:var(--blue)}
+  .topbar{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:18px}
+  .back{
+    display:inline-flex; align-items:center; gap:8px; text-decoration:none; color:#ffe6a3;
+    font-weight:700; font-size:13px; padding:7px 14px; border-radius:999px;
+    background:rgba(14,19,34,.82); border:1px solid rgba(255,224,140,.24); transition:transform .2s, background .2s;
+  }
+  .back:hover{background:var(--gold); color:#161004; transform:translate3d(-2px,0,0)}
   .back svg{width:14px;height:14px}
   .badge{
-    display:inline-flex; align-items:center; gap:8px; padding:5px 12px; border-radius:999px;
-    background:rgba(127,227,255,.09); border:1px solid rgba(127,227,255,.24);
+    display:inline-flex; align-items:center; gap:8px; padding:6px 13px; border-radius:999px;
+    background:rgba(127,227,255,.10); border:1px solid rgba(127,227,255,.28);
     font:600 11px/1 ui-monospace,monospace; letter-spacing:.08em; color:#c8f3ff;
   }
-  .badge i{width:5px;height:5px;border-radius:50%;background:var(--blue);box-shadow:0 0 8px var(--blue)}
+  .badge i{width:6px;height:6px;border-radius:50%;background:var(--blue);box-shadow:0 0 8px var(--blue)}
 
-  .head-row{display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:18px}
-  h1{margin:0; font-size:clamp(28px,5vw,38px); line-height:1.1; letter-spacing:-.02em; font-weight:800}
-  h1 em{font-style:normal; color:var(--blue)}
-  .lead{color:var(--dim); font-size:13.5px; margin:0}
+  .story-head{
+    display:flex; align-items:center; justify-content:space-between; gap:18px;
+    padding:18px 22px; margin-bottom:18px; border-radius:22px;
+    border:1px solid var(--line); background:var(--card);
+    box-shadow:0 20px 50px -30px rgba(0,0,0,.85);
+  }
+  .sh-copy h1{margin:0; font-size:clamp(24px,4vw,34px); font-weight:900; letter-spacing:-.02em; display:flex; align-items:center; gap:10px; flex-wrap:wrap}
+  .sh-copy h1 em{font-style:normal; color:var(--blue)}
+  .sh-copy .lead{margin:4px 0 0; font-size:13.5px; color:#d0dcf0}
+  .sh-copy .quote{margin:4px 0 0; font-size:12.5px; color:#ffefb8; opacity:.86}
+  .sh-art{width:84px; height:68px; flex:0 0 84px; overflow:visible}
 
-  /* 简洁语言选择栏：中 · 英 · 日 · 俄 · 维 */
   .lang-bar{
-    display:flex; flex-direction:column; gap:10px; padding:14px 16px; margin-bottom:14px;
-    border-radius:16px; border:1px solid var(--line); background:var(--glass);
+    display:flex; flex-direction:column; gap:10px; padding:15px 18px; margin-bottom:16px;
+    border-radius:20px; border:1px solid var(--line); background:var(--card);
   }
   .langrow{display:flex; align-items:center; gap:8px; flex-wrap:wrap}
-  .langrow .side{display:flex; gap:6px; flex-wrap:wrap; align-items:center; flex:1}
-  .lbl{flex:0 0 36px; font:700 12px/1 inherit; color:#8b95a6}
+  .langrow .side{display:flex; gap:7px; flex-wrap:wrap; align-items:center; flex:1}
+  .lbl{flex:0 0 38px; font:700 12.5px/1 inherit; color:#ffe6a3}
   .pill{
-    appearance:none; border:1px solid rgba(255,255,255,.1); background:rgba(255,255,255,.04);
-    color:#b5bfd0; font:600 13px/1 inherit; padding:8px 13px; border-radius:10px; cursor:pointer;
-    transition:all .18s ease;
+    appearance:none; border:1px solid rgba(255,255,255,.11); background:rgba(255,255,255,.045);
+    color:#c2cce0; font:600 13px/1 inherit; padding:8px 14px; border-radius:11px; cursor:pointer;
+    transition:all .16s ease;
   }
-  .pill:hover{color:#fff; border-color:rgba(255,255,255,.24)}
-  .pill.on{color:#051318; background:linear-gradient(180deg,#9beaff,#6dd8ff); border-color:#7fe3ff; font-weight:700; box-shadow:0 6px 16px -8px rgba(127,227,255,.8)}
+  .pill:hover{color:#fff; border-color:rgba(255,224,140,.35)}
+  .pill.on{
+    color:#140e02; background:linear-gradient(180deg,#ffe494,#ffc654); border-color:var(--gold);
+    font-weight:800; box-shadow:0 6px 18px -8px rgba(255,216,117,.75);
+  }
   .swap{
-    appearance:none; border:1px solid rgba(255,255,255,.14); background:rgba(255,255,255,.05);
-    color:#b5bfd0; padding:6px 10px; border-radius:9px; cursor:pointer; font:600 12px/1 inherit;
-    display:inline-flex; align-items:center; gap:5px; transition:all .18s ease;
+    appearance:none; border:1px solid rgba(127,227,255,.28); background:rgba(127,227,255,.08);
+    color:#c8f3ff; padding:7px 12px; border-radius:10px; cursor:pointer; font:700 12px/1 inherit;
+    display:inline-flex; align-items:center; gap:5px; transition:all .16s ease;
   }
-  .swap:hover{color:var(--blue); border-color:rgba(127,227,255,.45)}
+  .swap:hover{background:var(--blue); color:#041218; border-color:var(--blue)}
   .swap svg{width:14px;height:14px}
 
-  .panels{display:grid; grid-template-columns:1fr 1fr; gap:14px}
+  .panels{display:grid; grid-template-columns:1fr 1fr; gap:16px}
   .pane{
-    border:1px solid var(--line); border-radius:18px; background:var(--glass);
-    box-shadow:0 16px 40px -28px #000; overflow:hidden; display:flex; flex-direction:column;
+    border:1px solid var(--line); border-radius:20px; background:var(--card);
+    box-shadow:0 20px 50px -30px rgba(0,0,0,.88); overflow:hidden; display:flex; flex-direction:column;
   }
   .pane textarea{
-    display:block; width:100%; min-height:180px; flex:1; resize:vertical; padding:16px 18px;
+    display:block; width:100%; min-height:190px; flex:1; resize:vertical; padding:18px 20px;
     background:none; border:0; outline:0; color:var(--ink); font:inherit; font-size:16px; line-height:1.65;
   }
-  .pane textarea::placeholder{color:#5e6778}
+  .pane textarea::placeholder{color:#68748a}
   .pane .out{
-    min-height:180px; flex:1; padding:16px 18px; white-space:pre-wrap; word-break:break-word;
-    font-size:16px; line-height:1.65; color:#eef9ff;
+    min-height:190px; flex:1; padding:18px 20px; white-space:pre-wrap; word-break:break-word;
+    font-size:16px; line-height:1.65; color:#fff8e6;
   }
-  .pane .out.empty{color:#5e6778}
+  .pane .out.empty{color:#68748a}
   .bar{
-    display:flex; align-items:center; gap:8px; padding:10px 14px;
-    border-top:1px solid rgba(255,255,255,.06); flex-wrap:wrap;
+    display:flex; align-items:center; gap:8px; padding:10px 16px;
+    border-top:1px solid rgba(255,255,255,.07); background:rgba(255,255,255,.02); flex-wrap:wrap;
   }
-  .bar .meta{flex:1; min-width:70px; font:600 11.5px/1 ui-monospace,monospace; color:#727d90}
+  .bar .meta{flex:1; min-width:70px; font:600 11.5px/1 ui-monospace,monospace; color:#8894a8}
   .tbtn{
-    appearance:none; border:1px solid rgba(255,255,255,.1); background:rgba(255,255,255,.04);
-    color:#c0c9d8; font:600 12px/1 inherit; padding:7px 12px; border-radius:8px; cursor:pointer;
-    transition:all .18s ease; display:inline-flex; align-items:center; gap:5px;
+    appearance:none; border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.05);
+    color:#d0daec; font:600 12px/1 inherit; padding:7px 12px; border-radius:9px; cursor:pointer;
+    transition:all .16s ease; display:inline-flex; align-items:center; gap:5px;
   }
-  .tbtn:hover{color:#fff; border-color:rgba(127,227,255,.4); background:rgba(127,227,255,.1)}
-  .tbtn:disabled{opacity:.38; cursor:not-allowed}
+  .tbtn:hover{color:#181002; border-color:var(--gold); background:var(--gold)}
+  .tbtn:disabled{opacity:.36; cursor:not-allowed}
   .tbtn svg{width:13px;height:13px}
 
-  .action-row{display:flex; align-items:center; gap:12px; margin-top:14px}
+  .action-row{display:flex; align-items:center; gap:12px; margin-top:16px}
   .go{
     flex:1; padding:14px; border:0; border-radius:14px; cursor:pointer;
-    background:linear-gradient(180deg,#9beaff,#58cef5); color:#041218;
-    font:800 15px/1 inherit; letter-spacing:.02em;
-    box-shadow:0 16px 36px -20px rgba(127,227,255,.85);
-    transition:transform .12s ease, filter .18s ease;
+    background:linear-gradient(180deg,#ffe494,#ffc247); color:#181002;
+    font:800 15.5px/1 inherit; letter-spacing:.03em;
+    box-shadow:0 16px 36px -18px rgba(255,216,117,.8);
+    transition:transform .12s ease, filter .16s ease;
   }
   .go:hover{filter:brightness(1.05)}
   .go:active{transform:translateY(1px)}
   .go[disabled]{filter:grayscale(.4); opacity:.65; cursor:not-allowed}
 
   .err{margin-top:8px; color:#ffb0b0; font-size:12.5px; min-height:18px}
-  .hist{display:flex; gap:8px; margin-top:12px; flex-wrap:wrap; align-items:center}
+  .hist{display:flex; gap:8px; margin-top:10px; flex-wrap:wrap; align-items:center}
   .chip{
-    appearance:none; border:1px solid rgba(255,255,255,.08); background:rgba(255,255,255,.03);
-    color:#949fb1; font-size:12px; padding:6px 10px; border-radius:8px; cursor:pointer;
+    appearance:none; border:1px solid rgba(255,224,140,.2); background:rgba(14,19,34,.75);
+    color:#ffe6a3; font-size:12px; padding:6px 11px; border-radius:999px; cursor:pointer;
     overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:240px;
-    transition:all .18s ease;
+    transition:all .16s ease;
   }
-  .chip:hover{color:#fff; border-color:rgba(127,227,255,.3)}
-  .tagline{display:inline-flex; align-items:center; gap:6px; font:600 11px/1 ui-monospace,monospace; color:#737f92}
-  .tagline i{width:5px;height:5px;border-radius:50%;background:var(--blue)}
+  .chip:hover{background:var(--gold); color:#181002}
+  .tagline{display:inline-flex; align-items:center; gap:6px; font:600 11.5px/1 ui-monospace,monospace; color:#ffe6a3}
+  .tagline i{width:6px;height:6px;border-radius:50%;background:var(--gold)}
 
   @media(max-width:720px){
     .panels{grid-template-columns:1fr}
-    .pane textarea,.pane .out{min-height:140px}
+    .pane textarea,.pane .out{min-height:145px}
+    .story-head{padding:14px 16px}
+    .sh-art{width:64px; height:54px; flex:0 0 64px}
   }
   @media(max-width:560px){
     body{background-attachment:scroll}
     .wrap{padding:18px 0 48px}
-    .pill{padding:7px 10px; font-size:12px}
+    .pill{padding:7px 11px; font-size:12px}
   }
 </style>
 </head>
@@ -133,15 +150,26 @@
 
   <div class="topbar">
     <a class="back" href="/">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
-      返回空间站
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+      返回 B612 空间站
     </a>
     <span class="badge" id="mode"><i></i><span>中 · 英 · 日 · 俄 · 维</span></span>
   </div>
 
-  <div class="head-row">
-    <h1><em>翻译</em></h1>
-    <p class="lead">支持中文、英语、日语、俄语、维吾尔语 · 默认自动转英语</p>
+  <div class="story-head">
+    <div class="sh-copy">
+      <h1>✦ <em>翻译</em> · B612 星语信箱</h1>
+      <p class="lead">支持 中文 · 英语 · 日语 · 俄语 · 维吾尔语 — 默认自动转英语</p>
+      <p class="quote">“语言有时会带来误解，但跨越星海的倾听能让两颗星球彼此靠近。”</p>
+    </div>
+    <svg class="sh-art" viewBox="0 0 120 96" fill="none" aria-hidden="true">
+      <path d="M16 70 Q60 32 104 54" stroke="#7fe3ff" stroke-width="1.5" stroke-dasharray="4 5" opacity=".75"/>
+      <path d="M52 42 L88 26 L68 58 L62 46 Z" fill="#ffe294" stroke="#ffd875" stroke-width="1.2" stroke-linejoin="round"/>
+      <path d="M20 82 C28 62 76 62 84 82 C72 90 32 90 20 82 Z" fill="#233154" stroke="#7fe3ff" stroke-width="1.5"/>
+      <circle cx="48" cy="70" r="4.5" fill="#ff6b8b"/>
+      <path d="M24 22 C25 28 27 30 33 31 C27 32 25 34 24 40 C23 34 21 32 15 31 C21 30 23 28 24 22 Z" fill="#ffd875"/>
+      <circle cx="96" cy="20" r="2.2" fill="#7fe3ff"/>
+    </svg>
   </div>
 
   <div class="lang-bar">
@@ -150,7 +178,7 @@
       <div class="side" id="srcPills" role="group" aria-label="原文语言"></div>
       <button class="swap" id="swap" type="button" title="互换原文与译文语言">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h13l-3.5-3.5M20 15H7l3.5 3.5"/></svg>
-        互换
+        互换语言
       </button>
     </div>
     <div class="langrow">
@@ -161,7 +189,7 @@
 
   <div class="panels">
     <div class="pane">
-      <textarea id="input" placeholder="输入文字，自动翻译为目标语言（默认转英语）…" spellcheck="false" maxlength="3000"></textarea>
+      <textarea id="input" placeholder="在这里写下要翻译的话（默认自动转英语）…" spellcheck="false" maxlength="3000"></textarea>
       <div class="bar">
         <span class="meta" id="metaIn">0 字</span>
         <button class="tbtn" id="clear" type="button">清空</button>
@@ -172,7 +200,7 @@
     <div class="pane">
       <div class="out empty" id="out" aria-live="polite">译文会直接显示在这里</div>
       <div class="bar">
-        <span class="tagline" id="engine"><i></i>就绪</span>
+        <span class="tagline" id="engine"><i></i>默认转英语 · 就绪</span>
         <span class="meta" style="text-align:right" id="metaOut"></span>
         <button class="tbtn" id="copy" type="button">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2.5"/><path d="M5.5 15V6.5A2 2 0 0 1 7.5 4.5H15"/></svg>
@@ -187,7 +215,7 @@
   </div>
 
   <div class="action-row">
-    <button class="go" id="go" type="button">翻译</button>
+    <button class="go" id="go" type="button">✦ 翻译</button>
   </div>
   <div class="err" id="err" role="alert"></div>
   <div class="hist" id="hist"></div>
@@ -196,7 +224,6 @@
 
 <script>
 (function(){
-  /* 五种语言：中、英、日、俄、维 */
   var LANGS = [
     { id:'zh', label:'中文',     gtx:'zh-CN', prompt:'Simplified Chinese',  mm:'zh-CN', say:'zh-CN' },
     { id:'en', label:'英语',     gtx:'en',    prompt:'English',             mm:'en-US', say:'en-US' },
@@ -219,7 +246,6 @@
   var histEl = document.getElementById('hist');
   var speakBtn = document.getElementById('speak');
 
-  /* 默认始终：原文「自动识别」 -> 译文「英语」 */
   var src = 'auto';
   var tgt = 'en';
   var lastOut = '';
@@ -269,7 +295,6 @@
     return 'en';
   }
 
-  /* 本机离线服务（127.0.0.1:8099，静默探测） */
   var LOCAL = 'http://127.0.0.1:8099';
   var localOk = false;
 
@@ -313,7 +338,7 @@
     if (!Array.isArray(d) || !Array.isArray(d[0])) throw new Error('GTX_BAD');
     var outTxt = d[0].map(function(seg){ return (seg && seg[0]) || ''; }).join('').trim();
     if (!outTxt) throw new Error('GTX_EMPTY');
-    return { text: outTxt, engine: '已翻译 → ' + byId[to].label };
+    return { text: outTxt, engine: '已译为' + byId[to].label };
   }
 
   async function mmTranslate(from, to, text){
@@ -330,7 +355,7 @@
     if (!t || /MYMEMORY WARNING/i.test(t)) throw new Error('MM_EMPTY');
     return {
       text: t.replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, '&').trim(),
-      engine: '已翻译 → ' + byId[to].label
+      engine: '已译为' + byId[to].label
     };
   }
 
@@ -353,7 +378,7 @@
     var d = await r.json();
     var txt = (d.choices && d.choices[0] && d.choices[0].message && d.choices[0].message.content) || '';
     if (!txt.trim()) throw new Error('LLM_EMPTY');
-    return { text: txt.trim(), engine: '已翻译 → ' + byId[to].label };
+    return { text: txt.trim(), engine: '已译为' + byId[to].label };
   }
 
   function cacheKey(f, t, text){
@@ -367,7 +392,7 @@
     if (!text){
       out.textContent = '译文会直接显示在这里';
       out.classList.add('empty');
-      engineEl.innerHTML = '<i></i>就绪';
+      engineEl.innerHTML = '<i></i>默认转英语 · 就绪';
       metaOut.textContent = '';
       return;
     }
@@ -393,7 +418,7 @@
     try{
       var resObj = null;
       if (cached && cached.v === text && cached.r){
-        resObj = { text: cached.r, engine: '已翻译 → ' + byId[to].label };
+        resObj = { text: cached.r, engine: '已译为' + byId[to].label };
       } else {
         if (localOk){
           try{ resObj = await localTranslate(from, to, text); }
@@ -428,7 +453,7 @@
     } finally {
       if (mySeq === reqSeq){
         goBtn.disabled = false;
-        goBtn.textContent = '翻译';
+        goBtn.textContent = '✦ 翻译';
       }
     }
   }
@@ -457,7 +482,7 @@
         buildPills(); updateMeta();
         out.textContent = x.out; out.classList.remove('empty');
         lastOut = x.out; metaOut.textContent = '';
-        engineEl.innerHTML = '<i></i>' + (byId[x.to] ? byId[x.to].label : '');
+        engineEl.innerHTML = '<i></i>已译为' + (byId[x.to] ? byId[x.to].label : '');
       });
       histEl.appendChild(b);
     });
@@ -512,7 +537,7 @@
     input.value = ''; out.textContent = '译文会直接显示在这里'; out.classList.add('empty');
     lastOut = ''; metaOut.textContent = ''; errEl.textContent = '';
     src = 'auto'; tgt = 'en'; buildPills();
-    engineEl.innerHTML = '<i></i>就绪'; updateMeta(); input.focus();
+    engineEl.innerHTML = '<i></i>默认转英语 · 就绪'; updateMeta(); input.focus();
   });
 
   document.getElementById('paste').addEventListener('click', async function(){

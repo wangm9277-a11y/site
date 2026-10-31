@@ -19,7 +19,7 @@
     --text:#f2f4f8;
     --muted:#8b93a3;
     --line:rgba(255,255,255,.10);
-    --glass:rgba(12,14,20,.64);
+    --glass:rgba(11,15,26,.86);
     --ease:cubic-bezier(.22,.61,.36,1);
   }
   *{box-sizing:border-box}
@@ -30,8 +30,8 @@
   a{color:inherit; text-decoration:none}
   img{display:block; max-width:100%}
 
-  /* ---------- 背景小王子治愈星空（纯 GPU 合成层，零全屏重绘、零闪白） ---------- */
-  #theme{position:fixed; inset:0; z-index:-3; background:#0b0d16; transition:background .55s ease;
+  /* ---------- 背景小王子治愈星空（纯 GPU 合成层，全局 120 帧零重绘） ---------- */
+  #theme{position:fixed; inset:0; z-index:-3; background:#0b0d16; transition:background .5s ease;
     transform:translate3d(0,0,0); backface-visibility:hidden}
   #sky{position:fixed; inset:0; z-index:-2; background:#070912 url(assets/sky-b612.webp) center/cover no-repeat;
     will-change:transform, opacity; transform:translate3d(0,0,0) scale(1.04); backface-visibility:hidden; contain:paint}
@@ -39,30 +39,30 @@
     background:linear-gradient(90deg,rgba(5,8,18,.58) 0%,rgba(5,8,18,.18) 45%,rgba(5,8,18,.06) 72%,rgba(5,8,18,.28) 100%),
                linear-gradient(180deg,rgba(5,7,14,.24) 0%,rgba(5,7,14,.04) 40%,rgba(5,7,14,.76) 100%),
                var(--tint,transparent);
-    transition:background .6s ease; pointer-events:none}
+    transition:background .55s ease; pointer-events:none}
 
-  /* ---------- 顶部胶囊导航 ---------- */
+  /* ---------- 顶部胶囊导航（去除耗时 backdrop-filter，保证 120Hz 零掉帧） ---------- */
   .rail{position:fixed; z-index:40; top:18px; left:50%; transform:translate3d(-50%,0,0);
     width:min(1240px,94vw); display:flex; align-items:center; gap:18px; padding:8px 12px 8px 9px;
-    border-radius:999px; border:1px solid rgba(255,255,255,.13); background:rgba(10,13,20,.68);
-    backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
-    box-shadow:0 12px 36px rgba(0,0,0,.38); transition:transform .45s var(--ease), opacity .45s var(--ease);
-    backface-visibility:hidden}
+    border-radius:999px; border:1px solid rgba(255,255,255,.14);
+    background:linear-gradient(180deg,rgba(13,18,30,.90),rgba(9,12,22,.92));
+    box-shadow:0 12px 32px rgba(0,0,0,.42); transition:transform .42s var(--ease), opacity .42s var(--ease);
+    will-change:transform, opacity; backface-visibility:hidden}
   .rail.hide{transform:translate3d(-50%,-140%,0); opacity:0}
   .brand{display:inline-flex; align-items:center; gap:9px; padding:7px 15px 7px 7px; border-radius:999px;
     background:var(--lime); color:#0a0d05; font-weight:800; font-size:13.5px; letter-spacing:.01em; white-space:nowrap;
-    box-shadow:0 0 24px -4px var(--lime); transition:background .4s, box-shadow .4s}
-  .brand i{width:25px; height:25px; border-radius:50%; background:#0a0d05; display:grid; place-items:center; color:var(--lime); font-style:normal; flex:0 0 25px; transition:color .4s}
+    transition:background .35s}
+  .brand i{width:25px; height:25px; border-radius:50%; background:#0a0d05; display:grid; place-items:center; color:var(--lime); font-style:normal; flex:0 0 25px; transition:color .35s}
   .brand i svg{width:15px; height:15px; display:block; overflow:visible}
 
-  /* ---------- 偶发流星特效（偶尔 1~2 颗划过夜空，纯 GPU transform） ---------- */
+  /* ---------- 偶发流星特效（纯 GPU transform 合成） ---------- */
   #meteors{position:fixed; inset:0; z-index:-1; pointer-events:none; overflow:hidden; contain:strict}
   .meteor{position:absolute; width:clamp(90px,11vw,150px); height:1.8px; border-radius:999px;
     background:linear-gradient(90deg, rgba(255,253,232,1) 0%, rgba(255,230,142,.75) 26%, rgba(168,202,255,.22) 68%, transparent 100%);
     opacity:0; transform-origin:left center; will-change:transform, opacity; backface-visibility:hidden;
     animation:meteorFly 1.15s cubic-bezier(.16,.68,.32,1) forwards}
   .meteor::before{content:""; position:absolute; left:-1px; top:50%; width:4px; height:4px; border-radius:50%;
-    transform:translateY(-50%); background:#fffdf0; box-shadow:0 0 8px 1px #ffe88a}
+    transform:translateY(-50%); background:#fffdf0}
   @keyframes meteorFly{
     0%{opacity:0; transform:rotate(-26deg) translate3d(0,0,0) scaleX(.35)}
     18%{opacity:.96; transform:rotate(-26deg) translate3d(-28px,0,0) scaleX(1)}
@@ -71,10 +71,10 @@
   }
 
   .rail-links{display:flex; gap:6px; margin-inline:auto}
-  .rail-links a{padding:8px 14px; border-radius:999px; font-size:13.5px; color:rgba(255,255,255,.76); transition:.25s}
+  .rail-links a{padding:8px 14px; border-radius:999px; font-size:13.5px; color:rgba(255,255,255,.78); transition:color .2s, background .2s}
   .rail-links a:hover{color:#fff; background:rgba(255,255,255,.09)}
   .contact{padding:7px 16px; border-radius:999px; border:1px solid rgba(255,255,255,.22);
-    font-size:13px; color:#fff; transition:.25s; white-space:nowrap}
+    font-size:13px; color:#fff; transition:background .2s, color .2s, border-color .2s; white-space:nowrap}
   .contact:hover{background:var(--lime); border-color:var(--lime); color:#0a0d05}
   .rail .clock{font:600 11px/1 ui-monospace,monospace; letter-spacing:.12em; color:rgba(255,255,255,.52); white-space:nowrap}
 
@@ -82,21 +82,18 @@
   .hero{position:relative; min-height:100svh; padding:104px 5vw 212px; display:flex; align-items:center; justify-content:space-between; gap:20px}
   .hero-copy{position:relative; z-index:3; max-width:min(690px,55vw)}
   .kick{display:inline-flex; align-items:center; gap:9px; font:600 10.5px/1 ui-monospace,monospace;
-    letter-spacing:.32em; color:var(--lime); text-transform:uppercase; transition:color .4s}
-  .kick::before{content:""; width:5px; height:5px; border-radius:50%; background:var(--lime); box-shadow:0 0 12px var(--lime); transition:background .4s, box-shadow .4s}
+    letter-spacing:.32em; color:var(--lime); text-transform:uppercase; transition:color .35s}
+  .kick::before{content:""; width:5px; height:5px; border-radius:50%; background:var(--lime); transition:background .35s}
   .hero h1{position:relative; margin:18px 0 0; font-weight:900; letter-spacing:-.022em; line-height:.95;
     font-size:clamp(42px,6.2vw,96px)}
-  .hero h1 .l1{position:relative; display:inline-block; color:var(--lime);
-    text-shadow:0 0 46px rgba(200,248,48,.22); transition:color .4s}
+  .hero h1 .l1{position:relative; display:inline-block; color:var(--lime); transition:color .35s}
   .hero h1 .sp-stars{position:absolute; right:-54px; top:-10px; width:48px; height:42px; overflow:visible;
-    animation:starPulse 3.6s ease-in-out infinite alternate}
+    will-change:transform, opacity; animation:starPulse 3.6s ease-in-out infinite alternate}
   @keyframes starPulse{from{transform:scale(.92) rotate(-4deg); opacity:.82}to{transform:scale(1.08) rotate(4deg); opacity:1}}
-  .hero h1 .l2{position:relative; display:inline-block; color:#fff; text-shadow:0 8px 30px rgba(0,0,0,.5); margin-top:2px}
+  .hero h1 .l2{position:relative; display:inline-block; color:#fff; margin-top:2px}
   .hero h1 .sig{position:absolute; right:2px; bottom:-14px; font:italic 700 clamp(20px,2.5vw,38px)/1 "Brush Script MT","Segoe Script","Snell Roundhand","Apple Chancery",Georgia,serif;
-    color:var(--lime); letter-spacing:.02em; transform:rotate(-6deg); pointer-events:none;
-    text-shadow:0 2px 14px rgba(0,0,0,.85); opacity:.95; transition:color .4s}
-  .lede{margin:24px 0 0; color:rgba(240,244,252,.84); font-size:clamp(14.5px,1.15vw,17.5px); max-width:34em;
-    text-shadow:0 2px 14px rgba(0,0,0,.65)}
+    color:var(--lime); letter-spacing:.02em; transform:rotate(-6deg); pointer-events:none; opacity:.95; transition:color .35s}
+  .lede{margin:24px 0 0; color:rgba(240,244,252,.86); font-size:clamp(14.5px,1.15vw,17.5px); max-width:34em}
 
   /* ---------- 右侧：小王子 B612 星球场景 + 随卡片轮转切换的《小王子》经典名言 ---------- */
   .scene{position:relative; flex:1 1 460px; max-width:600px; height:clamp(340px,45vh,464px); z-index:2;
@@ -108,54 +105,49 @@
   .b612-slide{
     position:absolute; inset:0; width:94%; height:100%; margin:0 auto; object-fit:contain; z-index:2;
     opacity:0; transform:translate3d(0,6px,0) scale(.965);
-    transition:opacity .58s var(--ease), transform .64s var(--ease);
+    transition:opacity .52s var(--ease), transform .58s var(--ease);
     will-change:opacity, transform; backface-visibility:hidden; -webkit-backface-visibility:hidden;
     pointer-events:none;
   }
   .b612-slide.on{
     opacity:1; transform:translate3d(0,0,0) scale(1);
   }
-  /* 星球正下方的《小王子》名言栏（随卡片切换自动更换，不遮挡小王子） */
   .b612-quote{
     position:absolute; left:50%; bottom:-4px; transform:translate3d(-50%,0,0); z-index:4;
-    width:max-content; max-width:min(520px,90vw); padding:5px 14px; border-radius:999px;
-    background:rgba(7,10,18,.52); border:1px solid rgba(255,232,158,.18);
+    width:max-content; max-width:min(520px,90vw); padding:5px 15px; border-radius:999px;
+    background:rgba(8,12,24,.78); border:1px solid rgba(255,228,148,.22);
     color:#ffefb8; font:500 12.5px/1.45 inherit; letter-spacing:.025em; text-align:center;
-    text-shadow:0 2px 10px rgba(0,0,0,.9);
-    transition:opacity .32s ease, transform .32s ease; backface-visibility:hidden;
+    transition:opacity .28s ease, transform .28s ease; will-change:opacity, transform; backface-visibility:hidden;
   }
   .b612-quote.fade{opacity:0; transform:translate3d(-50%,4px,0)}
   @keyframes islandBob{0%,100%{transform:translate3d(-50%,0,0)}50%{transform:translate3d(-50%,-7px,0)}}
 
-  /* ---------- 首屏底部：120帧丝滑连续轮转工具卡带（桌面端与手机三卡同屏） ---------- */
+  /* ---------- 首屏底部：120帧物理阻尼连续轮转工具卡带（悬停/触摸平滑减速，不死停） ---------- */
   .deck-wrap{position:absolute; left:0; right:0; bottom:0; z-index:4; padding:0 0 20px}
   .deck{position:relative; overflow:hidden; padding:16px 0 14px; cursor:grab; user-select:none; -webkit-user-select:none;
-    touch-action:pan-y; contain:layout paint;
-    -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 4%,#000 96%,transparent 100%);
-    mask-image:linear-gradient(90deg,transparent 0%,#000 4%,#000 96%,transparent 100%)}
+    touch-action:pan-y; contain:layout paint}
   .deck.dragging{cursor:grabbing}
   .deck-track{display:flex; gap:16px; width:max-content; will-change:transform; backface-visibility:hidden;
     -webkit-backface-visibility:hidden; transform:translate3d(0,0,0); padding-left:5vw}
   .card{position:relative; flex:0 0 auto; width:clamp(218px,21.5vw,284px); border-radius:16px;
     overflow:hidden; border:1px solid rgba(255,255,255,.15); background:#0b0e16; cursor:pointer;
-    opacity:.72; transform:translate3d(0,2px,0) scale(.97);
-    box-shadow:0 18px 36px -18px rgba(0,0,0,.82);
-    transition:opacity .42s var(--ease), border-color .38s, box-shadow .42s, transform .45s var(--ease);
-    backface-visibility:hidden; -webkit-backface-visibility:hidden; contain:layout paint}
+    opacity:.74; transform:translate3d(0,2px,0) scale(.97);
+    transition:opacity .38s var(--ease), border-color .35s, transform .42s var(--ease);
+    will-change:transform, opacity; backface-visibility:hidden; -webkit-backface-visibility:hidden; contain:layout paint}
   .card img{display:block; width:100%; aspect-ratio:16/10; object-fit:cover; object-position:center; pointer-events:none;
     transform:translate3d(0,0,0); backface-visibility:hidden}
   .card::after{content:""; position:absolute; inset:0;
     background:linear-gradient(180deg,rgba(4,6,12,.04) 0%,rgba(4,6,12,.16) 48%,rgba(4,6,12,.86) 100%); pointer-events:none}
   .card .cap{position:absolute; left:14px; bottom:11px; z-index:2; font:800 14.5px/1.1 inherit; letter-spacing:.02em; color:#fff;
-    text-shadow:0 2px 10px rgba(0,0,0,.95); display:flex; align-items:center; gap:6px}
-  .card .cap::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--c-ac,#fff); box-shadow:0 0 8px var(--c-ac,#fff)}
+    display:flex; align-items:center; gap:6px}
+  .card .cap::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--c-ac,#fff)}
   .card .c-tag{position:absolute; right:9px; top:8px; z-index:2; font:600 9.5px/1 ui-monospace,monospace; font-style:normal;
-    letter-spacing:.04em; padding:4px 8px; border-radius:999px; background:rgba(8,10,16,.74); border:1px solid rgba(255,255,255,.16);
-    color:rgba(255,255,255,.88); transition:border-color .35s, color .35s}
-  .card:hover{opacity:.95}
+    letter-spacing:.04em; padding:4px 8px; border-radius:999px; background:rgba(8,10,18,.82); border:1px solid rgba(255,255,255,.16);
+    color:rgba(255,255,255,.88); transition:border-color .3s, color .3s}
+  .card:hover{opacity:.96}
   .card.on{opacity:1; transform:translate3d(0,-8px,0) scale(1.03);
-    border-color:var(--lime); box-shadow:0 24px 50px -20px rgba(0,0,0,.92), 0 0 36px -12px var(--lime)}
-  .card.on .c-tag{border-color:var(--lime); color:var(--lime); background:rgba(8,10,16,.88)}
+    border-color:var(--lime)}
+  .card.on .c-tag{border-color:var(--lime); color:var(--lime); background:rgba(8,10,18,.92)}
 
   /* ---------- 通用区块 ---------- */
   section{position:relative; z-index:2}
@@ -165,16 +157,16 @@
   .sec-head .en-title{display:inline-flex; align-items:baseline; gap:10px;
     font:800 clamp(28px,3.6vw,46px)/1.05 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
     letter-spacing:-.02em; color:#fff; text-transform:uppercase}
-  .sec-head .en-title .arr{color:var(--lime); font-weight:700; font-size:.82em; transition:color .4s}
+  .sec-head .en-title .arr{color:var(--lime); font-weight:700; font-size:.82em; transition:color .35s}
   .sec-head h2{margin:0; font-size:15px; font-weight:600; color:var(--muted); letter-spacing:.04em}
-  .js .rise{opacity:0; transform:translate3d(0,22px,0); transition:opacity .65s var(--ease), transform .65s var(--ease)}
+  .js .rise{opacity:0; transform:translate3d(0,20px,0); transition:opacity .55s var(--ease), transform .55s var(--ease); will-change:opacity, transform}
   .js .rise.in{opacity:1; transform:translate3d(0,0,0)}
 
   /* ---------- CORE STRENGTHS 核心功能 Bento 卡片 ---------- */
   .stack-grid{display:grid; grid-template-columns:repeat(6,1fr); gap:16px}
   .sk{position:relative; grid-column:span 2; padding:24px 24px 26px; border-radius:22px; border:1px solid rgba(255,255,255,.1);
-    background:rgba(11,14,21,.76); min-height:246px; transition:background .38s var(--ease), border-color .38s, color .35s, transform .38s var(--ease);
-    overflow:hidden; display:flex; flex-direction:column; backface-visibility:hidden}
+    background:rgba(11,15,24,.84); min-height:246px; transition:background .35s var(--ease), border-color .35s, color .3s, transform .35s var(--ease);
+    overflow:hidden; display:flex; flex-direction:column; backface-visibility:hidden; contain:layout paint}
   .sk.wide-sk{grid-column:span 3}
   .sk-top{display:flex; justify-content:space-between; align-items:center; margin-bottom:20px}
   .sk .k-num{font:700 10.5px/1 ui-monospace,monospace; padding:5px 11px; border-radius:999px;
@@ -184,16 +176,14 @@
   .sk h3 .dot{color:var(--lime); margin-left:2px; transition:color .3s}
   .sk p{margin:0; font-size:13px; color:var(--muted); max-width:22em; transition:color .3s}
   .sk-pills{display:flex; flex-direction:column; align-items:flex-start; gap:7px; margin-top:auto; padding-top:14px;
-    opacity:0; transform:translate3d(0,8px,0); transition:opacity .32s var(--ease), transform .32s var(--ease); position:relative; z-index:2}
-  .sk-pill{display:inline-block; padding:6px 14px; border-radius:999px; font-size:12px; font-weight:700;
-    box-shadow:0 8px 20px -6px rgba(0,0,0,.22); white-space:nowrap}
+    opacity:0; transform:translate3d(0,8px,0); transition:opacity .3s var(--ease), transform .3s var(--ease); position:relative; z-index:2}
+  .sk-pill{display:inline-block; padding:6px 14px; border-radius:999px; font-size:12px; font-weight:700; white-space:nowrap}
   .sk-pill.p1{background:#ffffff; color:#0a0d05; transform:rotate(-2.5deg)}
   .sk-pill.p2{background:#0b0e12; color:#ffffff; transform:rotate(-5deg) translateX(6px)}
   .sk-pill.p3{background:rgba(255,255,255,.28); color:#0a0d05; border:1px solid rgba(10,13,5,.12); transform:rotate(2deg) translateX(18px)}
   .sk-art{position:absolute; right:12px; bottom:10px; width:96px; height:96px; pointer-events:none;
-    transition:transform .45s var(--ease), opacity .35s}
-  .sk.lit, .sk:hover{background:var(--lime); border-color:var(--lime); color:#0a0d05;
-    transform:translate3d(0,-4px,0); box-shadow:0 24px 50px -22px rgba(0,0,0,.85)}
+    transition:transform .4s var(--ease), opacity .3s}
+  .sk.lit, .sk:hover{background:var(--lime); border-color:var(--lime); color:#0a0d05; transform:translate3d(0,-4px,0)}
   .sk.lit .k-num, .sk:hover .k-num{background:rgba(10,13,5,.1); border-color:rgba(10,13,5,.2); color:#0a0d05}
   .sk.lit .k, .sk:hover .k{color:rgba(10,13,5,.55)}
   .sk.lit h3 .dot, .sk:hover h3 .dot{color:#0a0d05}
@@ -204,12 +194,13 @@
   /* ---------- SELECTED WORKS 沉浸式 Bento 作品网格 ---------- */
   .works-grid{display:grid; grid-template-columns:1.15fr .85fr; gap:18px}
   .work{position:relative; border-radius:22px; overflow:hidden; border:1px solid rgba(255,255,255,.11);
-    background:#0a0d14; cursor:pointer; transition:transform .4s var(--ease), border-color .35s, box-shadow .4s; height:242px; display:block; backface-visibility:hidden}
+    background:#0a0d14; cursor:pointer; transition:transform .38s var(--ease), border-color .3s; height:242px; display:block;
+    backface-visibility:hidden; contain:layout paint}
   .work.wide{grid-column:1 / -1; height:258px}
   .work.wide img{object-position:center 46%}
   .work.tall{grid-row:span 2; height:502px}
   .work img{width:100%; height:100%; object-fit:cover; object-position:center;
-    opacity:.92; transition:transform .55s var(--ease), opacity .4s; backface-visibility:hidden}
+    opacity:.92; transition:transform .5s var(--ease), opacity .35s; backface-visibility:hidden}
   .work::after{content:""; position:absolute; inset:0;
     background:linear-gradient(180deg,rgba(5,7,10,.06) 0%,rgba(5,7,10,.22) 45%,rgba(5,7,10,.88) 100%); pointer-events:none}
   .work .wb{position:absolute; left:22px; right:22px; bottom:20px; z-index:2;
@@ -217,19 +208,19 @@
   .work h3{margin:0; font-size:clamp(19px,2vw,24px); font-weight:800; color:#fff; letter-spacing:-.01em;
     display:flex; align-items:center; gap:9px}
   .work h3 small{font:600 10px/1 ui-monospace,monospace; padding:4px 9px; border-radius:999px;
-    background:rgba(10,13,18,.72); border:1px solid rgba(255,255,255,.18); color:var(--lime)}
+    background:rgba(10,13,18,.78); border:1px solid rgba(255,255,255,.18); color:var(--lime)}
   .work p{margin:6px 0 0; color:rgba(235,240,248,.74); font-size:13px; letter-spacing:.02em}
-  .work .go{font:600 11.5px/1 ui-monospace,monospace; color:rgba(255,255,255,.78); letter-spacing:.08em;
-    padding:7px 12px; border-radius:999px; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.14);
-    transition:.3s; white-space:nowrap}
-  .work:hover, .work.m-lit{border-color:var(--lime); transform:translate3d(0,-4px,0); box-shadow:0 24px 48px -22px rgba(0,0,0,.9)}
-  .work:hover img, .work.m-lit img{transform:scale(1.035); opacity:1}
+  .work .go{font:600 11.5px/1 ui-monospace,monospace; color:rgba(255,255,255,.82); letter-spacing:.08em;
+    padding:7px 12px; border-radius:999px; background:rgba(12,16,26,.78); border:1px solid rgba(255,255,255,.16);
+    transition:.25s; white-space:nowrap}
+  .work:hover, .work.m-lit{border-color:var(--lime); transform:translate3d(0,-4px,0)}
+  .work:hover img, .work.m-lit img{transform:scale(1.03); opacity:1}
   .work:hover .go, .work.m-lit .go{background:var(--lime); border-color:var(--lime); color:#0a0d05}
 
   /* ---------- 工作台列表 ---------- */
   .lab-list{border-top:1px solid var(--line)}
   .lab-row{display:grid; grid-template-columns:52px 1fr auto; gap:18px; align-items:center;
-    padding:22px 6px; border-bottom:1px solid var(--line); transition:.25s; cursor:pointer}
+    padding:22px 6px; border-bottom:1px solid var(--line); transition:background .2s, padding-left .2s; cursor:pointer}
   .lab-row:hover{background:rgba(255,255,255,.035); padding-left:14px}
   .lab-row .no{font:600 11px/1 ui-monospace,monospace; color:rgba(255,255,255,.32)}
   .lab-row h3{margin:0; font-size:17px; font-weight:700}
@@ -246,7 +237,7 @@
   .outro h2 .arr{color:#fff; font-weight:400; margin-left:6px}
   .outro .cn-sub{margin:20px 0 26px; max-width:30em; color:rgba(255,255,255,.62); font-size:15px}
   .contact-card{border-radius:24px; border:1px solid rgba(255,255,255,.12);
-    background:rgba(14,17,24,.78); padding:28px 28px 26px; box-shadow:0 30px 70px -28px rgba(0,0,0,.92)}
+    background:rgba(13,17,26,.86); padding:28px 28px 26px}
   .contact-card .cc-head{font:700 12px/1 ui-monospace,monospace; letter-spacing:.16em; color:var(--lime); margin-bottom:18px}
   .contact-card .cc-list{display:grid; gap:11px; font-size:13.5px; color:rgba(255,255,255,.82); margin-bottom:20px}
   .contact-card .cc-list span{color:var(--muted); margin-right:6px}
@@ -254,7 +245,7 @@
   .contact-card .cc-foot{display:flex; align-items:center; justify-content:space-between; gap:16px;
     padding-top:18px; border-top:1px solid rgba(255,255,255,.08)}
   .phone{width:96px; aspect-ratio:9/16; border-radius:14px; border:1px solid rgba(255,255,255,.2);
-    background:#0a0c10; padding:4px; box-shadow:0 14px 30px -12px rgba(0,0,0,.9)}
+    background:#0a0c10; padding:4px}
   .phone .scr{width:100%; height:100%; border-radius:10px; overflow:hidden}
   .phone img{width:100%; height:100%; object-fit:cover; object-position:top center}
 
@@ -263,38 +254,63 @@
   footer a:hover{color:var(--lime)}
 
   /* 灯箱 */
-  .lb{position:fixed; inset:0; z-index:80; display:none; place-items:center; padding:4vh 4vw;
-    background:rgba(3,4,6,.86)}
+  .lb{position:fixed; inset:0; z-index:80; display:none; place-items:center; padding:4vh 4vw; background:rgba(3,4,8,.9)}
   .lb.on{display:grid}
   .lb .frame{position:relative; width:min(1100px,92vw); max-height:86vh; border-radius:18px; overflow:hidden;
-    border:1px solid rgba(255,255,255,.16); background:#0a0c10; box-shadow:0 40px 120px -30px #000}
+    border:1px solid rgba(255,255,255,.16); background:#0a0c10}
   .lb img{width:100%; max-height:86vh; object-fit:contain; display:block}
-  .lb .cap{position:absolute; left:18px; bottom:14px; font:700 15px/1.2 sans-serif; color:#fff;
-    text-shadow:0 2px 14px rgba(0,0,0,.9)}
+  .lb .cap{position:absolute; left:18px; bottom:14px; font:700 15px/1.2 sans-serif; color:#fff}
   .lb .cap small{display:block; font:600 9.5px/1 ui-monospace,monospace; letter-spacing:.24em; color:var(--lime); margin-bottom:6px}
   .lb .x{position:absolute; right:14px; top:14px; width:34px; height:34px; border-radius:50%;
-    border:1px solid rgba(255,255,255,.25); background:rgba(0,0,0,.4); color:#fff; font-size:16px;
+    border:1px solid rgba(255,255,255,.25); background:rgba(0,0,0,.5); color:#fff; font-size:16px;
     display:grid; place-items:center; cursor:pointer}
-  .lb .x:hover{background:var(--lime); color:#0a0d05; border-color:var(--lime)}
 
-  /* 开场 */
-  #intro{position:fixed; inset:0; z-index:90; display:grid; place-items:center; overflow:hidden; background:#070912}
-  #intro::before{content:""; position:absolute; width:min(80vmin,660px); aspect-ratio:1; border-radius:50%;
-    background:radial-gradient(circle,rgba(154,204,36,.10) 0%,rgba(70,96,12,.045) 44%,transparent 70%)}
-  #intro .center{position:relative; text-align:center}
-  #intro .label{font:600 10px/1 ui-monospace,monospace; letter-spacing:.44em;
-    color:rgba(255,255,255,.5); text-indent:.44em; margin-bottom:14px}
-  #intro .num{font:900 clamp(68px,13.5vw,158px)/.9 "Arial Black","Segoe UI Black",Impact,sans-serif;
-    color:#c8f830; letter-spacing:-.045em; font-variant-numeric:tabular-nums;
-    text-shadow:0 0 26px rgba(200,248,48,.18)}
-  #intro .num i{font-style:normal; font-size:.46em; vertical-align:.46em; letter-spacing:0; margin-left:.02em}
-  #intro .spark{position:absolute; left:calc(50% + 96px); top:calc(50% + 30px); width:5px; height:5px;
-    border-radius:50%; background:#fff; box-shadow:0 0 9px rgba(255,255,255,.95); animation:sparkDrift 2.6s ease-in-out infinite}
-  #intro.cut{opacity:0; transition:opacity .12s linear}
-  @keyframes sparkDrift{0%,100%{transform:translate(0,0); opacity:.3}50%{transform:translate(7px,-11px); opacity:.95}}
+  /* ---------- 全新重做：小王子 B612 治愈星空绘本风开屏（手机端视觉中心上移 + 同步预加载） ---------- */
+  #intro{
+    position:fixed; inset:0; z-index:90; display:grid; place-items:center; overflow:hidden;
+    background:radial-gradient(ellipse at 50% 38%, #182342 0%, #0b1124 52%, #060913 100%);
+    transition:opacity .42s cubic-bezier(.22,.61,.36,1), transform .48s cubic-bezier(.22,.61,.36,1);
+    will-change:opacity, transform; backface-visibility:hidden;
+  }
+  #intro .center{
+    position:relative; text-align:center; width:min(420px,88vw);
+    transform:translate3d(0,-5.5vh,0);
+    display:flex; flex-direction:column; align-items:center;
+  }
+  #intro .b612-emblem{
+    width:136px; height:116px; margin-bottom:10px; overflow:visible;
+    animation:introFloat 3.6s ease-in-out infinite alternate;
+  }
+  @keyframes introFloat{from{transform:translate3d(0,3px,0)}to{transform:translate3d(0,-5px,0)}}
+  #intro .label{
+    display:inline-flex; align-items:center; gap:8px;
+    font:600 11px/1 ui-monospace,monospace; letter-spacing:.28em;
+    color:#ffe294; margin-bottom:10px; text-transform:uppercase;
+  }
+  #intro .num{
+    font:900 clamp(54px,11vw,96px)/1 -apple-system,BlinkMacSystemFont,"Segoe UI",Georgia,serif;
+    color:#fff6d6; letter-spacing:-.03em; font-variant-numeric:tabular-nums;
+    text-shadow:0 0 32px rgba(255,220,128,.32);
+  }
+  #intro .num i{font-style:normal; font-size:.42em; color:#ffd875; vertical-align:.38em; margin-left:3px}
+  #intro .bar-track{
+    width:min(240px,68vw); height:4px; border-radius:999px; margin:16px 0 14px;
+    background:rgba(255,255,255,.10); overflow:hidden; position:relative;
+  }
+  #intro .bar-fill{
+    height:100%; width:0%; border-radius:999px;
+    background:linear-gradient(90deg,#7fe3ff 0%,#ffe082 65%,#ff9ebb 100%);
+    transition:width .08s linear;
+  }
+  #intro .whisper{
+    font-size:12.5px; color:rgba(255,244,214,.74); letter-spacing:.03em; line-height:1.5; max-width:26em;
+  }
+  #intro.cut{opacity:0; transform:scale(1.03); pointer-events:none}
 
-  /* ---------- 响应式与手机端至少三张卡同屏布局 ---------- */
+  /* ---------- 响应式与手机端三卡同屏布局 ---------- */
   @media (max-width:900px){
+    #intro .center{transform:translate3d(0,-9vh,0)}
+    #intro .b612-emblem{width:122px; height:104px}
     .works-grid{grid-template-columns:1fr}
     .work, .work.wide, .work.tall{grid-row:auto; height:220px}
     .stack-grid{grid-template-columns:repeat(2,1fr)}
@@ -314,7 +330,6 @@
     .deck-wrap{position:relative; padding:0 0 4px; margin:0 -5vw}
     .deck{padding:10px 0 10px}
     .deck-track{gap:10px; padding-left:3.5vw}
-    /* 手机端卡片宽度设为 28.2vw，确保单屏同时清晰看到至少 3 张卡片 */
     .card{width:clamp(102px,28.2vw,146px); border-radius:12px}
     .card.on{transform:translate3d(0,-5px,0) scale(1.03)}
     .card .cap{left:8px; bottom:6px; font-size:11.5px; gap:4px}
@@ -330,18 +345,43 @@
   @media (prefers-reduced-motion:reduce){
     html{scroll-behavior:auto}
     .rise{opacity:1; transform:none; transition:none}
-    .island,.hero h1 .sp-stars{animation:none}
+    .island,.hero h1 .sp-stars,#intro .b612-emblem{animation:none}
   }
 </style>
 </head>
 <body>
 <script>document.documentElement.classList.add('js');</script>
 
+<!-- 小王子 B612 治愈星空绘本开屏（视觉位置居中偏高 + 同步预加载图片资源） -->
 <div id="intro" aria-hidden="true">
   <div class="center">
-    <div class="label">LOADING SPACE STATION</div>
+    <svg class="b612-emblem" viewBox="0 0 180 150" fill="none">
+      <defs>
+        <radialGradient id="iGlow" cx="50%" cy="54%" r="48%">
+          <stop offset="0%" stop-color="#ffe599" stop-opacity=".35"/>
+          <stop offset="65%" stop-color="#7fe3ff" stop-opacity=".1"/>
+          <stop offset="100%" stop-color="#070912" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <circle cx="90" cy="82" r="68" fill="url(#iGlow)"/>
+      <ellipse cx="90" cy="96" rx="68" ry="18" transform="rotate(-14 90 96)" stroke="#ffe294" stroke-width="1.3" stroke-dasharray="5 6" opacity=".65"/>
+      <path d="M38 112 C48 84 132 84 142 112 C126 126 54 126 38 112 Z" fill="#233154" stroke="#ffe49e" stroke-width="1.6"/>
+      <circle cx="64" cy="105" r="5" fill="#18233e" stroke="#ffe49e" stroke-width="1" opacity=".65"/>
+      <circle cx="114" cy="107" r="6.5" fill="#18233e" stroke="#ffe49e" stroke-width="1" opacity=".65"/>
+      <path d="M78 92 V68 C78 61 102 61 102 68 V92" fill="rgba(165,220,255,.12)" stroke="#bfe8ff" stroke-width="1.4"/>
+      <path d="M90 92 V74" stroke="#6dd89f" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M90 83 C84 80 83 84 90 85" fill="#6dd89f"/>
+      <circle cx="90" cy="71" r="5.5" fill="#ff6b8b"/>
+      <circle cx="88.5" cy="69.5" r="2.2" fill="#ffa8bc"/>
+      <path d="M36 44 C37.5 52 39.5 54 47.5 55.5 C39.5 57 37.5 59 36 67 C34.5 59 32.5 57 24.5 55.5 C32.5 54 34.5 52 36 44 Z" fill="#ffe484"/>
+      <path d="M144 34 C145 40 146.5 41.5 152.5 42.5 C146.5 43.5 145 45 144 51 C143 45 141.5 43.5 135.5 42.5 C141.5 41.5 143 40 144 34 Z" fill="#7fe3ff"/>
+      <circle cx="126" cy="56" r="2" fill="#ffe484"/>
+      <circle cx="56" cy="36" r="1.8" fill="#fff"/>
+    </svg>
+    <div class="label">✦ ASTEROID B612 · 正在穿越星海 ✦</div>
     <div class="num"><span id="pct">0</span><i>%</i></div>
-    <span class="spark"></span>
+    <div class="bar-track"><div class="bar-fill" id="introBar"></div></div>
+    <div class="whisper">“星星发亮，是为了让每一个人有一天都能找到属于自己的星。”</div>
   </div>
 </div>
 
@@ -374,7 +414,6 @@
       <p class="lede">一个私人的小站。工具、作品、还有点没想好放哪儿的念头，都在这儿。</p>
     </div>
 
-    <!-- 右侧：小王子 B612 四幕场景 + 随底部卡片切换的《小王子》经典名言 -->
     <div class="scene" id="b612Scene" aria-hidden="true">
       <div class="island">
         <div class="b612-stage" id="b612Stage">
@@ -406,7 +445,6 @@
             </g>
           </svg>
 
-          <!-- 4 幅小王子同画风插画层叠交叉淡入淡出 -->
           <img class="b612-slide on" src="assets/b612-s1.webp" decoding="async" alt="B612星球：小王子、玻璃罩玫瑰与小狐狸">
           <img class="b612-slide" src="assets/b612-s2.webp" decoding="async" alt="B612星球：小王子与小狐狸背影仰望星空">
           <img class="b612-slide" src="assets/b612-s3.webp" decoding="async" alt="B612星球：小王子俯身轻嗅红玫瑰">
@@ -416,7 +454,6 @@
       <div class="b612-quote" id="b612Quote">“真正重要的东西，用眼睛是看不见的，要用心去感受。”</div>
     </div>
 
-    <!-- 底部：120帧丝滑连续轮转工具卡带（学易经 → 翻译 → 计算 → 私人歌单） -->
     <div class="deck-wrap">
       <div class="deck" id="deck" aria-label="工具轮转长廊">
         <div class="deck-track" id="deckTrack">
@@ -429,7 +466,7 @@
             <img src="assets/card-tr.webp" decoding="async" alt="翻译"><span class="cap">翻译</span>
           </a>
           <a class="card" href="/calc.html" data-idx="2" data-bg="#161006" data-ac="#ffc46b" data-tint="rgba(255,190,110,.20)" style="--c-ac:#ffc46b">
-            <em class="c-tag">大写金额 · 折扣速算</em>
+            <em class="c-tag">双11满减 · 凑单算价</em>
             <img src="assets/card-calc.webp" decoding="async" alt="计算"><span class="cap">计算</span>
           </a>
           <a class="card" href="/ktv.html" data-idx="3" data-bg="#091512" data-ac="#7ef2b8" data-tint="rgba(110,238,180,.20)" style="--c-ac:#7ef2b8">
@@ -441,7 +478,6 @@
     </div>
   </section>
 
-  <!-- 核心功能（位于精选作品上方） -->
   <section class="sec" id="stack">
     <div class="wrap">
       <div class="sec-head rise">
@@ -456,7 +492,7 @@
           <div class="sk-pills">
             <span class="sk-pill p1">原生 HTML / CSS 零框架</span>
             <span class="sk-pill p2">B612 小王子四幕丝滑切换</span>
-            <span class="sk-pill p3">桌面与移动端自适应布局</span>
+            <span class="sk-pill p3">全站统一治愈星空绘本风</span>
           </div>
           <svg class="sk-art" viewBox="0 0 100 100" fill="none" aria-hidden="true">
             <defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c8f830"/><stop offset="1" stop-color="#7c5cff"/></linearGradient></defs>
@@ -466,12 +502,12 @@
         </div>
 
         <div class="sk wide-sk rise lit">
-          <div class="sk-top"><span class="k-num">02</span><span class="k">120HZ MOTION</span></div>
-          <h3>120帧连续轮转与交互反馈<span class="dot">.</span></h3>
-          <p>首尾无缝轮转长廊、全 GPU 合成层零闪白、拖拽跟随并在松手 1 秒后自动续转。</p>
+          <div class="sk-top"><span class="k-num">02</span><span class="k">120HZ PHYSICS</span></div>
+          <h3>全局120帧物理阻尼交互<span class="dot">.</span></h3>
+          <p>首尾无缝轮转长廊、触摸/悬停平滑减速跟随并带自然惯性过渡，零死停零掉帧。</p>
           <div class="sk-pills">
             <span class="sk-pill p1">120Hz 原生高刷零布局抖动</span>
-            <span class="sk-pill p2">手动拖拽实时跟随 · 松手 1s 续转</span>
+            <span class="sk-pill p2">触摸平滑减速 · 惯性丝滑续转</span>
             <span class="sk-pill p3">《小王子》16 条经典名言轮播</span>
           </div>
           <svg class="sk-art" viewBox="0 0 100 100" fill="none" aria-hidden="true">
@@ -497,13 +533,13 @@
         </div>
 
         <div class="sk rise">
-          <div class="sk-top"><span class="k-num">04</span><span class="k">DESKTOP</span></div>
-          <h3>桌面自动化控制<span class="dot">.</span></h3>
-          <p>PowerShell、Win32 与系统媒体会话底层接管。</p>
+          <div class="sk-top"><span class="k-num">04</span><span class="k">SHOPPING CALC</span></div>
+          <h3>网购满减与凑单精算<span class="dot">.</span></h3>
+          <p>双11跨店每满减、多券叠加、定金膨胀与凑单品按比例分摊到手价。</p>
           <div class="sk-pills">
-            <span class="sk-pill p1">27 项本机控制小工具</span>
-            <span class="sk-pill p2">音量亮度与切歌语音控</span>
-            <span class="sk-pill p3">CDP 无头浏览器自动截图</span>
+            <span class="sk-pill p1">每满300-50 / 200-30 一键套用</span>
+            <span class="sk-pill p2">主买与凑单品真实到手价分摊</span>
+            <span class="sk-pill p3">人民币大写与账本自动求和</span>
           </div>
           <svg class="sk-art" viewBox="0 0 100 100" fill="none" aria-hidden="true">
             <polygon points="50,18 82,36 82,70 50,88 18,70 18,36" fill="#7c5cff" opacity=".4"/>
@@ -529,7 +565,6 @@
     </div>
   </section>
 
-  <!-- 精选作品（学易经、翻译、计算、私人歌单） -->
   <section class="sec" id="works">
     <div class="wrap">
       <div class="sec-head rise">
@@ -551,7 +586,7 @@
         </a>
         <a class="work rise" href="/calc.html">
           <img src="assets/card-calc.webp" decoding="async" alt="计算">
-          <div class="wb"><div><h3>计算 <small>实用速算 · 大写金额</small></h3><p>算式实时预览 / 人民币大写转换 / 折扣与 AA 分账速算 / 历史账本求和</p></div><span class="go">打开 →</span></div>
+          <div class="wb"><div><h3>计算 <small>双11满减凑单 · 大写账本</small></h3><p>跨店每满减 / 折扣券与定金膨胀叠加 / 凑单分摊到手价 / 大写金额</p></div><span class="go">打开 →</span></div>
         </a>
       </div>
     </div>
@@ -618,19 +653,46 @@
 (function(){
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* ---------- 开场计数器 ---------- */
+  /* ---------- 小王子 B612 绘本风开屏倒计时（同步预加载并 GPU 解码核心图片资源） ---------- */
   var intro = document.getElementById('intro');
+  var PRELOAD_ASSETS = [
+    'assets/sky-b612.webp',
+    'assets/b612-s1.webp',
+    'assets/b612-s2.webp',
+    'assets/b612-s3.webp',
+    'assets/b612-s4.webp',
+    'assets/card-yi.webp',
+    'assets/card-tr.webp',
+    'assets/card-calc.webp',
+    'assets/card-ktv.webp'
+  ];
+
+  var loadedCount = 0;
+  var totalAssets = PRELOAD_ASSETS.length;
+  PRELOAD_ASSETS.forEach(function(src){
+    var im = new Image();
+    im.src = src;
+    var done = function(){ loadedCount++; };
+    if (im.decode){
+      im.decode().then(done, done);
+    } else {
+      im.onload = done;
+      im.onerror = done;
+    }
+  });
+
   if (intro){
     var pctEl = document.getElementById('pct');
+    var barEl = document.getElementById('introBar');
     var force = /[?&]intro\b/.test(location.search);
     var skip = reduce || /[?&]nointro\b/.test(location.search) || (sessionStorage.getItem('wmv-intro') === '1' && !force);
     if (skip){
       intro.remove();
     } else {
       sessionStorage.setItem('wmv-intro', '1');
-      var CURVE = [[0,0],[.18,22],[.36,55],[.54,80],[.72,88],[.88,96],[1,100]];
-      var DUR = 980, t0 = performance.now();
-      function value(t){
+      var DUR = 2150, t0 = performance.now();
+      var CURVE = [[0,0],[.20,18],[.42,46],[.65,74],[.84,91],[1,100]];
+      function curveVal(t){
         for (var i = 1; i < CURVE.length; i++){
           if (t <= CURVE[i][0]){
             var a = CURVE[i-1], b = CURVE[i], k = (t - a[0]) / (b[0] - a[0]);
@@ -640,21 +702,24 @@
         return 100;
       }
       (function frame(now){
-        var t = Math.min(1, (now - t0) / DUR);
-        pctEl.textContent = Math.round(value(t));
+        var elapsed = now - t0;
+        var t = Math.min(1, elapsed / DUR);
+        var timePct = curveVal(t);
+        var assetPct = (loadedCount / totalAssets) * 100;
+        var val = Math.round(timePct * 0.72 + Math.max(timePct, assetPct) * 0.28);
+        if (t >= 1) val = 100;
+        pctEl.textContent = val;
+        if (barEl) barEl.style.width = val + '%';
         if (t < 1) requestAnimationFrame(frame);
         else setTimeout(function(){
           intro.classList.add('cut');
-          setTimeout(function(){ intro.remove(); }, 120);
-        }, 160);
+          setTimeout(function(){ intro.remove(); }, 420);
+        }, 180);
       })(t0);
     }
   }
 
-  /* ---------- 外链开关 ---------- */
-  var EXT = {
-    qianqian: ''
-  };
+  var EXT = { qianqian: '' };
 
   /* ---------- 《小王子》16 条精选治愈名言（随卡片切换轮播） ---------- */
   var QUOTES = [
@@ -689,14 +754,10 @@
     quoteTimer = setTimeout(function(){
       quoteEl.textContent = nextTxt;
       quoteEl.classList.remove('fade');
-    }, 180);
+    }, 160);
   }
 
-  /* ---------- 小王子 B612 四幕切换（预解码防闪白） ---------- */
   var slides = [].slice.call(document.querySelectorAll('#b612Stage .b612-slide'));
-  slides.forEach(function(img){
-    if (img.decode) img.decode().catch(function(){});
-  });
   var curScene = -1;
   function setPrinceScene(idx){
     if (!slides.length) return;
@@ -708,18 +769,18 @@
     }
   }
 
-  /* ---------- 120Hz 原生高刷零布局抖动连续轮转卡带 ---------- */
+  /* ---------- 全局 120Hz 物理阻尼连续轮转（触摸/滑动不死停，平滑减速+惯性过渡） ---------- */
   var theme = document.getElementById('theme');
   var sky = document.getElementById('sky');
   var deck = document.getElementById('deck');
   var track = document.getElementById('deckTrack');
   var root = document.documentElement;
+  var sk = Array.prototype.slice.call(document.querySelectorAll('#stackGrid .sk'));
 
   if (deck && track){
     var origCards = [].slice.call(track.querySelectorAll('.card'));
     var N = origCards.length;
 
-    /* 复制两组追加到轨道末尾（共 3 组 12 张），实现完美无缝循环 */
     for (var copy = 0; copy < 2; copy++){
       origCards.forEach(function(c){
         track.appendChild(c.cloneNode(true));
@@ -735,7 +796,6 @@
       el.setAttribute('rel', 'noopener');
     });
 
-    /* 缓存所有几何坐标，避免在 120Hz 渲染循环中读取 offsetLeft 造成强制同步重排 */
     var setWidth = 0;
     var deckWidth = 0;
     var focalOffset = 0;
@@ -743,17 +803,20 @@
     var pos = 0;
     var activeCardPosIdx = -1;
     var activeRealIdx = -1;
+
+    var baseSpeed = 70;
+    var vel = 70;
     var isDragging = false;
+    var isHovering = false;
     var dragLastX = 0;
+    var dragLastT = 0;
     var dragMoved = 0;
-    var resumeAt = 0;
-    var speedPxPerSec = 68;
 
     function measureGeometry(){
       deckWidth = deck.clientWidth || innerWidth;
       var isMob = innerWidth <= 900;
       focalOffset = deckWidth * (isMob ? 0.36 : 0.28);
-      speedPxPerSec = isMob ? 54 : 68;
+      baseSpeed = isMob ? 56 : 70;
       cardCenters = new Array(allCards.length);
       for (var i = 0; i < allCards.length; i++){
         var c = allCards[i];
@@ -762,7 +825,7 @@
       if (allCards.length >= N * 2){
         var w = allCards[N].offsetLeft - allCards[0].offsetLeft;
         if (w > 80){
-          if (setWidth === 0) pos = w;
+          if (setWidth === 0){ pos = w; vel = baseSpeed; }
           setWidth = w;
         }
       }
@@ -784,7 +847,6 @@
           bestI = i;
         }
       }
-      /* 仅当焦点卡片真正发生变化时才更新 DOM class、小王子场景、主题色与名言！ */
       if (bestI !== activeCardPosIdx){
         if (activeCardPosIdx >= 0 && allCards[activeCardPosIdx]){
           allCards[activeCardPosIdx].classList.remove('on');
@@ -807,35 +869,38 @@
 
     measureGeometry();
     syncActiveCard();
-    addEventListener('resize', function(){
-      measureGeometry();
-      syncActiveCard();
-    });
-    addEventListener('load', function(){
-      measureGeometry();
-      syncActiveCard();
-    });
+    addEventListener('resize', function(){ measureGeometry(); syncActiveCard(); });
+    addEventListener('load', function(){ measureGeometry(); syncActiveCard(); });
 
-    /* 手动拖拽与手指滑动：暂停自动轮转、1:1 跟随手动位移，松手 1.0 秒后继续轮转 */
+    deck.addEventListener('mouseenter', function(){ isHovering = true; });
+    deck.addEventListener('mouseleave', function(){ isHovering = false; if (isDragging) onEnd(); });
+
     function onStart(clientX){
       isDragging = true;
       dragLastX = clientX;
+      dragLastT = performance.now();
       dragMoved = 0;
+      vel = baseSpeed * 0.28;
       deck.classList.add('dragging');
     }
     function onMove(clientX){
       if (!isDragging) return;
+      var now = performance.now();
+      var dt = Math.max(0.004, (now - dragLastT) * 0.001);
       var dx = clientX - dragLastX;
       dragLastX = clientX;
+      dragLastT = now;
       dragMoved += Math.abs(dx);
       pos -= dx;
+      var instVel = (-dx / dt);
+      instVel = Math.max(-680, Math.min(680, instVel));
+      vel = vel * 0.55 + (instVel + baseSpeed * 0.25) * 0.45;
       syncActiveCard();
     }
     function onEnd(){
       if (!isDragging) return;
       isDragging = false;
       deck.classList.remove('dragging');
-      resumeAt = performance.now() + 1000;
     }
 
     deck.addEventListener('mousedown', function(e){
@@ -847,7 +912,6 @@
       if (isDragging) onMove(e.clientX);
     }, { passive: true });
     addEventListener('mouseup', onEnd);
-    addEventListener('mouseleave', onEnd);
 
     deck.addEventListener('touchstart', function(e){
       var t = e.touches && e.touches[0];
@@ -867,20 +931,43 @@
       }
     }, true);
 
-    /* 120Hz 原生高刷主循环（零强制同步布局，纯 GPU 位移） */
+    var stackVisible = false;
+    var skIdx = 1, skPaused = false, skLastSwitch = performance.now();
+    function litSk(k){
+      for (var i = 0; i < sk.length; i++) sk[i].classList.toggle('lit', i === k);
+      skIdx = k;
+    }
+    if (sk.length){
+      var skIo = new IntersectionObserver(function(es){
+        stackVisible = es[0] && es[0].isIntersecting;
+      }, { threshold: 0.05 });
+      skIo.observe(document.getElementById('stackGrid'));
+      sk.forEach(function(el, k){
+        el.addEventListener('mouseenter', function(){ skPaused = true; litSk(k); });
+        el.addEventListener('mouseleave', function(){ skPaused = false; skLastSwitch = performance.now(); });
+        el.addEventListener('touchstart', function(){ skPaused = true; litSk(k); }, { passive: true });
+      });
+    }
+
     var lastT = performance.now();
     var heroVisible = true;
     (function loop(now){
-      var dt = Math.min(0.05, Math.max(0, (now - lastT) * 0.001));
+      var dt = Math.min(0.05, Math.max(0.001, (now - lastT) * 0.001));
       lastT = now;
-      if (!reduce && !isDragging && now >= resumeAt && heroVisible){
-        pos += speedPxPerSec * dt;
+      if (!reduce && heroVisible){
+        var targetVel = isDragging ? (baseSpeed * 0.25) : (isHovering ? baseSpeed * 0.38 : baseSpeed);
+        var damp = isDragging ? 2.2 : 3.6;
+        vel += (targetVel - vel) * (1 - Math.exp(-damp * dt));
+        pos += vel * dt;
         syncActiveCard();
+      }
+      if (stackVisible && !skPaused && now - skLastSwitch > 2500){
+        skLastSwitch = now;
+        litSk((skIdx + 1) % sk.length);
       }
       requestAnimationFrame(loop);
     })(lastT);
 
-    /* 滚动节流合成 */
     var scrollTicking = false;
     var rail = document.getElementById('rail');
     function updateScroll(){
@@ -902,46 +989,17 @@
     updateScroll();
   }
 
-  /* ---------- 进场动画 ---------- */
   var io = new IntersectionObserver(function(es){
     es.forEach(function(e){ if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
   }, { rootMargin: '0px 0px -2% 0px', threshold: .04 });
-  document.querySelectorAll('.rise').forEach(function(el, i){ el.style.transitionDelay = (i % 4) * 60 + 'ms'; io.observe(el); });
+  document.querySelectorAll('.rise').forEach(function(el, i){ el.style.transitionDelay = (i % 4) * 55 + 'ms'; io.observe(el); });
 
-  /* ---------- 核心功能卡片 & 作品卡片交互 ---------- */
-  var sk = Array.prototype.slice.call(document.querySelectorAll('#stackGrid .sk'));
-  var works = Array.prototype.slice.call(document.querySelectorAll('#works .work'));
-  if (sk.length){
-    var idx = 1, paused = false, resumeTimer = null;
-    function litSk(k){
-      sk.forEach(function(x, i){ x.classList.toggle('lit', i === k); });
-      idx = k;
-    }
-    sk.forEach(function(el, k){
-      el.addEventListener('mouseenter', function(){ paused = true; litSk(k); });
-      el.addEventListener('mouseleave', function(){ paused = false; });
-      el.addEventListener('touchstart', function(){
-        paused = true;
-        litSk(k);
-        clearTimeout(resumeTimer);
-        resumeTimer = setTimeout(function(){ paused = false; }, 3200);
-      }, { passive: true });
-    });
-    setInterval(function(){
-      if (paused) return;
-      litSk(idx % sk.length);
-      idx++;
-    }, 2400);
-  }
-
-  /* ---------- 灯箱 ---------- */
   var lb = document.getElementById('lb');
   function closeLb(){ lb.classList.remove('on'); }
   document.getElementById('lbX').addEventListener('click', closeLb);
   lb.addEventListener('click', function(e){ if (e.target === lb) closeLb(); });
   addEventListener('keydown', function(e){ if (e.key === 'Escape') closeLb(); });
 
-  /* ---------- 时钟 ---------- */
   var clock = document.getElementById('clock');
   function tickClock(){
     if (!clock) return;
@@ -950,7 +1008,6 @@
   }
   tickClock(); setInterval(tickClock, 20000);
 
-  /* ---------- 夜空偶发流星（偶尔 1~2 颗划过天际） ---------- */
   var meteorBox = document.getElementById('meteors');
   if (meteorBox && !reduce){
     function spawnOneMeteor(xPct, yPct){
