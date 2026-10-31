@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="zh-CN" style="background:#070912">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#08090c">
+<meta name="theme-color" content="#070912">
 <meta name="description" content="WM的空间站 —— 一个私人的小站，放工具、作品和入口。">
 <title>WM的空间站 · wmv587</title>
 <meta property="og:title" content="WM的空间站 · wmv587">
@@ -15,62 +15,59 @@
   :root{
     --lime:#c8f830;
     --mint:#5ee0a8;
-    --ink:#05070a;
+    --ink:#070912;
     --text:#f2f4f8;
     --muted:#8b93a3;
     --line:rgba(255,255,255,.10);
-    --glass:rgba(12,14,18,.58);
+    --glass:rgba(12,14,20,.64);
     --ease:cubic-bezier(.22,.61,.36,1);
   }
   *{box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{margin:0; background:var(--ink); color:var(--text);
+  html{background:#070912; overscroll-behavior-y:none}
+  body{margin:0; background:transparent; color:var(--text);
     font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
-    -webkit-font-smoothing:antialiased; overflow-x:hidden}
+    -webkit-font-smoothing:antialiased; overflow-x:hidden; overscroll-behavior-y:none}
   a{color:inherit; text-decoration:none}
   img{display:block; max-width:100%}
 
-  /* ---------- 背景小王子治愈星空云海 ---------- */
-  #theme{position:fixed; inset:0; z-index:-3; background:#0b0d14; transition:background .7s ease}
-  #sky{position:fixed; inset:0; z-index:-2; background:url(assets/sky-b612.webp) center/cover no-repeat;
-    will-change:opacity, transform; transform:scale(1.04)}
-  #sky::before{content:""; position:absolute; inset:0; background-image:radial-gradient(0.8px 0.8px at 32.4% 8.7%, rgba(255,255,255,0.29), transparent 100%),radial-gradient(0.8px 0.8px at 53.6% 21.2%, rgba(255,255,255,0.70), transparent 100%),radial-gradient(1.2px 1.2px at 21.5% 5.0%, rgba(255,255,255,0.28), transparent 100%),radial-gradient(1.6px 1.6px at 9.1% 24.6%, rgba(255,255,255,0.31), transparent 100%),radial-gradient(0.8px 0.8px at 22.3% 36.4%, rgba(255,255,255,0.54), transparent 100%),radial-gradient(0.8px 0.8px at 39.7% 56.6%, rgba(255,255,255,0.53), transparent 100%),radial-gradient(1.6px 1.6px at 13.3% 24.3%, rgba(255,255,255,0.31), transparent 100%),radial-gradient(1.0px 1.0px at 30.8% 47.3%, rgba(255,255,255,0.30), transparent 100%),radial-gradient(0.8px 0.8px at 57.1% 10.9%, rgba(255,255,255,0.52), transparent 100%),radial-gradient(1.0px 1.0px at 6.3% 3.5%, rgba(255,255,255,0.50), transparent 100%),radial-gradient(1.2px 1.2px at 53.2% 45.1%, rgba(255,255,255,0.54), transparent 100%),radial-gradient(1.0px 1.0px at 45.3% 17.4%, rgba(255,255,255,0.60), transparent 100%),radial-gradient(1.6px 1.6px at 24.4% 33.3%, rgba(255,255,255,0.50), transparent 100%),radial-gradient(1.6px 1.6px at 34.3% 26.0%, rgba(255,255,255,0.74), transparent 100%),radial-gradient(1.0px 1.0px at 11.8% 24.3%, rgba(255,255,255,0.33), transparent 100%),radial-gradient(0.8px 0.8px at 48.9% 2.3%, rgba(255,255,255,0.63), transparent 100%),radial-gradient(1.0px 1.0px at 57.3% 50.8%, rgba(255,255,255,0.42), transparent 100%),radial-gradient(1.2px 1.2px at 35.0% 28.8%, rgba(255,255,255,0.28), transparent 100%),radial-gradient(0.8px 0.8px at 9.4% 15.7%, rgba(255,255,255,0.28), transparent 100%),radial-gradient(1.2px 1.2px at 70.1% 37.5%, rgba(255,255,255,0.39), transparent 100%),radial-gradient(0.8px 0.8px at 38.6% 38.8%, rgba(255,255,255,0.72), transparent 100%),radial-gradient(1.2px 1.2px at 35.5% 35.4%, rgba(255,255,255,0.28), transparent 100%),radial-gradient(1.0px 1.0px at 76.8% 7.5%, rgba(255,255,255,0.45), transparent 100%),radial-gradient(1.0px 1.0px at 91.7% 28.8%, rgba(255,255,255,0.47), transparent 100%),radial-gradient(1.2px 1.2px at 54.9% 51.2%, rgba(255,255,255,0.68), transparent 100%),radial-gradient(1.0px 1.0px at 27.8% 24.1%, rgba(255,255,255,0.59), transparent 100%),radial-gradient(0.8px 0.8px at 38.0% 13.4%, rgba(255,255,255,0.34), transparent 100%),radial-gradient(1.2px 1.2px at 23.2% 13.5%, rgba(255,255,255,0.67), transparent 100%),radial-gradient(1.0px 1.0px at 18.2% 16.4%, rgba(255,255,255,0.46), transparent 100%),radial-gradient(1.0px 1.0px at 36.9% 32.8%, rgba(255,255,255,0.60), transparent 100%),radial-gradient(0.8px 0.8px at 51.5% 35.8%, rgba(255,255,255,0.48), transparent 100%),radial-gradient(1.6px 1.6px at 87.1% 55.2%, rgba(255,255,255,0.45), transparent 100%),radial-gradient(1.2px 1.2px at 39.9% 6.0%, rgba(255,255,255,0.28), transparent 100%),radial-gradient(1.0px 1.0px at 6.7% 12.1%, rgba(255,255,255,0.30), transparent 100%),radial-gradient(1.6px 1.6px at 60.1% 5.9%, rgba(255,255,255,0.33), transparent 100%),radial-gradient(0.8px 0.8px at 10.1% 21.1%, rgba(255,255,255,0.29), transparent 100%),radial-gradient(1.0px 1.0px at 20.8% 21.8%, rgba(255,255,255,0.73), transparent 100%),radial-gradient(0.8px 0.8px at 60.2% 27.5%, rgba(255,255,255,0.67), transparent 100%),radial-gradient(1.2px 1.2px at 99.3% 27.0%, rgba(255,255,255,0.41), transparent 100%),radial-gradient(1.0px 1.0px at 14.4% 43.5%, rgba(255,255,255,0.49), transparent 100%),radial-gradient(1.0px 1.0px at 69.2% 29.9%, rgba(255,255,255,0.73), transparent 100%),radial-gradient(1.6px 1.6px at 52.8% 8.5%, rgba(255,255,255,0.71), transparent 100%),radial-gradient(0.8px 0.8px at 75.8% 17.3%, rgba(255,255,255,0.60), transparent 100%),radial-gradient(1.0px 1.0px at 26.1% 21.3%, rgba(255,255,255,0.43), transparent 100%),radial-gradient(1.6px 1.6px at 22.3% 31.4%, rgba(255,255,255,0.41), transparent 100%),radial-gradient(1.0px 1.0px at 22.3% 47.1%, rgba(255,255,255,0.65), transparent 100%),radial-gradient(1.0px 1.0px at 81.8% 42.9%, rgba(255,255,255,0.35), transparent 100%),radial-gradient(0.8px 0.8px at 49.3% 42.4%, rgba(255,255,255,0.65), transparent 100%),radial-gradient(1.6px 1.6px at 47.2% 11.2%, rgba(255,255,255,0.73), transparent 100%),radial-gradient(1.0px 1.0px at 44.7% 54.3%, rgba(255,255,255,0.73), transparent 100%),radial-gradient(1.0px 1.0px at 36.5% 12.8%, rgba(255,255,255,0.49), transparent 100%),radial-gradient(1.6px 1.6px at 33.8% 28.0%, rgba(255,255,255,0.67), transparent 100%),radial-gradient(0.8px 0.8px at 47.9% 37.9%, rgba(255,255,255,0.67), transparent 100%),radial-gradient(1.0px 1.0px at 12.0% 22.5%, rgba(255,255,255,0.49), transparent 100%),radial-gradient(1.0px 1.0px at 17.9% 45.8%, rgba(255,255,255,0.29), transparent 100%),radial-gradient(1.2px 1.2px at 94.6% 41.9%, rgba(255,255,255,0.45), transparent 100%),radial-gradient(1.0px 1.0px at 94.7% 42.0%, rgba(255,255,255,0.75), transparent 100%),radial-gradient(1.2px 1.2px at 2.8% 34.3%, rgba(255,255,255,0.65), transparent 100%),radial-gradient(1.2px 1.2px at 14.6% 47.9%, rgba(255,255,255,0.58), transparent 100%),radial-gradient(1.0px 1.0px at 35.0% 31.8%, rgba(255,255,255,0.26), transparent 100%),radial-gradient(0.8px 0.8px at 79.9% 42.1%, rgba(255,255,255,0.51), transparent 100%),radial-gradient(1.0px 1.0px at 93.4% 25.2%, rgba(255,255,255,0.66), transparent 100%),radial-gradient(1.0px 1.0px at 21.1% 14.6%, rgba(255,255,255,0.50), transparent 100%),radial-gradient(1.6px 1.6px at 76.4% 18.9%, rgba(255,255,255,0.46), transparent 100%),radial-gradient(1.0px 1.0px at 13.1% 52.8%, rgba(255,255,255,0.70), transparent 100%),radial-gradient(1.6px 1.6px at 66.2% 47.3%, rgba(255,255,255,0.46), transparent 100%),radial-gradient(1.6px 1.6px at 91.8% 29.1%, rgba(255,255,255,0.33), transparent 100%),radial-gradient(1.0px 1.0px at 51.1% 50.6%, rgba(255,255,255,0.55), transparent 100%),radial-gradient(1.0px 1.0px at 77.6% 8.7%, rgba(255,255,255,0.49), transparent 100%),radial-gradient(1.0px 1.0px at 72.5% 32.3%, rgba(255,255,255,0.59), transparent 100%); background-repeat:no-repeat; animation:twinkle 7s ease-in-out infinite alternate; pointer-events:none}
-  @keyframes twinkle{from{opacity:.35}to{opacity:.95}}
+  /* ---------- 背景小王子治愈星空（纯 GPU 合成层，零全屏重绘、零闪白） ---------- */
+  #theme{position:fixed; inset:0; z-index:-3; background:#0b0d16; transition:background .55s ease;
+    transform:translate3d(0,0,0); backface-visibility:hidden}
+  #sky{position:fixed; inset:0; z-index:-2; background:#070912 url(assets/sky-b612.webp) center/cover no-repeat;
+    will-change:transform, opacity; transform:translate3d(0,0,0) scale(1.04); backface-visibility:hidden; contain:paint}
   #sky::after{content:""; position:absolute; inset:0;
-    background:linear-gradient(90deg,rgba(5,8,18,.60) 0%,rgba(5,8,18,.20) 45%,rgba(5,8,18,.06) 72%,rgba(5,8,18,.30) 100%),
-               linear-gradient(180deg,rgba(5,7,14,.26) 0%,rgba(5,7,14,.04) 40%,rgba(5,7,14,.76) 100%),
+    background:linear-gradient(90deg,rgba(5,8,18,.58) 0%,rgba(5,8,18,.18) 45%,rgba(5,8,18,.06) 72%,rgba(5,8,18,.28) 100%),
+               linear-gradient(180deg,rgba(5,7,14,.24) 0%,rgba(5,7,14,.04) 40%,rgba(5,7,14,.76) 100%),
                var(--tint,transparent);
-    mix-blend-mode:normal; transition:background .8s ease}
-  #grain{position:fixed; inset:0; z-index:-1; pointer-events:none; opacity:.26;
-    background-image:radial-gradient(rgba(255,255,255,.05) .6px, transparent .7px);
-    background-size:3px 3px; mix-blend-mode:overlay}
+    transition:background .6s ease; pointer-events:none}
 
   /* ---------- 顶部胶囊导航 ---------- */
-  .rail{position:fixed; z-index:40; top:18px; left:50%; transform:translateX(-50%);
+  .rail{position:fixed; z-index:40; top:18px; left:50%; transform:translate3d(-50%,0,0);
     width:min(1240px,94vw); display:flex; align-items:center; gap:18px; padding:8px 12px 8px 9px;
-    border-radius:999px; border:1px solid rgba(255,255,255,.13); background:rgba(10,13,18,.52);
-    backdrop-filter:blur(18px) saturate(145%); -webkit-backdrop-filter:blur(18px) saturate(145%);
-    box-shadow:0 12px 40px rgba(0,0,0,.38); transition:transform .5s var(--ease), opacity .5s var(--ease)}
-  .rail.hide{transform:translateX(-50%) translateY(-140%); opacity:0}
+    border-radius:999px; border:1px solid rgba(255,255,255,.13); background:rgba(10,13,20,.68);
+    backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+    box-shadow:0 12px 36px rgba(0,0,0,.38); transition:transform .45s var(--ease), opacity .45s var(--ease);
+    backface-visibility:hidden}
+  .rail.hide{transform:translate3d(-50%,-140%,0); opacity:0}
   .brand{display:inline-flex; align-items:center; gap:9px; padding:7px 15px 7px 7px; border-radius:999px;
     background:var(--lime); color:#0a0d05; font-weight:800; font-size:13.5px; letter-spacing:.01em; white-space:nowrap;
     box-shadow:0 0 24px -4px var(--lime); transition:background .4s, box-shadow .4s}
   .brand i{width:25px; height:25px; border-radius:50%; background:#0a0d05; display:grid; place-items:center; color:var(--lime); font-style:normal; flex:0 0 25px; transition:color .4s}
   .brand i svg{width:15px; height:15px; display:block; overflow:visible}
 
-  /* ---------- 偶发流星特效（偶尔 1~2 颗划过夜空） ---------- */
-  #meteors{position:fixed; inset:0; z-index:-1; pointer-events:none; overflow:hidden}
+  /* ---------- 偶发流星特效（偶尔 1~2 颗划过夜空，纯 GPU transform） ---------- */
+  #meteors{position:fixed; inset:0; z-index:-1; pointer-events:none; overflow:hidden; contain:strict}
   .meteor{position:absolute; width:clamp(90px,11vw,150px); height:1.8px; border-radius:999px;
     background:linear-gradient(90deg, rgba(255,253,232,1) 0%, rgba(255,230,142,.75) 26%, rgba(168,202,255,.22) 68%, transparent 100%);
-    filter:drop-shadow(0 0 6px rgba(255,238,170,.85)); opacity:0; transform-origin:left center;
+    opacity:0; transform-origin:left center; will-change:transform, opacity; backface-visibility:hidden;
     animation:meteorFly 1.15s cubic-bezier(.16,.68,.32,1) forwards}
   .meteor::before{content:""; position:absolute; left:-1px; top:50%; width:4px; height:4px; border-radius:50%;
-    transform:translateY(-50%); background:#fffdf0; box-shadow:0 0 10px 2px #ffe88a}
+    transform:translateY(-50%); background:#fffdf0; box-shadow:0 0 8px 1px #ffe88a}
   @keyframes meteorFly{
-    0%{opacity:0; transform:rotate(-26deg) translateX(0) scaleX(.35)}
-    18%{opacity:.96; transform:rotate(-26deg) translateX(-28px) scaleX(1)}
+    0%{opacity:0; transform:rotate(-26deg) translate3d(0,0,0) scaleX(.35)}
+    18%{opacity:.96; transform:rotate(-26deg) translate3d(-28px,0,0) scaleX(1)}
     82%{opacity:.78}
-    100%{opacity:0; transform:rotate(-26deg) translateX(-240px) scaleX(.65)}
+    100%{opacity:0; transform:rotate(-26deg) translate3d(-240px,0,0) scaleX(.65)}
   }
 
   .rail-links{display:flex; gap:6px; margin-inline:auto}
@@ -82,7 +79,7 @@
   .rail .clock{font:600 11px/1 ui-monospace,monospace; letter-spacing:.12em; color:rgba(255,255,255,.52); white-space:nowrap}
 
   /* ---------- 首屏大标题 ---------- */
-  .hero{position:relative; min-height:100svh; padding:108px 5vw 216px; display:flex; align-items:center; justify-content:space-between; gap:20px}
+  .hero{position:relative; min-height:100svh; padding:104px 5vw 212px; display:flex; align-items:center; justify-content:space-between; gap:20px}
   .hero-copy{position:relative; z-index:3; max-width:min(690px,55vw)}
   .kick{display:inline-flex; align-items:center; gap:9px; font:600 10.5px/1 ui-monospace,monospace;
     letter-spacing:.32em; color:var(--lime); text-transform:uppercase; transition:color .4s}
@@ -90,64 +87,75 @@
   .hero h1{position:relative; margin:18px 0 0; font-weight:900; letter-spacing:-.022em; line-height:.95;
     font-size:clamp(42px,6.2vw,96px)}
   .hero h1 .l1{position:relative; display:inline-block; color:var(--lime);
-    text-shadow:0 0 54px rgba(200,248,48,.24); transition:color .4s}
+    text-shadow:0 0 46px rgba(200,248,48,.22); transition:color .4s}
   .hero h1 .sp-stars{position:absolute; right:-54px; top:-10px; width:48px; height:42px; overflow:visible;
-    filter:drop-shadow(0 0 12px var(--lime)); animation:starPulse 3.6s ease-in-out infinite alternate}
+    animation:starPulse 3.6s ease-in-out infinite alternate}
   @keyframes starPulse{from{transform:scale(.92) rotate(-4deg); opacity:.82}to{transform:scale(1.08) rotate(4deg); opacity:1}}
-  .hero h1 .l2{position:relative; display:inline-block; color:#fff; text-shadow:0 8px 34px rgba(0,0,0,.5); margin-top:2px}
+  .hero h1 .l2{position:relative; display:inline-block; color:#fff; text-shadow:0 8px 30px rgba(0,0,0,.5); margin-top:2px}
   .hero h1 .sig{position:absolute; right:2px; bottom:-14px; font:italic 700 clamp(20px,2.5vw,38px)/1 "Brush Script MT","Segoe Script","Snell Roundhand","Apple Chancery",Georgia,serif;
     color:var(--lime); letter-spacing:.02em; transform:rotate(-6deg); pointer-events:none;
-    text-shadow:0 2px 14px rgba(0,0,0,.85), 0 0 22px var(--lime); opacity:.95; transition:color .4s}
+    text-shadow:0 2px 14px rgba(0,0,0,.85); opacity:.95; transition:color .4s}
   .lede{margin:24px 0 0; color:rgba(240,244,252,.84); font-size:clamp(14.5px,1.15vw,17.5px); max-width:34em;
-    text-shadow:0 2px 16px rgba(0,0,0,.65)}
+    text-shadow:0 2px 14px rgba(0,0,0,.65)}
 
-  /* ---------- 右侧：小王子 B612 纯净治愈星球场景（随底部轮转卡丝滑切换，无多余文字遮挡） ---------- */
-  .scene{position:relative; flex:1 1 460px; max-width:600px; height:clamp(330px,44vh,456px); z-index:2;
-    transform:translateY(clamp(12px,2.5vh,30px)); pointer-events:none; user-select:none}
-  .island{position:absolute; left:50%; bottom:0; width:102%; transform:translateX(-50%); animation:islandBob 9.2s ease-in-out infinite}
-  .b612-stage{position:relative; width:100%; aspect-ratio:720/540}
+  /* ---------- 右侧：小王子 B612 星球场景 + 随卡片轮转切换的《小王子》经典名言 ---------- */
+  .scene{position:relative; flex:1 1 460px; max-width:600px; height:clamp(340px,45vh,464px); z-index:2;
+    transform:translate3d(0,clamp(8px,2vh,24px),0); pointer-events:none; user-select:none}
+  .island{position:absolute; left:50%; bottom:24px; width:102%; transform:translate3d(-50%,0,0);
+    will-change:transform; backface-visibility:hidden; animation:islandBob 9s ease-in-out infinite}
+  .b612-stage{position:relative; width:100%; aspect-ratio:720/540; contain:layout style}
   .b612-deco{position:absolute; inset:-4% -3% 0; width:106%; height:104%; overflow:visible; pointer-events:none; z-index:1}
   .b612-slide{
     position:absolute; inset:0; width:94%; height:100%; margin:0 auto; object-fit:contain; z-index:2;
-    opacity:0; transform:scale(.955) translate3d(0,8px,0);
-    transition:opacity .82s cubic-bezier(.22,.61,.36,1), transform .88s cubic-bezier(.22,.61,.36,1);
-    will-change:opacity, transform; pointer-events:none;
-    filter:drop-shadow(0 24px 48px rgba(3,6,18,.78)) drop-shadow(0 0 36px rgba(255,224,130,.18));
+    opacity:0; transform:translate3d(0,6px,0) scale(.965);
+    transition:opacity .58s var(--ease), transform .64s var(--ease);
+    will-change:opacity, transform; backface-visibility:hidden; -webkit-backface-visibility:hidden;
+    pointer-events:none;
   }
   .b612-slide.on{
-    opacity:1; transform:scale(1) translate3d(0,0,0);
+    opacity:1; transform:translate3d(0,0,0) scale(1);
   }
-  @keyframes islandBob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-8px)}}
+  /* 星球正下方的《小王子》名言栏（随卡片切换自动更换，不遮挡小王子） */
+  .b612-quote{
+    position:absolute; left:50%; bottom:-4px; transform:translate3d(-50%,0,0); z-index:4;
+    width:max-content; max-width:min(520px,90vw); padding:5px 14px; border-radius:999px;
+    background:rgba(7,10,18,.52); border:1px solid rgba(255,232,158,.18);
+    color:#ffefb8; font:500 12.5px/1.45 inherit; letter-spacing:.025em; text-align:center;
+    text-shadow:0 2px 10px rgba(0,0,0,.9);
+    transition:opacity .32s ease, transform .32s ease; backface-visibility:hidden;
+  }
+  .b612-quote.fade{opacity:0; transform:translate3d(-50%,4px,0)}
+  @keyframes islandBob{0%,100%{transform:translate3d(-50%,0,0)}50%{transform:translate3d(-50%,-7px,0)}}
 
-  /* ---------- 首屏底部：从右向左首尾连续轮转工具卡带（支持手动拖拽/触摸滑动，松手 1s 恢复轮转） ---------- */
-  .deck-wrap{position:absolute; left:0; right:0; bottom:0; z-index:4; padding:0 0 22px}
-  .deck{position:relative; overflow:hidden; padding:18px 0 16px; cursor:grab; user-select:none; -webkit-user-select:none;
-    touch-action:pan-y;
-    -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 5%,#000 95%,transparent 100%);
-    mask-image:linear-gradient(90deg,transparent 0%,#000 5%,#000 95%,transparent 100%)}
+  /* ---------- 首屏底部：120帧丝滑连续轮转工具卡带（桌面端与手机三卡同屏） ---------- */
+  .deck-wrap{position:absolute; left:0; right:0; bottom:0; z-index:4; padding:0 0 20px}
+  .deck{position:relative; overflow:hidden; padding:16px 0 14px; cursor:grab; user-select:none; -webkit-user-select:none;
+    touch-action:pan-y; contain:layout paint;
+    -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 4%,#000 96%,transparent 100%);
+    mask-image:linear-gradient(90deg,transparent 0%,#000 4%,#000 96%,transparent 100%)}
   .deck.dragging{cursor:grabbing}
-  .deck-track{display:flex; gap:18px; width:max-content; will-change:transform; padding-left:6vw}
-  .card{position:relative; flex:0 0 auto; width:clamp(224px,22.5vw,292px); border-radius:18px;
-    overflow:hidden; border:1px solid rgba(255,255,255,.16); background:#0b0e12; cursor:pointer;
-    opacity:.72; filter:saturate(.92);
-    transform:translateY(2px) scale(.97);
-    box-shadow:0 22px 44px -20px rgba(0,0,0,.85);
-    transition:opacity .5s var(--ease), filter .5s var(--ease), border-color .45s, box-shadow .5s, transform .55s var(--ease)}
+  .deck-track{display:flex; gap:16px; width:max-content; will-change:transform; backface-visibility:hidden;
+    -webkit-backface-visibility:hidden; transform:translate3d(0,0,0); padding-left:5vw}
+  .card{position:relative; flex:0 0 auto; width:clamp(218px,21.5vw,284px); border-radius:16px;
+    overflow:hidden; border:1px solid rgba(255,255,255,.15); background:#0b0e16; cursor:pointer;
+    opacity:.72; transform:translate3d(0,2px,0) scale(.97);
+    box-shadow:0 18px 36px -18px rgba(0,0,0,.82);
+    transition:opacity .42s var(--ease), border-color .38s, box-shadow .42s, transform .45s var(--ease);
+    backface-visibility:hidden; -webkit-backface-visibility:hidden; contain:layout paint}
   .card img{display:block; width:100%; aspect-ratio:16/10; object-fit:cover; object-position:center; pointer-events:none;
-    transition:transform .6s var(--ease), opacity .4s}
+    transform:translate3d(0,0,0); backface-visibility:hidden}
   .card::after{content:""; position:absolute; inset:0;
-    background:linear-gradient(180deg,rgba(4,6,12,.06) 0%,rgba(4,6,12,.18) 48%,rgba(4,6,12,.86) 100%); pointer-events:none}
-  .card .cap{position:absolute; left:15px; bottom:12px; z-index:2; font:800 15px/1.1 inherit; letter-spacing:.03em; color:#fff;
-    text-shadow:0 2px 12px rgba(0,0,0,.95); display:flex; align-items:center; gap:7px}
-  .card .cap::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--c-ac,#fff); box-shadow:0 0 10px var(--c-ac,#fff)}
-  .card .c-tag{position:absolute; right:10px; top:9px; z-index:2; font:600 10px/1 ui-monospace,monospace; font-style:normal;
-    letter-spacing:.06em; padding:4px 9px; border-radius:999px; background:rgba(8,10,16,.66); border:1px solid rgba(255,255,255,.18);
-    color:rgba(255,255,255,.88); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); transition:all .4s}
-  .card:hover{opacity:.94; filter:none}
-  .card:hover img{transform:scale(1.04)}
-  .card.on{opacity:1; filter:none; transform:translateY(-9px) scale(1.035);
-    border-color:var(--lime); box-shadow:0 30px 64px -26px rgba(0,0,0,.95), 0 0 48px -14px var(--lime)}
-  .card.on .c-tag{border-color:var(--lime); color:var(--lime); background:rgba(8,10,16,.82)}
+    background:linear-gradient(180deg,rgba(4,6,12,.04) 0%,rgba(4,6,12,.16) 48%,rgba(4,6,12,.86) 100%); pointer-events:none}
+  .card .cap{position:absolute; left:14px; bottom:11px; z-index:2; font:800 14.5px/1.1 inherit; letter-spacing:.02em; color:#fff;
+    text-shadow:0 2px 10px rgba(0,0,0,.95); display:flex; align-items:center; gap:6px}
+  .card .cap::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--c-ac,#fff); box-shadow:0 0 8px var(--c-ac,#fff)}
+  .card .c-tag{position:absolute; right:9px; top:8px; z-index:2; font:600 9.5px/1 ui-monospace,monospace; font-style:normal;
+    letter-spacing:.04em; padding:4px 8px; border-radius:999px; background:rgba(8,10,16,.74); border:1px solid rgba(255,255,255,.16);
+    color:rgba(255,255,255,.88); transition:border-color .35s, color .35s}
+  .card:hover{opacity:.95}
+  .card.on{opacity:1; transform:translate3d(0,-8px,0) scale(1.03);
+    border-color:var(--lime); box-shadow:0 24px 50px -20px rgba(0,0,0,.92), 0 0 36px -12px var(--lime)}
+  .card.on .c-tag{border-color:var(--lime); color:var(--lime); background:rgba(8,10,16,.88)}
 
   /* ---------- 通用区块 ---------- */
   section{position:relative; z-index:2}
@@ -159,49 +167,49 @@
     letter-spacing:-.02em; color:#fff; text-transform:uppercase}
   .sec-head .en-title .arr{color:var(--lime); font-weight:700; font-size:.82em; transition:color .4s}
   .sec-head h2{margin:0; font-size:15px; font-weight:600; color:var(--muted); letter-spacing:.04em}
-  .js .rise{opacity:0; transform:translateY(26px); transition:opacity .8s var(--ease), transform .8s var(--ease)}
-  .js .rise.in{opacity:1; transform:none}
+  .js .rise{opacity:0; transform:translate3d(0,22px,0); transition:opacity .65s var(--ease), transform .65s var(--ease)}
+  .js .rise.in{opacity:1; transform:translate3d(0,0,0)}
 
-  /* ---------- CORE STRENGTHS 核心功能 Bento 卡片（已挪至精选作品上方） ---------- */
+  /* ---------- CORE STRENGTHS 核心功能 Bento 卡片 ---------- */
   .stack-grid{display:grid; grid-template-columns:repeat(6,1fr); gap:16px}
   .sk{position:relative; grid-column:span 2; padding:24px 24px 26px; border-radius:22px; border:1px solid rgba(255,255,255,.1);
-    background:rgba(11,14,19,.68); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
-    min-height:246px; transition:all .42s var(--ease); overflow:hidden; display:flex; flex-direction:column}
+    background:rgba(11,14,21,.76); min-height:246px; transition:background .38s var(--ease), border-color .38s, color .35s, transform .38s var(--ease);
+    overflow:hidden; display:flex; flex-direction:column; backface-visibility:hidden}
   .sk.wide-sk{grid-column:span 3}
   .sk-top{display:flex; justify-content:space-between; align-items:center; margin-bottom:20px}
   .sk .k-num{font:700 10.5px/1 ui-monospace,monospace; padding:5px 11px; border-radius:999px;
-    background:rgba(200,248,48,.12); border:1px solid rgba(200,248,48,.28); color:var(--lime); transition:.35s}
-  .sk .k{font:600 10px/1 ui-monospace,monospace; letter-spacing:.18em; color:rgba(255,255,255,.36); text-transform:uppercase; transition:.35s}
+    background:rgba(200,248,48,.12); border:1px solid rgba(200,248,48,.28); color:var(--lime); transition:.3s}
+  .sk .k{font:600 10px/1 ui-monospace,monospace; letter-spacing:.18em; color:rgba(255,255,255,.36); text-transform:uppercase; transition:.3s}
   .sk h3{margin:0 0 8px; font-size:clamp(20px,2vw,24px); font-weight:800; letter-spacing:-.01em}
-  .sk h3 .dot{color:var(--lime); margin-left:2px; transition:color .35s}
-  .sk p{margin:0; font-size:13px; color:var(--muted); max-width:22em; transition:opacity .3s, color .35s}
+  .sk h3 .dot{color:var(--lime); margin-left:2px; transition:color .3s}
+  .sk p{margin:0; font-size:13px; color:var(--muted); max-width:22em; transition:color .3s}
   .sk-pills{display:flex; flex-direction:column; align-items:flex-start; gap:7px; margin-top:auto; padding-top:14px;
-    opacity:0; transform:translateY(10px); transition:all .38s var(--ease); position:relative; z-index:2}
+    opacity:0; transform:translate3d(0,8px,0); transition:opacity .32s var(--ease), transform .32s var(--ease); position:relative; z-index:2}
   .sk-pill{display:inline-block; padding:6px 14px; border-radius:999px; font-size:12px; font-weight:700;
     box-shadow:0 8px 20px -6px rgba(0,0,0,.22); white-space:nowrap}
   .sk-pill.p1{background:#ffffff; color:#0a0d05; transform:rotate(-2.5deg)}
   .sk-pill.p2{background:#0b0e12; color:#ffffff; transform:rotate(-5deg) translateX(6px)}
   .sk-pill.p3{background:rgba(255,255,255,.28); color:#0a0d05; border:1px solid rgba(10,13,5,.12); transform:rotate(2deg) translateX(18px)}
   .sk-art{position:absolute; right:12px; bottom:10px; width:96px; height:96px; pointer-events:none;
-    transition:transform .5s var(--ease), opacity .4s}
+    transition:transform .45s var(--ease), opacity .35s}
   .sk.lit, .sk:hover{background:var(--lime); border-color:var(--lime); color:#0a0d05;
-    transform:translateY(-4px); box-shadow:0 28px 60px -24px rgba(0,0,0,.85), 0 0 46px -18px var(--lime)}
+    transform:translate3d(0,-4px,0); box-shadow:0 24px 50px -22px rgba(0,0,0,.85)}
   .sk.lit .k-num, .sk:hover .k-num{background:rgba(10,13,5,.1); border-color:rgba(10,13,5,.2); color:#0a0d05}
   .sk.lit .k, .sk:hover .k{color:rgba(10,13,5,.55)}
   .sk.lit h3 .dot, .sk:hover h3 .dot{color:#0a0d05}
   .sk.lit p, .sk:hover p{color:rgba(10,13,5,.66)}
-  .sk.lit .sk-pills, .sk:hover .sk-pills{opacity:1; transform:translateY(0)}
+  .sk.lit .sk-pills, .sk:hover .sk-pills{opacity:1; transform:translate3d(0,0,0)}
   .sk.lit .sk-art, .sk:hover .sk-art{transform:scale(1.08) rotate(6deg); opacity:.32}
 
-  /* ---------- SELECTED WORKS 沉浸式 Bento 作品网格（学易经、翻译、计算、私人歌单） ---------- */
+  /* ---------- SELECTED WORKS 沉浸式 Bento 作品网格 ---------- */
   .works-grid{display:grid; grid-template-columns:1.15fr .85fr; gap:18px}
   .work{position:relative; border-radius:22px; overflow:hidden; border:1px solid rgba(255,255,255,.11);
-    background:#0a0d12; cursor:pointer; transition:.45s var(--ease); height:242px; display:block}
+    background:#0a0d14; cursor:pointer; transition:transform .4s var(--ease), border-color .35s, box-shadow .4s; height:242px; display:block; backface-visibility:hidden}
   .work.wide{grid-column:1 / -1; height:258px}
   .work.wide img{object-position:center 46%}
   .work.tall{grid-row:span 2; height:502px}
   .work img{width:100%; height:100%; object-fit:cover; object-position:center;
-    opacity:.92; transition:transform .65s var(--ease), opacity .45s}
+    opacity:.92; transition:transform .55s var(--ease), opacity .4s; backface-visibility:hidden}
   .work::after{content:""; position:absolute; inset:0;
     background:linear-gradient(180deg,rgba(5,7,10,.06) 0%,rgba(5,7,10,.22) 45%,rgba(5,7,10,.88) 100%); pointer-events:none}
   .work .wb{position:absolute; left:22px; right:22px; bottom:20px; z-index:2;
@@ -209,19 +217,19 @@
   .work h3{margin:0; font-size:clamp(19px,2vw,24px); font-weight:800; color:#fff; letter-spacing:-.01em;
     display:flex; align-items:center; gap:9px}
   .work h3 small{font:600 10px/1 ui-monospace,monospace; padding:4px 9px; border-radius:999px;
-    background:rgba(10,13,18,.68); border:1px solid rgba(255,255,255,.18); color:var(--lime)}
+    background:rgba(10,13,18,.72); border:1px solid rgba(255,255,255,.18); color:var(--lime)}
   .work p{margin:6px 0 0; color:rgba(235,240,248,.74); font-size:13px; letter-spacing:.02em}
   .work .go{font:600 11.5px/1 ui-monospace,monospace; color:rgba(255,255,255,.78); letter-spacing:.08em;
-    padding:7px 12px; border-radius:999px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.14);
-    backdrop-filter:blur(8px); transition:.3s; white-space:nowrap}
-  .work:hover, .work.m-lit{border-color:var(--lime); transform:translateY(-4px); box-shadow:0 26px 54px -24px rgba(0,0,0,.9), 0 0 36px -18px var(--lime)}
-  .work:hover img, .work.m-lit img{transform:scale(1.04); opacity:1}
+    padding:7px 12px; border-radius:999px; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.14);
+    transition:.3s; white-space:nowrap}
+  .work:hover, .work.m-lit{border-color:var(--lime); transform:translate3d(0,-4px,0); box-shadow:0 24px 48px -22px rgba(0,0,0,.9)}
+  .work:hover img, .work.m-lit img{transform:scale(1.035); opacity:1}
   .work:hover .go, .work.m-lit .go{background:var(--lime); border-color:var(--lime); color:#0a0d05}
 
   /* ---------- 工作台列表 ---------- */
   .lab-list{border-top:1px solid var(--line)}
   .lab-row{display:grid; grid-template-columns:52px 1fr auto; gap:18px; align-items:center;
-    padding:22px 6px; border-bottom:1px solid var(--line); transition:.3s; cursor:pointer}
+    padding:22px 6px; border-bottom:1px solid var(--line); transition:.25s; cursor:pointer}
   .lab-row:hover{background:rgba(255,255,255,.035); padding-left:14px}
   .lab-row .no{font:600 11px/1 ui-monospace,monospace; color:rgba(255,255,255,.32)}
   .lab-row h3{margin:0; font-size:17px; font-weight:700}
@@ -238,8 +246,7 @@
   .outro h2 .arr{color:#fff; font-weight:400; margin-left:6px}
   .outro .cn-sub{margin:20px 0 26px; max-width:30em; color:rgba(255,255,255,.62); font-size:15px}
   .contact-card{border-radius:24px; border:1px solid rgba(255,255,255,.12);
-    background:rgba(14,17,22,.72); backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
-    padding:28px 28px 26px; box-shadow:0 34px 80px -28px rgba(0,0,0,.92)}
+    background:rgba(14,17,24,.78); padding:28px 28px 26px; box-shadow:0 30px 70px -28px rgba(0,0,0,.92)}
   .contact-card .cc-head{font:700 12px/1 ui-monospace,monospace; letter-spacing:.16em; color:var(--lime); margin-bottom:18px}
   .contact-card .cc-list{display:grid; gap:11px; font-size:13.5px; color:rgba(255,255,255,.82); margin-bottom:20px}
   .contact-card .cc-list span{color:var(--muted); margin-right:6px}
@@ -257,7 +264,7 @@
 
   /* 灯箱 */
   .lb{position:fixed; inset:0; z-index:80; display:none; place-items:center; padding:4vh 4vw;
-    background:rgba(3,4,6,.82); backdrop-filter:blur(14px)}
+    background:rgba(3,4,6,.86)}
   .lb.on{display:grid}
   .lb .frame{position:relative; width:min(1100px,92vw); max-height:86vh; border-radius:18px; overflow:hidden;
     border:1px solid rgba(255,255,255,.16); background:#0a0c10; box-shadow:0 40px 120px -30px #000}
@@ -271,23 +278,22 @@
   .lb .x:hover{background:var(--lime); color:#0a0d05; border-color:var(--lime)}
 
   /* 开场 */
-  #intro{position:fixed; inset:0; z-index:90; display:grid; place-items:center; overflow:hidden; background:#000}
+  #intro{position:fixed; inset:0; z-index:90; display:grid; place-items:center; overflow:hidden; background:#070912}
   #intro::before{content:""; position:absolute; width:min(80vmin,660px); aspect-ratio:1; border-radius:50%;
-    background:radial-gradient(circle,rgba(154,204,36,.10) 0%,rgba(70,96,12,.045) 44%,transparent 70%);
-    filter:blur(6px)}
+    background:radial-gradient(circle,rgba(154,204,36,.10) 0%,rgba(70,96,12,.045) 44%,transparent 70%)}
   #intro .center{position:relative; text-align:center}
   #intro .label{font:600 10px/1 ui-monospace,monospace; letter-spacing:.44em;
     color:rgba(255,255,255,.5); text-indent:.44em; margin-bottom:14px}
   #intro .num{font:900 clamp(68px,13.5vw,158px)/.9 "Arial Black","Segoe UI Black",Impact,sans-serif;
     color:#c8f830; letter-spacing:-.045em; font-variant-numeric:tabular-nums;
-    text-shadow:0 0 26px rgba(200,248,48,.18),0 0 90px rgba(200,248,48,.07)}
+    text-shadow:0 0 26px rgba(200,248,48,.18)}
   #intro .num i{font-style:normal; font-size:.46em; vertical-align:.46em; letter-spacing:0; margin-left:.02em}
   #intro .spark{position:absolute; left:calc(50% + 96px); top:calc(50% + 30px); width:5px; height:5px;
     border-radius:50%; background:#fff; box-shadow:0 0 9px rgba(255,255,255,.95); animation:sparkDrift 2.6s ease-in-out infinite}
   #intro.cut{opacity:0; transition:opacity .12s linear}
   @keyframes sparkDrift{0%,100%{transform:translate(0,0); opacity:.3}50%{transform:translate(7px,-11px); opacity:.95}}
 
-  /* ---------- 响应式与无障碍 ---------- */
+  /* ---------- 响应式与手机端至少三张卡同屏布局 ---------- */
   @media (max-width:900px){
     .works-grid{grid-template-columns:1fr}
     .work, .work.wide, .work.tall{grid-row:auto; height:220px}
@@ -297,22 +303,29 @@
     .rail-links{display:none}
     .rail .clock{display:none}
     .contact{margin-left:auto}
-    .hero{flex-direction:column; align-items:stretch; justify-content:flex-start; gap:0; min-height:auto; padding:82px 6vw 10px}
+    .hero{flex-direction:column; align-items:stretch; justify-content:flex-start; gap:0; min-height:auto; padding:80px 5vw 10px}
     .hero-copy{max-width:100%}
     .hero h1 .sp-stars{right:-38px; top:-6px; width:34px; height:30px}
     .lede{margin-top:14px}
-    .scene{flex:0 0 auto; width:100%; max-width:none; height:242px; margin:8px 0 0; transform:none}
-    .island{width:100%; bottom:0}
-    .b612-slide{width:86%}
-    .deck-wrap{position:relative; padding:0 0 6px; margin:0 -6vw}
-    .deck{padding:12px 0 12px}
-    .card{width:min(62vw,236px)}
+    .scene{flex:0 0 auto; width:100%; max-width:none; height:260px; margin:6px 0 4px; transform:none}
+    .island{width:100%; bottom:24px}
+    .b612-slide{width:84%}
+    .b612-quote{bottom:-2px; font-size:11.5px; padding:4px 12px; max-width:92vw}
+    .deck-wrap{position:relative; padding:0 0 4px; margin:0 -5vw}
+    .deck{padding:10px 0 10px}
+    .deck-track{gap:10px; padding-left:3.5vw}
+    /* 手机端卡片宽度设为 28.2vw，确保单屏同时清晰看到至少 3 张卡片 */
+    .card{width:clamp(102px,28.2vw,146px); border-radius:12px}
+    .card.on{transform:translate3d(0,-5px,0) scale(1.03)}
+    .card .cap{left:8px; bottom:6px; font-size:11.5px; gap:4px}
+    .card .cap::before{width:4.5px; height:4.5px}
+    .card .c-tag{right:5px; top:5px; font-size:7.5px; padding:2px 5px}
   }
   @media (max-width:560px){
     .stack-grid{grid-template-columns:1fr}
     .rail{top:10px; padding:7px 8px}
     .brand{font-size:12.5px; padding:6px 12px 6px 6px}
-    .scene{height:232px; margin:6px 0 0}
+    .scene{height:248px; margin:4px 0 4px}
   }
   @media (prefers-reduced-motion:reduce){
     html{scroll-behavior:auto}
@@ -335,7 +348,6 @@
 <div id="theme"></div>
 <div id="sky"></div>
 <div id="meteors" aria-hidden="true"></div>
-<div id="grain" aria-hidden="true"></div>
 
 <header class="rail" id="rail">
   <a class="brand" href="/"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 7.2 L6.3 16.8 L10.1 7.2 L13.9 16.8 L17.7 7.2 L21.5 16.8"/></svg></i>WM的空间站</a>
@@ -362,7 +374,7 @@
       <p class="lede">一个私人的小站。工具、作品、还有点没想好放哪儿的念头，都在这儿。</p>
     </div>
 
-    <!-- 右侧：小王子 B612 纯净四幕场景（随底部工具轮转自动丝滑切换，点击或触摸小王子不切换） -->
+    <!-- 右侧：小王子 B612 四幕场景 + 随底部卡片切换的《小王子》经典名言 -->
     <div class="scene" id="b612Scene" aria-hidden="true">
       <div class="island">
         <div class="b612-stage" id="b612Stage">
@@ -373,9 +385,6 @@
                 <stop offset="52%" stop-color="#6f86d6" stop-opacity=".14"/>
                 <stop offset="100%" stop-color="#1e2749" stop-opacity="0"/>
               </radialGradient>
-              <filter id="starGlow" x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur stdDeviation="3.5"/>
-              </filter>
             </defs>
             <ellipse cx="380" cy="316" rx="330" ry="188" fill="url(#b612Halo)"/>
             <g fill="none" stroke-linecap="round" opacity=".55">
@@ -383,7 +392,6 @@
               <path d="M138 186 C232 124 360 112 482 148" stroke="#ffe596" stroke-width="1.5" stroke-dasharray="5 9" opacity=".7"/>
             </g>
             <g fill="#ffe484">
-              <path d="M132 94 C134 108 137 111 151 113 C137 115 134 118 132 132 C130 118 127 115 113 113 C127 111 130 108 132 94 Z" filter="url(#starGlow)" opacity=".55"/>
               <path d="M132 94 C134 108 137 111 151 113 C137 115 134 118 132 132 C130 118 127 115 113 113 C127 111 130 108 132 94 Z"/>
               <path d="M642 74 C644 86 647 89 659 91 C647 93 644 96 642 108 C640 96 637 93 625 91 C637 89 640 86 642 74 Z"/>
               <path d="M92 238 C93 246 95 248 103 249 C95 250 93 252 92 260 C91 252 89 250 81 249 C89 248 91 246 92 238 Z" opacity=".88"/>
@@ -399,41 +407,41 @@
           </svg>
 
           <!-- 4 幅小王子同画风插画层叠交叉淡入淡出 -->
-          <img class="b612-slide on" src="assets/b612-s1.webp" alt="B612星球：小王子、玻璃罩玫瑰与小狐狸">
-          <img class="b612-slide" src="assets/b612-s2.webp" alt="B612星球：小王子与小狐狸背影仰望星空">
-          <img class="b612-slide" src="assets/b612-s3.webp" alt="B612星球：小王子俯身轻嗅红玫瑰">
-          <img class="b612-slide" src="assets/b612-s4.webp" alt="B612星球：玫瑰、小王子与小狐狸并肩背影">
+          <img class="b612-slide on" src="assets/b612-s1.webp" decoding="async" alt="B612星球：小王子、玻璃罩玫瑰与小狐狸">
+          <img class="b612-slide" src="assets/b612-s2.webp" decoding="async" alt="B612星球：小王子与小狐狸背影仰望星空">
+          <img class="b612-slide" src="assets/b612-s3.webp" decoding="async" alt="B612星球：小王子俯身轻嗅红玫瑰">
+          <img class="b612-slide" src="assets/b612-s4.webp" decoding="async" alt="B612星球：玫瑰、小王子与小狐狸并肩背影">
         </div>
       </div>
+      <div class="b612-quote" id="b612Quote">“真正重要的东西，用眼睛是看不见的，要用心去感受。”</div>
     </div>
 
-    <!-- 底部：从右向左缓慢连续轮转的工具卡带（学易经 → 翻译 → 计算 → 私人歌单） -->
+    <!-- 底部：120帧丝滑连续轮转工具卡带（学易经 → 翻译 → 计算 → 私人歌单） -->
     <div class="deck-wrap">
       <div class="deck" id="deck" aria-label="工具轮转长廊">
         <div class="deck-track" id="deckTrack">
-          <!-- 第 1 组（学易经、翻译、计算、私人歌单） -->
           <a class="card" href="/tools/qianqian.html" data-idx="0" data-ext="qianqian" data-bg="#120e1e" data-ac="#b9a4ff" data-tint="rgba(150,120,255,.24)" style="--c-ac:#b9a4ff">
             <em class="c-tag">六十四卦 · 罗盘</em>
-            <img src="assets/card-yi.webp" alt="学易经"><span class="cap">学易经</span>
+            <img src="assets/card-yi.webp" decoding="async" alt="学易经"><span class="cap">学易经</span>
           </a>
           <a class="card" href="/translate.html" data-idx="1" data-bg="#08141d" data-ac="#7fe3ff" data-tint="rgba(110,214,255,.22)" style="--c-ac:#7fe3ff">
-            <em class="c-tag">五语秒翻 · 离线合一</em>
-            <img src="assets/card-tr.webp" alt="翻译"><span class="cap">翻译</span>
+            <em class="c-tag">中·英·日·俄·维</em>
+            <img src="assets/card-tr.webp" decoding="async" alt="翻译"><span class="cap">翻译</span>
           </a>
           <a class="card" href="/calc.html" data-idx="2" data-bg="#161006" data-ac="#ffc46b" data-tint="rgba(255,190,110,.20)" style="--c-ac:#ffc46b">
-            <em class="c-tag">星盘算式 · 历史回溯</em>
-            <img src="assets/card-calc.webp" alt="计算"><span class="cap">计算</span>
+            <em class="c-tag">大写金额 · 折扣速算</em>
+            <img src="assets/card-calc.webp" decoding="async" alt="计算"><span class="cap">计算</span>
           </a>
           <a class="card" href="/ktv.html" data-idx="3" data-bg="#091512" data-ac="#7ef2b8" data-tint="rgba(110,238,180,.20)" style="--c-ac:#7ef2b8">
             <em class="c-tag">随身曲库 · 随机点歌</em>
-            <img src="assets/card-ktv.webp" alt="私人歌单"><span class="cap">私人歌单</span>
+            <img src="assets/card-ktv.webp" decoding="async" alt="私人歌单"><span class="cap">私人歌单</span>
           </a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- 核心功能（已挪至精选作品上方） -->
+  <!-- 核心功能（位于精选作品上方） -->
   <section class="sec" id="stack">
     <div class="wrap">
       <div class="sec-head rise">
@@ -458,13 +466,13 @@
         </div>
 
         <div class="sk wide-sk rise lit">
-          <div class="sk-top"><span class="k-num">02</span><span class="k">MOTION</span></div>
-          <h3>连续轮转与交互反馈<span class="dot">.</span></h3>
-          <p>首尾无缝轮转长廊、夜空偶发流星、拖拽跟随并在松手 1 秒后自动续转。</p>
+          <div class="sk-top"><span class="k-num">02</span><span class="k">120HZ MOTION</span></div>
+          <h3>120帧连续轮转与交互反馈<span class="dot">.</span></h3>
+          <p>首尾无缝轮转长廊、全 GPU 合成层零闪白、拖拽跟随并在松手 1 秒后自动续转。</p>
           <div class="sk-pills">
-            <span class="sk-pill p1">首尾无缝轮转联动小王子与主题</span>
+            <span class="sk-pill p1">120Hz 原生高刷零布局抖动</span>
             <span class="sk-pill p2">手动拖拽实时跟随 · 松手 1s 续转</span>
-            <span class="sk-pill p3">逐帧缓动与无障碍静默兼容</span>
+            <span class="sk-pill p3">《小王子》16 条经典名言轮播</span>
           </div>
           <svg class="sk-art" viewBox="0 0 100 100" fill="none" aria-hidden="true">
             <circle cx="38" cy="58" r="22" fill="#8b5cf6" opacity=".45"/>
@@ -475,10 +483,10 @@
 
         <div class="sk rise">
           <div class="sk-top"><span class="k-num">03</span><span class="k">AI WORKFLOW</span></div>
-          <h3>AI 接入与工具编排<span class="dot">.</span></h3>
-          <p>多通道极速并发翻译、本地 NLLB 离线推理与语音工具链。</p>
+          <h3>AI 接入与多语种翻译<span class="dot">.</span></h3>
+          <p>支持中、英、日、俄、维五种语言自动识别互译与本地离线推理。</p>
           <div class="sk-pills">
-            <span class="sk-pill p1">五语种 0.5 秒并发直连秒翻</span>
+            <span class="sk-pill p1">中英日俄维 · 默认自动转英语</span>
             <span class="sk-pill p2">本地离线引擎无缝二合一</span>
             <span class="sk-pill p3">小智 MCP 语音指令协同</span>
           </div>
@@ -521,7 +529,7 @@
     </div>
   </section>
 
-  <!-- 精选作品（按 学易经、翻译、计算、私人歌单 顺序与新绘本预览图呈现） -->
+  <!-- 精选作品（学易经、翻译、计算、私人歌单） -->
   <section class="sec" id="works">
     <div class="wrap">
       <div class="sec-head rise">
@@ -530,20 +538,20 @@
       </div>
       <div class="works-grid">
         <a class="work rise wide" href="/tools/qianqian.html" data-ext="qianqian">
-          <img src="assets/card-yi.webp" alt="学易经">
+          <img src="assets/card-yi.webp" decoding="async" alt="学易经">
           <div class="wb"><div><h3>学易经 <small>六十四卦 · 罗盘</small></h3><p>六十四卦经传研读 / 双环星象罗盘 / 上下卦推演</p></div><span class="go">打开 →</span></div>
         </a>
         <a class="work rise" href="/translate.html">
-          <img src="assets/card-tr.webp" alt="翻译">
-          <div class="wb"><div><h3>翻译 <small>五语秒翻 · 二合一</small></h3><p>中英日维蒙毫秒级并发直连 / 本地离线自动切换 / 语音朗读</p></div><span class="go">打开 →</span></div>
+          <img src="assets/card-tr.webp" decoding="async" alt="翻译">
+          <div class="wb"><div><h3>翻译 <small>中·英·日·俄·维</small></h3><p>支持中英日俄维五种语言 / 默认自动转英语 / 语音朗读</p></div><span class="go">打开 →</span></div>
         </a>
         <a class="work rise tall" href="/ktv.html">
-          <img src="assets/card-ktv.webp" alt="私人歌单">
+          <img src="assets/card-ktv.webp" decoding="async" alt="私人歌单">
           <div class="wb"><div><h3>私人歌单 <small>随身曲库</small></h3><p>随机抽歌 🎲 / 曲风与歌手快筛 / 本场已唱标记 / 批量导入</p></div><span class="go">打开 →</span></div>
         </a>
         <a class="work rise" href="/calc.html">
-          <img src="assets/card-calc.webp" alt="计算">
-          <div class="wb"><div><h3>计算 <small>日常工具</small></h3><p>括号与百分比运算 / 历史算式回溯 / 全键盘快捷键</p></div><span class="go">打开 →</span></div>
+          <img src="assets/card-calc.webp" decoding="async" alt="计算">
+          <div class="wb"><div><h3>计算 <small>实用速算 · 大写金额</small></h3><p>算式实时预览 / 人民币大写转换 / 折扣与 AA 分账速算 / 历史账本求和</p></div><span class="go">打开 →</span></div>
         </a>
       </div>
     </div>
@@ -558,7 +566,7 @@
       <div class="lab-list">
         <div class="lab-row rise"><span class="no">01</span><div><h3>音乐搭子</h3><p>对着玩具说话，电脑就放歌、切歌、调音量</p></div><span class="tag">小智 MCP</span></div>
         <div class="lab-row rise"><span class="no">02</span><div><h3>电脑控制</h3><p>音量、亮度、息屏、开关应用、语音打字</p></div><span class="tag">27 tools</span></div>
-        <div class="lab-row rise"><span class="no">03</span><div><h3>五语极速/离线双模互译</h3><p>在线毫秒级并发直连，启动本地 620MB 模型后断网也能翻</p></div><span class="tag">Fast + NLLB</span></div>
+        <div class="lab-row rise"><span class="no">03</span><div><h3>多语种在线/离线双模翻译</h3><p>支持中英日俄维，默认自动转英语，启动本地模型后断网也能翻</p></div><span class="tag">Fast + NLLB</span></div>
         <div class="lab-row rise"><span class="no">04</span><div><h3>这个站</h3><p>单文件页面，Canvas + SVG + CSS 手写，无框架</p></div><span class="tag">static</span></div>
       </div>
     </div>
@@ -621,7 +629,7 @@
     } else {
       sessionStorage.setItem('wmv-intro', '1');
       var CURVE = [[0,0],[.18,22],[.36,55],[.54,80],[.72,88],[.88,96],[1,100]];
-      var DUR = 1080, t0 = performance.now();
+      var DUR = 980, t0 = performance.now();
       function value(t){
         for (var i = 1; i < CURVE.length; i++){
           if (t <= CURVE[i][0]){
@@ -637,8 +645,8 @@
         if (t < 1) requestAnimationFrame(frame);
         else setTimeout(function(){
           intro.classList.add('cut');
-          setTimeout(function(){ intro.remove(); }, 130);
-        }, 200);
+          setTimeout(function(){ intro.remove(); }, 120);
+        }, 160);
       })(t0);
     }
   }
@@ -648,18 +656,59 @@
     qianqian: ''
   };
 
-  /* ---------- 小王子 B612 四幕切换（由底部连续轮转卡带驱动） ---------- */
+  /* ---------- 《小王子》16 条精选治愈名言（随卡片切换轮播） ---------- */
+  var QUOTES = [
+    '“真正重要的东西，用眼睛是看不见的，要用心去感受。”',
+    '“你在你的玫瑰花身上耗费的时间，使你的玫瑰花变得如此重要。”',
+    '“如果你驯养了我，我们就互相需要了。对我来说，你就是独一无二的了。”',
+    '“星星发亮，是为了让每一个人有一天都能找到属于自己的星。”',
+    '“所有的大人都曾经是小孩，虽然，只有少数的人记得。”',
+    '“要是有人爱上一朵花，天上的千万颗星星里只有一颗有她，仰望繁星就会很快乐。”',
+    '“沙漠之所以美丽，是因为它在某个地方藏着一口井。”',
+    '“如果你说你在下午四点来，从三点钟开始，我就开始感觉很快乐。”',
+    '“一旦你驯服了什么，就要对她负责，永远的负责。”',
+    '“当你仰望星空时，既然我就住在其中一颗星星上笑，那么对你来说，就好像所有的星星都在笑。”',
+    '“语言是误解的源泉，但心与心的靠近不需要太多言语。”',
+    '“这是我的秘密，再简单不过的秘密：一个人只有用心去看，才能看到真实。”',
+    '“如果你想跟别人制造羁绊，就要承受流泪的风险。”',
+    '“我始终认为一个人可以很天真简单地活下去，必是身边有人用更大的代价守护而来的。”',
+    '“每个人心底都有一颗属于自己的 B612 星球，那里有一朵需要守护的玫瑰。”',
+    '“走得再远，也别忘了当初出发时仰望的那片星空。”'
+  ];
+  var quoteEl = document.getElementById('b612Quote');
+  var quoteCursor = -1;
+  var quoteTimer = null;
+
+  function nextQuote(){
+    if (!quoteEl) return;
+    quoteCursor = (quoteCursor + 1) % QUOTES.length;
+    var nextTxt = QUOTES[quoteCursor];
+    if (quoteCursor === 0 && quoteEl.textContent === nextTxt) return;
+    quoteEl.classList.add('fade');
+    clearTimeout(quoteTimer);
+    quoteTimer = setTimeout(function(){
+      quoteEl.textContent = nextTxt;
+      quoteEl.classList.remove('fade');
+    }, 180);
+  }
+
+  /* ---------- 小王子 B612 四幕切换（预解码防闪白） ---------- */
   var slides = [].slice.call(document.querySelectorAll('#b612Stage .b612-slide'));
+  slides.forEach(function(img){
+    if (img.decode) img.decode().catch(function(){});
+  });
   var curScene = -1;
   function setPrinceScene(idx){
     if (!slides.length) return;
     idx = ((idx % slides.length) + slides.length) % slides.length;
     if (idx === curScene) return;
     curScene = idx;
-    slides.forEach(function(s, k){ s.classList.toggle('on', k === idx); });
+    for (var k = 0; k < slides.length; k++){
+      slides[k].classList.toggle('on', k === idx);
+    }
   }
 
-  /* ---------- 首尾连续轮转工具卡带（从右向左缓慢轮转 + 手动拖拽跟随 + 松手 1 秒后恢复轮转） ---------- */
+  /* ---------- 120Hz 原生高刷零布局抖动连续轮转卡带 ---------- */
   var theme = document.getElementById('theme');
   var sky = document.getElementById('sky');
   var deck = document.getElementById('deck');
@@ -668,13 +717,12 @@
 
   if (deck && track){
     var origCards = [].slice.call(track.querySelectorAll('.card'));
-    var N = origCards.length; /* 4 张：0 学易经, 1 翻译, 2 计算, 3 私人歌单 */
+    var N = origCards.length;
 
-    /* 复制两组追加到轨道末尾（共 3 组 12 张），实现完美无缝首尾连续循环 */
+    /* 复制两组追加到轨道末尾（共 3 组 12 张），实现完美无缝循环 */
     for (var copy = 0; copy < 2; copy++){
       origCards.forEach(function(c){
-        var clone = c.cloneNode(true);
-        track.appendChild(clone);
+        track.appendChild(c.cloneNode(true));
       });
     }
 
@@ -687,78 +735,90 @@
       el.setAttribute('rel', 'noopener');
     });
 
+    /* 缓存所有几何坐标，避免在 120Hz 渲染循环中读取 offsetLeft 造成强制同步重排 */
     var setWidth = 0;
+    var deckWidth = 0;
+    var focalOffset = 0;
+    var cardCenters = [];
     var pos = 0;
+    var activeCardPosIdx = -1;
     var activeRealIdx = -1;
     var isDragging = false;
-    var dragStartX = 0;
     var dragLastX = 0;
     var dragMoved = 0;
     var resumeAt = 0;
-    varSPEED = 42; /* 每秒从右向左平滑推进 42px */
+    var speedPxPerSec = 68;
 
-    function measureSet(){
+    function measureGeometry(){
+      deckWidth = deck.clientWidth || innerWidth;
+      var isMob = innerWidth <= 900;
+      focalOffset = deckWidth * (isMob ? 0.36 : 0.28);
+      speedPxPerSec = isMob ? 54 : 68;
+      cardCenters = new Array(allCards.length);
+      for (var i = 0; i < allCards.length; i++){
+        var c = allCards[i];
+        cardCenters[i] = c.offsetLeft + c.offsetWidth * 0.5;
+      }
       if (allCards.length >= N * 2){
         var w = allCards[N].offsetLeft - allCards[0].offsetLeft;
-        if (w > 100){
-          if (setWidth === 0) pos = w; /* 初始定位于中间第 2 组起点 */
+        if (w > 80){
+          if (setWidth === 0) pos = w;
           setWidth = w;
         }
       }
     }
 
-    function wrapPos(){
+    function syncActiveCard(){
       if (setWidth <= 0) return;
       while (pos >= setWidth * 2) pos -= setWidth;
       while (pos < setWidth) pos += setWidth;
-    }
-
-    function applyThemeAndPrince(cardEl){
-      var idx = Number(cardEl.getAttribute('data-idx') || 0);
-      if (idx !== activeRealIdx){
-        activeRealIdx = idx;
-        root.style.setProperty('--lime', cardEl.dataset.ac);
-        root.style.setProperty('--tint', cardEl.dataset.tint);
-        theme.style.background = cardEl.dataset.bg;
-        setPrinceScene(idx);
-      }
-    }
-
-    function updateCards(){
-      if (!setWidth) measureSet();
-      wrapPos();
       track.style.transform = 'translate3d(' + (-pos.toFixed(2)) + 'px,0,0)';
 
-      /* 以视口左侧偏中作为焦点检测线：当下一张卡片从右向左滑过焦点线时，自动切换高亮、小王子与主题 */
-      var focalRatio = innerWidth <= 900 ? 0.42 : 0.28;
-      var focalX = pos + deck.clientWidth * focalRatio;
-      var bestCard = allCards[N];
+      var focalX = pos + focalOffset;
+      var bestI = N;
       var minDist = 1e9;
-      for (var i = 0; i < allCards.length; i++){
-        var c = allCards[i];
-        var center = c.offsetLeft + c.offsetWidth * 0.5;
-        var d = Math.abs(center - focalX);
+      for (var i = 0; i < cardCenters.length; i++){
+        var d = Math.abs(cardCenters[i] - focalX);
         if (d < minDist){
           minDist = d;
-          bestCard = c;
+          bestI = i;
         }
       }
-      var activeIdx = Number(bestCard.getAttribute('data-idx') || 0);
-      for (var j = 0; j < allCards.length; j++){
-        var isMatch = (allCards[j] === bestCard);
-        allCards[j].classList.toggle('on', isMatch);
+      /* 仅当焦点卡片真正发生变化时才更新 DOM class、小王子场景、主题色与名言！ */
+      if (bestI !== activeCardPosIdx){
+        if (activeCardPosIdx >= 0 && allCards[activeCardPosIdx]){
+          allCards[activeCardPosIdx].classList.remove('on');
+        }
+        activeCardPosIdx = bestI;
+        var bestCard = allCards[bestI];
+        bestCard.classList.add('on');
+
+        var realIdx = Number(bestCard.getAttribute('data-idx') || 0);
+        if (realIdx !== activeRealIdx){
+          activeRealIdx = realIdx;
+          root.style.setProperty('--lime', bestCard.dataset.ac);
+          root.style.setProperty('--tint', bestCard.dataset.tint);
+          theme.style.background = bestCard.dataset.bg;
+          setPrinceScene(realIdx);
+          nextQuote();
+        }
       }
-      applyThemeAndPrince(bestCard);
     }
 
-    measureSet();
-    updateCards();
-    addEventListener('resize', function(){ measureSet(); updateCards(); });
+    measureGeometry();
+    syncActiveCard();
+    addEventListener('resize', function(){
+      measureGeometry();
+      syncActiveCard();
+    });
+    addEventListener('load', function(){
+      measureGeometry();
+      syncActiveCard();
+    });
 
-    /* 手动拖拽与手指滑动：暂停自动轮转、1:1 跟随手动位移，松手 1.0 秒后继续从右向左轮转 */
+    /* 手动拖拽与手指滑动：暂停自动轮转、1:1 跟随手动位移，松手 1.0 秒后继续轮转 */
     function onStart(clientX){
       isDragging = true;
-      dragStartX = clientX;
       dragLastX = clientX;
       dragMoved = 0;
       deck.classList.add('dragging');
@@ -769,13 +829,13 @@
       dragLastX = clientX;
       dragMoved += Math.abs(dx);
       pos -= dx;
-      updateCards();
+      syncActiveCard();
     }
     function onEnd(){
       if (!isDragging) return;
       isDragging = false;
       deck.classList.remove('dragging');
-      resumeAt = performance.now() + 1000; /* 手松开 1 秒后再继续轮转 */
+      resumeAt = performance.now() + 1000;
     }
 
     deck.addEventListener('mousedown', function(e){
@@ -785,7 +845,7 @@
     });
     addEventListener('mousemove', function(e){
       if (isDragging) onMove(e.clientX);
-    });
+    }, { passive: true });
     addEventListener('mouseup', onEnd);
     addEventListener('mouseleave', onEnd);
 
@@ -800,7 +860,6 @@
     deck.addEventListener('touchend', onEnd, { passive: true });
     deck.addEventListener('touchcancel', onEnd, { passive: true });
 
-    /* 区分拖拽与点击：如果手指/鼠标发生了拖拽滑动，不触发卡片跳转；轻点才跳转 */
     track.addEventListener('click', function(e){
       if (dragMoved > 6){
         e.preventDefault();
@@ -808,35 +867,46 @@
       }
     }, true);
 
-    /* 连续动画主循环 */
+    /* 120Hz 原生高刷主循环（零强制同步布局，纯 GPU 位移） */
     var lastT = performance.now();
+    var heroVisible = true;
     (function loop(now){
-      var dt = Math.min(0.06, Math.max(0, (now - lastT) / 1000));
+      var dt = Math.min(0.05, Math.max(0, (now - lastT) * 0.001));
       lastT = now;
-      if (!reduce && !isDragging && now >= resumeAt && scrollY < innerHeight * 0.9){
-        pos += varSPEED * dt;
-        updateCards();
+      if (!reduce && !isDragging && now >= resumeAt && heroVisible){
+        pos += speedPxPerSec * dt;
+        syncActiveCard();
       }
       requestAnimationFrame(loop);
     })(lastT);
-  }
 
-  function onScroll(){
-    var fade = Math.min(1, Math.max(0, scrollY / (innerHeight * 0.9)));
-    sky.style.opacity = String(1 - fade * 0.85);
-    sky.style.transform = 'scale(' + (1.04 + fade * 0.05) + ') translateY(' + (scrollY * 0.05) + 'px)';
+    /* 滚动节流合成 */
+    var scrollTicking = false;
     var rail = document.getElementById('rail');
-    if (scrollY > 220) rail.classList.add('hide'); else rail.classList.remove('hide');
+    function updateScroll(){
+      scrollTicking = false;
+      var sy = scrollY;
+      var ih = innerHeight;
+      heroVisible = (sy < ih * 0.95);
+      var fade = Math.min(1, Math.max(0, sy / (ih * 0.9)));
+      sky.style.opacity = (1 - fade * 0.82).toFixed(3);
+      sky.style.transform = 'translate3d(0,' + (sy * 0.04).toFixed(1) + 'px,0) scale(' + (1.04 + fade * 0.04).toFixed(3) + ')';
+      if (sy > 220) rail.classList.add('hide'); else rail.classList.remove('hide');
+    }
+    addEventListener('scroll', function(){
+      if (!scrollTicking){
+        scrollTicking = true;
+        requestAnimationFrame(updateScroll);
+      }
+    }, { passive: true });
+    updateScroll();
   }
-  addEventListener('scroll', onScroll, { passive: true });
-  addEventListener('resize', onScroll);
-  onScroll();
 
   /* ---------- 进场动画 ---------- */
   var io = new IntersectionObserver(function(es){
     es.forEach(function(e){ if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
   }, { rootMargin: '0px 0px -2% 0px', threshold: .04 });
-  document.querySelectorAll('.rise').forEach(function(el, i){ el.style.transitionDelay = (i % 4) * 70 + 'ms'; io.observe(el); });
+  document.querySelectorAll('.rise').forEach(function(el, i){ el.style.transitionDelay = (i % 4) * 60 + 'ms'; io.observe(el); });
 
   /* ---------- 核心功能卡片 & 作品卡片交互 ---------- */
   var sk = Array.prototype.slice.call(document.querySelectorAll('#stackGrid .sk'));
@@ -861,38 +931,11 @@
       if (paused) return;
       litSk(idx % sk.length);
       idx++;
-    }, 2200);
-
-    addEventListener('scroll', function(){
-      if (innerWidth > 900) return;
-      var mid = innerHeight * 0.52;
-      var bestW = -1, minW = 1e9;
-      works.forEach(function(w, i){
-        var r = w.getBoundingClientRect();
-        if (r.bottom < 80 || r.top > innerHeight - 80) return;
-        var d = Math.abs((r.top + r.bottom) / 2 - mid);
-        if (d < minW){ minW = d; bestW = i; }
-      });
-      works.forEach(function(w, i){ w.classList.toggle('m-lit', i === bestW); });
-
-      var bestS = -1, minS = 1e9;
-      sk.forEach(function(s, i){
-        var r = s.getBoundingClientRect();
-        if (r.bottom < 80 || r.top > innerHeight - 80) return;
-        var d = Math.abs((r.top + r.bottom) / 2 - mid);
-        if (d < minS){ minS = d; bestS = i; }
-      });
-      if (bestS !== -1){
-        paused = true;
-        litSk(bestS);
-        clearTimeout(resumeTimer);
-        resumeTimer = setTimeout(function(){ paused = false; }, 2400);
-      }
-    }, { passive: true });
+    }, 2400);
   }
 
   /* ---------- 灯箱 ---------- */
-  var lb = document.getElementById('lb'), lbImg = document.getElementById('lbImg'), lbCap = document.getElementById('lbCap');
+  var lb = document.getElementById('lb');
   function closeLb(){ lb.classList.remove('on'); }
   document.getElementById('lbX').addEventListener('click', closeLb);
   lb.addEventListener('click', function(e){ if (e.target === lb) closeLb(); });
@@ -935,7 +978,7 @@
         scheduleMeteor();
       }, 5200 + Math.random() * 4600);
     }
-    setTimeout(function(){ spawnOneMeteor(68, 14); }, 1800);
+    setTimeout(function(){ spawnOneMeteor(68, 14); }, 1600);
     scheduleMeteor();
   }
 })();

@@ -1,116 +1,129 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="zh-CN" style="background:#070912">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#07080a">
+<meta name="theme-color" content="#070912">
 <title>计算器 · WM的空间站</title>
-<meta name="description" content="能算括号和百分比的网页计算器，带历史记录。">
+<meta name="description" content="实用随身计算器：支持括号、折扣速算、AA均摊、人民币大写金额转换与历史账本自动求和。">
 <style>
   :root{
-    --bg:#07080a; --ink:#ececf1; --dim:#8b8b96; --line:rgba(255,255,255,.09);
-    --mint:#5ee0a8; --glass:rgba(20,22,28,.66);
+    --bg:#070912; --ink:#ececf1; --dim:#8b93a4; --line:rgba(255,255,255,.10);
+    --gold:#ffd166; --mint:#5ee0a8; --glass:rgba(16,20,30,.75);
   }
   *{box-sizing:border-box}
-  html,body{margin:0}
+  html,body{margin:0; background:var(--bg)}
   body{
     min-height:100svh; color:var(--ink);
     font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
     -webkit-font-smoothing:antialiased;
-    background:var(--bg) url(assets/bg.webp) center/cover no-repeat fixed;
+    background:var(--bg) url(assets/sky-b612.webp) center/cover no-repeat fixed;
   }
   body::before{
     content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
-    background:linear-gradient(180deg,rgba(7,8,10,.74),rgba(7,8,10,.9) 42%,#07080a 100%);
+    background:linear-gradient(180deg,rgba(7,9,18,.78),rgba(7,9,18,.92) 48%,#070912 100%);
   }
-  .wrap{position:relative; z-index:1; width:min(560px,92vw); margin:0 auto; padding:26px 0 64px}
+  .wrap{position:relative; z-index:1; width:min(580px,93vw); margin:0 auto; padding:24px 0 64px}
 
-  .topbar{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:28px}
-  .back{display:inline-flex; align-items:center; gap:7px; text-decoration:none; color:var(--dim); font-size:13px; transition:color .25s}
-  .back:hover{color:var(--mint)}
+  .topbar{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:20px}
+  .back{display:inline-flex; align-items:center; gap:7px; text-decoration:none; color:var(--dim); font-size:13px; transition:color .2s}
+  .back:hover{color:var(--gold)}
   .back svg{width:14px;height:14px}
   .badge{
-    display:inline-flex; align-items:center; gap:8px; padding:6px 12px; border-radius:999px;
-    background:rgba(94,224,168,.09); border:1px solid rgba(94,224,168,.26);
-    font:600 11px/1 ui-monospace,monospace; letter-spacing:.14em; color:#a9f2d4;
+    display:inline-flex; align-items:center; gap:8px; padding:5px 12px; border-radius:999px;
+    background:rgba(255,209,102,.1); border:1px solid rgba(255,209,102,.28);
+    font:600 11px/1 ui-monospace,monospace; letter-spacing:.1em; color:#ffe49e;
   }
-  .badge i{width:5px;height:5px;border-radius:50%;background:var(--mint);box-shadow:0 0 10px var(--mint)}
+  .badge i{width:5px;height:5px;border-radius:50%;background:var(--gold);box-shadow:0 0 8px var(--gold)}
 
-  .kick{font:600 11px/1 ui-monospace,monospace; letter-spacing:.2em; text-transform:uppercase; color:var(--mint); margin-bottom:12px}
-  h1{margin:0 0 22px; font-size:clamp(30px,6vw,42px); line-height:1.1; letter-spacing:-.03em; font-weight:800}
-  h1 em{font-style:normal; background:linear-gradient(92deg,#fff 10%,#cfe4ff 45%,var(--mint) 88%);
-    -webkit-background-clip:text; background-clip:text; color:transparent}
+  .head-row{display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:16px}
+  h1{margin:0; font-size:clamp(26px,5vw,36px); line-height:1.1; letter-spacing:-.02em; font-weight:800}
+  h1 em{font-style:normal; color:var(--gold)}
+  .lead{margin:0; font-size:13px; color:var(--dim)}
 
   .calc{
     border:1px solid var(--line); border-radius:22px; overflow:hidden;
-    background:var(--glass); backdrop-filter:blur(18px) saturate(1.2); -webkit-backdrop-filter:blur(18px) saturate(1.2);
-    box-shadow:0 30px 70px -50px #000, 0 1px 0 rgba(255,255,255,.06) inset;
+    background:var(--glass); box-shadow:0 26px 60px -36px #000;
   }
-  .screen{padding:20px 20px 14px; text-align:right; border-bottom:1px solid rgba(255,255,255,.06)}
+  .screen{padding:18px 20px 14px; text-align:right; border-bottom:1px solid rgba(255,255,255,.07)}
   .expr{
-    min-height:24px; font:500 14px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;
-    color:#8b95a6; letter-spacing:.02em; word-break:break-all;
+    min-height:24px; font:500 14.5px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;
+    color:#94a0b4; letter-spacing:.02em; word-break:break-all;
   }
-  .expr .caret{color:var(--mint)}
+  .expr .caret{color:var(--gold)}
   .result{
-    margin-top:6px; font-weight:700; font-size:clamp(30px,7.4vw,44px); line-height:1.15;
-    letter-spacing:-.02em; word-break:break-all; transition:color .2s;
+    margin-top:4px; font-weight:800; font-size:clamp(30px,7vw,44px); line-height:1.15;
+    letter-spacing:-.02em; word-break:break-all; color:#fff;
   }
   .result.err{color:#ff9d9d; font-size:clamp(20px,4vw,26px)}
-  .sub{min-height:18px; margin-top:4px; font:600 11px/1.4 ui-monospace,monospace; letter-spacing:.06em; color:#5f6a79}
+  .sub-row{display:flex; align-items:center; justify-content:space-between; gap:8px; margin-top:8px; min-height:22px}
+  .cn-upper{font-size:12px; color:#ffd980; text-align:left; word-break:break-all; flex:1}
+  .sub{font:600 11.5px/1.4 ui-monospace,monospace; color:#7b8698}
+
+  /* 实用速算快捷栏：折扣、AA均摊、税率 */
+  .quick-ops{
+    display:flex; align-items:center; gap:6px; padding:10px 14px; overflow-x:auto; scrollbar-width:none;
+    border-bottom:1px solid rgba(255,255,255,.06); background:rgba(255,255,255,.02);
+  }
+  .quick-ops::-webkit-scrollbar{display:none}
+  .q-lbl{font:700 11px/1 inherit; color:#758094; white-space:nowrap; margin-right:2px}
+  .q-btn{
+    appearance:none; border:1px solid rgba(255,209,102,.2); background:rgba(255,209,102,.07);
+    color:#ffe299; font:600 11.5px/1 inherit; padding:6px 10px; border-radius:8px; cursor:pointer;
+    white-space:nowrap; transition:all .15s ease;
+  }
+  .q-btn:hover{background:rgba(255,209,102,.18); border-color:rgba(255,209,102,.45); color:#fff}
 
   .keys{display:grid; grid-template-columns:repeat(4,1fr); gap:9px; padding:14px}
   .key{
-    appearance:none; border:1px solid rgba(255,255,255,.075); background:rgba(255,255,255,.045);
-    color:#e9eef7; font:600 19px/1 inherit; padding:0; height:54px; border-radius:14px; cursor:pointer;
-    transition:background .16s ease, transform .1s ease, border-color .16s ease;
+    appearance:none; border:1px solid rgba(255,255,255,.08); background:rgba(255,255,255,.045);
+    color:#eef2f8; font:600 19px/1 inherit; padding:0; height:54px; border-radius:14px; cursor:pointer;
+    transition:background .15s ease, transform .08s ease, border-color .15s ease;
     display:grid; place-items:center; user-select:none; -webkit-tap-highlight-color:transparent;
   }
-  .key:hover{background:rgba(255,255,255,.09); border-color:rgba(255,255,255,.16)}
+  .key:hover{background:rgba(255,255,255,.1); border-color:rgba(255,255,255,.18)}
   .key:active{transform:scale(.97)}
-  .key:focus-visible{outline:2px solid rgba(94,224,168,.7); outline-offset:2px}
-  .key.op{color:#bfe9d7; background:rgba(94,224,168,.07); border-color:rgba(94,224,168,.16)}
-  .key.op:hover{background:rgba(94,224,168,.13)}
-  .key.fn{color:#9aa5b6; font-size:15px; background:rgba(255,255,255,.03)}
+  .key.op{color:#ffe299; background:rgba(255,209,102,.08); border-color:rgba(255,209,102,.2)}
+  .key.op:hover{background:rgba(255,209,102,.16)}
+  .key.fn{color:#9ca7b8; font-size:15px; background:rgba(255,255,255,.03)}
   .key.eq{
-    grid-column:span 3; background:linear-gradient(180deg,#8ff0c6,#4fd6a0); color:#04120c;
-    border-color:transparent; box-shadow:0 16px 34px -22px rgba(94,224,168,.95); font-size:21px;
+    grid-column:span 2; background:linear-gradient(180deg,#ffe082,#ffc247); color:#181102;
+    border-color:transparent; box-shadow:0 14px 30px -18px rgba(255,209,102,.9); font-weight:800; font-size:21px;
   }
-  .key.eq:hover{filter:brightness(1.05); background:linear-gradient(180deg,#9df6cf,#57dea6)}
-  .key.span2{grid-column:span 2}
+  .key.eq:hover{filter:brightness(1.05)}
 
   .toolrow{display:flex; gap:8px; padding:0 14px 14px; flex-wrap:wrap}
   .tbtn{
     appearance:none; border:1px solid rgba(255,255,255,.1); background:rgba(255,255,255,.04);
-    color:#b9c2d0; font:600 12px/1 inherit; padding:9px 12px; border-radius:9px; cursor:pointer;
-    transition:all .2s ease;
+    color:#c0c9d8; font:600 12px/1 inherit; padding:8px 11px; border-radius:9px; cursor:pointer;
+    transition:all .18s ease;
   }
-  .tbtn:hover{color:#eafff6; border-color:rgba(94,224,168,.4); background:rgba(94,224,168,.08)}
-  .tbtn:disabled{opacity:.4; cursor:not-allowed}
+  .tbtn:hover{color:#fff; border-color:rgba(255,209,102,.45); background:rgba(255,209,102,.1)}
   .spacer{flex:1}
 
-  .hist{margin-top:20px}
-  .hist h2{font:600 11px/1 ui-monospace,monospace; letter-spacing:.2em; text-transform:uppercase; color:#6b7484; margin:0 0 10px}
+  /* 历史账本 + 自动累计求和 */
+  .hist{margin-top:18px; border:1px solid var(--line); border-radius:18px; background:var(--glass); padding:14px 16px}
+  .hist-head{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px; flex-wrap:wrap}
+  .hist-head h2{font:700 12.5px/1 inherit; color:#9ba6b8; margin:0}
+  .hist-sum{font:700 12.5px/1 ui-monospace,monospace; color:var(--gold); cursor:pointer; padding:4px 9px; border-radius:7px; background:rgba(255,209,102,.1); border:1px solid rgba(255,209,102,.24)}
+  .hist-sum:hover{background:rgba(255,209,102,.2)}
   .hitem{
     display:flex; align-items:center; gap:12px; width:100%; text-align:left;
-    border:1px solid rgba(255,255,255,.07); background:rgba(255,255,255,.028);
-    border-radius:12px; padding:10px 14px; margin-bottom:7px; cursor:pointer; color:inherit;
-    transition:all .18s ease; font:inherit;
+    border:1px solid rgba(255,255,255,.07); background:rgba(255,255,255,.03);
+    border-radius:11px; padding:9px 13px; margin-bottom:6px; cursor:pointer; color:inherit;
+    transition:all .15s ease; font:inherit;
   }
-  .hitem:hover{border-color:rgba(94,224,168,.3); background:rgba(94,224,168,.05)}
+  .hitem:hover{border-color:rgba(255,209,102,.35); background:rgba(255,209,102,.06)}
   .hitem .e{flex:1; min-width:0; color:#8b95a6; font:500 12.5px/1.4 ui-monospace,monospace; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
-  .hitem .r{font-weight:700; font-size:14px; color:#dfe8f2; max-width:48%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
-  .empty{color:#5f6a79; font-size:12.5px}
-
-  .note{margin-top:18px; color:#6b7484; font-size:12px; line-height:1.7}
+  .hitem .r{font-weight:700; font-size:14px; color:#fff; max-width:48%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+  .empty{color:#626d7e; font-size:12.5px; padding:4px 0}
 
   @media(max-width:560px){
     body{background-attachment:scroll}
-    .wrap{padding:20px 0 52px}
+    .wrap{padding:18px 0 48px}
     .key{height:50px; font-size:18px; border-radius:12px}
     .keys{gap:8px; padding:12px}
   }
-  @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
@@ -124,14 +137,33 @@
     <span class="badge"><i></i>CALCULATOR</span>
   </div>
 
-  <div class="kick">Number crunching</div>
-  <h1>算得<em>清清楚楚</em></h1>
+  <div class="head-row">
+    <h1>实用<em>计算器</em></h1>
+    <p class="lead">支持括号算式 · 折扣与 AA 均摊 · 大写金额 · 账本自动求和</p>
+  </div>
 
   <div class="calc">
     <div class="screen">
       <div class="expr" id="expr">&nbsp;</div>
       <div class="result" id="result" aria-live="polite">0</div>
-      <div class="sub" id="sub"></div>
+      <div class="sub-row">
+        <div class="cn-upper" id="cnUpper">零元整</div>
+        <div class="sub" id="sub"></div>
+      </div>
+    </div>
+
+    <!-- 实用速算栏 -->
+    <div class="quick-ops" id="quickOps">
+      <span class="q-lbl">速算:</span>
+      <button class="q-btn" type="button" data-mul="*0.9" title="打九折">9折</button>
+      <button class="q-btn" type="button" data-mul="*0.88" title="打八八折">88折</button>
+      <button class="q-btn" type="button" data-mul="*0.85" title="打八五折">85折</button>
+      <button class="q-btn" type="button" data-mul="*0.8" title="打八折">8折</button>
+      <button class="q-btn" type="button" data-mul="/2" title="2人AA均摊">÷2人</button>
+      <button class="q-btn" type="button" data-mul="/3" title="3人AA均摊">÷3人</button>
+      <button class="q-btn" type="button" data-mul="/4" title="4人AA均摊">÷4人</button>
+      <button class="q-btn" type="button" data-mul="*1.06" title="含6%税">+6%税</button>
+      <button class="q-btn" type="button" data-mul="*1.13" title="含13%税">+13%税</button>
     </div>
 
     <div class="keys" id="keys">
@@ -156,31 +188,32 @@
       <button class="key op" data-k="-" type="button">−</button>
 
       <button class="key" data-k="0" type="button">0</button>
+      <button class="key" data-k="00" type="button">00</button>
       <button class="key" data-k="." type="button">.</button>
-      <button class="key fn" data-k="%" type="button">%</button>
       <button class="key op" data-k="+" type="button">+</button>
 
+      <button class="key fn" data-k="%" type="button">%</button>
       <button class="key fn" data-k="neg" type="button">±</button>
       <button class="key eq" data-k="=" type="button">=</button>
     </div>
 
     <div class="toolrow">
-      <button class="tbtn" id="copy" type="button">复制结果</button>
+      <button class="tbtn" id="copy" type="button">复制数字</button>
+      <button class="tbtn" id="copyCn" type="button">复制大写金额</button>
       <button class="tbtn" id="useResult" type="button">用结果继续算</button>
       <span class="spacer"></span>
-      <button class="tbtn" id="clearHist" type="button">清空历史</button>
+      <button class="tbtn" id="clearHist" type="button">清空账本</button>
     </div>
   </div>
 
   <div class="hist">
-    <h2>History</h2>
-    <div id="histList"><div class="empty">还没有计算记录</div></div>
+    <div class="hist-head">
+      <h2>算式历史账本（点击任意记录可回填）</h2>
+      <button class="hist-sum" id="histSumBtn" type="button" title="点击把账本合计金额填入计算器">账本合计：0</button>
+    </div>
+    <div id="histList"><div class="empty">还没有计算记录，按 = 号会自动记入账本并求和</div></div>
   </div>
 
-  <p class="note">
-    键盘也能用：数字、<code>+ − * /</code>、括号、<code>%</code>，回车等于，退格删除，Esc 清空。
-    输入时会实时预演结果，按等号才记录到历史。
-  </p>
 </div>
 
 <script>
@@ -188,17 +221,64 @@
   var exprEl = document.getElementById('expr');
   var resEl = document.getElementById('result');
   var subEl = document.getElementById('sub');
+  var cnUpperEl = document.getElementById('cnUpper');
   var histList = document.getElementById('histList');
+  var histSumBtn = document.getElementById('histSumBtn');
   var HKEY = 'wmv587.calc.hist';
 
-  var expr = '';        // 当前表达式
-  var shown = '0';      // 显示的结果
-  var justEq = false;   // 刚按过等号
+  var expr = '';
+  var shown = '0';
+  var justEq = false;
   var lastResult = '';
+  var currentVal = 0;
 
-  var OP = /[+\-*/()%]/;
+  /* ---------- 人民币大写金额转换 ---------- */
+  function toChineseRMB(num){
+    if (!isFinite(num) || Math.abs(num) >= 1e12) return '';
+    var neg = num < 0 ? '负' : '';
+    num = Math.abs(Math.round(num * 100) / 100);
+    if (num === 0) return '零元整';
+    var digits = ['零','壹','贰','叁','肆','伍','陆','柒','捌','玖'];
+    var radices = ['','拾','佰','仟'];
+    var bigRadices = ['','万','亿'];
+    var parts = num.toFixed(2).split('.');
+    var intPart = parts[0];
+    var decPart = parts[1];
+    var out = '';
+    if (parseInt(intPart, 10) > 0){
+      var zeroCount = 0;
+      var len = intPart.length;
+      for (var i = 0; i < len; i++){
+        var p = len - i - 1;
+        var d = intPart.substr(i, 1);
+        var quotient = Math.floor(p / 4);
+        var modulus = p % 4;
+        if (d === '0'){
+          zeroCount++;
+        } else {
+          if (zeroCount > 0) out += digits[0];
+          zeroCount = 0;
+          out += digits[Number(d)] + radices[modulus];
+        }
+        if (modulus === 0 && zeroCount < 4){
+          out += bigRadices[quotient];
+        }
+      }
+      out += '元';
+    }
+    var jiao = Number(decPart[0]);
+    var fen = Number(decPart[1]);
+    if (jiao === 0 && fen === 0){
+      out += '整';
+    } else {
+      if (jiao > 0) out += digits[jiao] + '角';
+      else if (parseInt(intPart, 10) > 0) out += '零';
+      if (fen > 0) out += digits[fen] + '分';
+    }
+    return neg + out;
+  }
 
-  /* ---------- 解析与求值（不用 eval） ---------- */
+  /* ---------- 解析与求值 ---------- */
   function tokenize(s){
     var t = [], i = 0, prev = 'start';
     while (i < s.length){
@@ -217,7 +297,6 @@
         prev = 'num'; i = j; continue;
       }
       if (c === '-' && (prev === 'start' || prev === 'op' || prev === '(')){
-        // 一元负号：并入后面的数字
         var k = i + 1;
         while (k < s.length && /[0-9.]/.test(s[k])) k++;
         if (k === i + 1) throw new Error('减号后面缺少数字');
@@ -237,8 +316,7 @@
     var out = [], stack = [];
     var prec = { '+':1, '-':1, '*':2, '/':2 };
     tokens.forEach(function(tk){
-      if (tk.type === 'num') out.push(tk);
-      else if (tk.type === 'pct') out.push(tk);
+      if (tk.type === 'num' || tk.type === 'pct') out.push(tk);
       else if (tk.type === 'op'){
         while (stack.length){
           var top = stack[stack.length - 1];
@@ -294,11 +372,9 @@
   function calc(s){
     if (!s.trim()) return null;
     var r = evalRPN(toRPN(tokenize(s)));
-    // 消掉浮点噪声：保留 12 位有效数字
     return parseFloat(r.toPrecision(12));
   }
 
-  /* ---------- 显示格式 ---------- */
   function fmt(n){
     if (!isFinite(n)) return '∞';
     var a = Math.abs(n);
@@ -311,7 +387,6 @@
     return (neg ? '-' : '') + parts.join('.');
   }
 
-  /* ---------- 渲染 ---------- */
   function prettyExpr(s){
     return s.replace(/\*/g, '×').replace(/\//g, '÷').replace(/-/g, '−').replace(/\+/g, '+');
   }
@@ -322,32 +397,40 @@
 
     if (justEq && shown) {
       resEl.textContent = shown;
-      subEl.textContent = lastResult ? '按「用结果继续算」接着写' : '';
+      cnUpperEl.textContent = toChineseRMB(currentVal);
+      subEl.textContent = '已记入下方账本';
       return;
     }
 
-    if (!expr.trim()){ resEl.textContent = '0'; subEl.textContent = ''; return; }
+    if (!expr.trim()){
+      currentVal = 0;
+      resEl.textContent = '0';
+      cnUpperEl.textContent = '零元整';
+      subEl.textContent = '';
+      return;
+    }
 
     try{
       var v = calc(expr);
+      currentVal = v || 0;
       resEl.textContent = v === null ? '0' : fmt(v);
-      subEl.textContent = '';
+      cnUpperEl.textContent = toChineseRMB(currentVal);
+      subEl.textContent = '实时预览';
     } catch(e){
-      // 输入未完成时不报错，只保留上一次合法预览
       if (e.message === '不能除以 0'){
         resEl.textContent = '不能除以 0';
         resEl.classList.add('err');
         subEl.textContent = '';
       } else {
-        subEl.textContent = '…';
+        subEl.textContent = '输入中…';
       }
     }
   }
 
-  function pushHistory(e, r){
+  function pushHistory(e, r, numVal){
     var list = loadHist();
-    list.unshift({ e:e, r:r, at:Date.now() });
-    list = list.slice(0, 12);
+    list.unshift({ e:e, r:r, v:numVal, at:Date.now() });
+    list = list.slice(0, 15);
     try{ localStorage.setItem(HKEY, JSON.stringify(list)); }catch(err){}
     renderHist();
   }
@@ -356,11 +439,20 @@
     try{ return JSON.parse(localStorage.getItem(HKEY) || '[]'); }catch(e){ return []; }
   }
 
+  var lastSum = 0;
   function renderHist(){
     var list = loadHist();
     histList.innerHTML = '';
+    var sum = 0;
+    list.forEach(function(x){
+      var n = typeof x.v === 'number' ? x.v : parseFloat(String(x.r || '0').replace(/,/g, ''));
+      if (isFinite(n)) sum += n;
+    });
+    lastSum = parseFloat(sum.toPrecision(12));
+    histSumBtn.textContent = '账本合计：' + fmt(lastSum);
+
     if (!list.length){
-      histList.innerHTML = '<div class="empty">还没有计算记录</div>';
+      histList.innerHTML = '<div class="empty">还没有计算记录，按 = 号会自动记入账本并求和</div>';
       return;
     }
     list.forEach(function(x){
@@ -371,18 +463,24 @@
       var r = document.createElement('span');
       r.className = 'r'; r.textContent = x.r;
       b.appendChild(e); b.appendChild(r);
-      b.title = '点一下，把这个算式填回去';
+      b.title = '点击回填该算式';
       b.addEventListener('click', function(){
-        expr = x.e; justEq = false; render(); resEl.focus && resEl.focus();
+        expr = x.e; justEq = false; render();
       });
       histList.appendChild(b);
     });
   }
 
-  /* ---------- 按键逻辑 ---------- */
+  histSumBtn.addEventListener('click', function(){
+    if (!lastSum) return;
+    expr = String(lastSum);
+    justEq = false;
+    render();
+  });
+
   function press(k){
     if (k === 'clear'){
-      expr = ''; justEq = false; shown = '0'; lastResult = '';
+      expr = ''; justEq = false; shown = '0'; lastResult = ''; currentVal = 0;
       render(); return;
     }
     if (k === 'back'){
@@ -392,7 +490,6 @@
     if (k === '='){ doEqual(); return; }
     if (k === 'neg'){
       if (justEq){ expr = String(shown).replace(/,/g, ''); justEq = false; }
-      // 给当前最后一段数字取反
       var m = expr.match(/(-?\d*\.?\d+)$/);
       if (m){
         var num = m[1];
@@ -405,7 +502,6 @@
     }
 
     if (justEq){
-      // 按了等号后再按数字/符号：等于把结果当新起点
       justEq = false;
       if (/[0-9.]/.test(k) || k === '(') expr = '';
       else expr = String(shown).replace(/,/g, '');
@@ -419,8 +515,6 @@
       if (tail.indexOf('.') >= 0) return;
       if (!tail) expr += '0';
       expr += '.';
-    } else if (k === '(' || k === ')'){
-      expr += k;
     } else {
       expr += k;
     }
@@ -432,14 +526,16 @@
     try{
       var v = calc(expr);
       if (v === null) return;
+      currentVal = v;
       shown = fmt(v);
       lastResult = fmt(v);
       resEl.textContent = fmt(v);
       resEl.classList.remove('err');
-      subEl.textContent = expr.length > 18 ? '' : '';
+      cnUpperEl.textContent = toChineseRMB(v);
       justEq = true;
-      pushHistory(expr, fmt(v));
-      exprEl.innerHTML = prettyExpr(expr) + ' <span style="color:#5f6a79">=</span>';
+      pushHistory(expr, fmt(v), v);
+      exprEl.innerHTML = prettyExpr(expr) + ' <span style="color:#ffd166">=</span>';
+      subEl.textContent = '已记入下方账本';
     } catch(e){
       resEl.textContent = e.message || '算式有误';
       resEl.classList.add('err');
@@ -453,14 +549,35 @@
     b.blur();
   });
 
+  /* 速算按钮：9折 / 88折 / AA均摊 / 税率 */
+  document.getElementById('quickOps').addEventListener('click', function(e){
+    var b = e.target.closest('.q-btn');
+    if (!b) return;
+    var suffix = b.getAttribute('data-mul');
+    var base = justEq ? String(shown).replace(/,/g, '') : (expr.trim() || String(currentVal || 0));
+    if (!base || base === '0') base = '100';
+    expr = /[+\-*/]/.test(base) ? '(' + base + ')' + suffix : base + suffix;
+    justEq = false;
+    doEqual();
+  });
+
   document.getElementById('copy').addEventListener('click', async function(){
     var txt = (justEq ? lastResult : resEl.textContent).replace(/,/g, '');
     try{
       await navigator.clipboard.writeText(txt);
-      this.textContent = '已复制';
-      var self = this;
-      setTimeout(function(){ self.textContent = '复制结果'; }, 1200);
-    }catch(e){ this.textContent = '复制不了'; }
+      var self = this; self.textContent = '✓ 已复制';
+      setTimeout(function(){ self.textContent = '复制数字'; }, 1200);
+    }catch(e){}
+  });
+
+  document.getElementById('copyCn').addEventListener('click', async function(){
+    var txt = cnUpperEl.textContent;
+    if (!txt) return;
+    try{
+      await navigator.clipboard.writeText(txt);
+      var self = this; self.textContent = '✓ 已复制大写';
+      setTimeout(function(){ self.textContent = '复制大写金额'; }, 1200);
+    }catch(e){}
   });
 
   document.getElementById('useResult').addEventListener('click', function(){
