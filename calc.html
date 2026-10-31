@@ -4,15 +4,16 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#070912">
-<title>计算器 · WM的空间站</title>
-<meta name="description" content="实用随身计算器：支持括号、折扣速算、AA均摊、人民币大写金额转换与历史账本自动求和。">
+<title>计算 · B612星球账房 · WM的空间站</title>
+<meta name="description" content="小王子星空绘本风实用计算器：内置双11网购满减凑单分摊算价、括号算式、人民币大写金额与账本自动求和。">
 <style>
   :root{
-    --bg:#070912; --ink:#ececf1; --dim:#8b93a4; --line:rgba(255,255,255,.10);
-    --gold:#ffd166; --mint:#5ee0a8; --glass:rgba(16,20,30,.75);
+    --bg:#070912; --ink:#f4f6fb; --dim:#9aa5b8; --line:rgba(255,228,158,.16);
+    --gold:#ffd875; --rose:#ff8da1; --mint:#7ef2b8; --blue:#8ce0ff;
+    --card:linear-gradient(165deg,rgba(16,22,40,.90),rgba(10,14,26,.94));
   }
   *{box-sizing:border-box}
-  html,body{margin:0; background:var(--bg)}
+  html,body{margin:0; background:var(--bg); overscroll-behavior-y:none}
   body{
     min-height:100svh; color:var(--ink);
     font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
@@ -21,30 +22,146 @@
   }
   body::before{
     content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
-    background:linear-gradient(180deg,rgba(7,9,18,.78),rgba(7,9,18,.92) 48%,#070912 100%);
+    background:radial-gradient(circle at 50% 16%, rgba(255,216,117,.12), transparent 55%),
+               linear-gradient(180deg,rgba(7,9,18,.68),rgba(7,9,18,.88) 52%,#070912 100%);
   }
-  .wrap{position:relative; z-index:1; width:min(580px,93vw); margin:0 auto; padding:24px 0 64px}
+  .wrap{position:relative; z-index:1; width:min(1140px,94vw); margin:0 auto; padding:14px 0 56px}
 
-  .topbar{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:20px}
-  .back{display:inline-flex; align-items:center; gap:7px; text-decoration:none; color:var(--dim); font-size:13px; transition:color .2s}
-  .back:hover{color:var(--gold)}
+  .topbar{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px}
+  .back{
+    display:inline-flex; align-items:center; gap:8px; text-decoration:none; color:#ffe6a3;
+    font-weight:700; font-size:13px; padding:7px 14px; border-radius:999px;
+    background:rgba(14,19,34,.82); border:1px solid rgba(255,224,140,.24); transition:transform .2s, background .2s;
+  }
+  .back:hover{background:var(--gold); color:#161004; transform:translate3d(-2px,0,0)}
   .back svg{width:14px;height:14px}
   .badge{
-    display:inline-flex; align-items:center; gap:8px; padding:5px 12px; border-radius:999px;
-    background:rgba(255,209,102,.1); border:1px solid rgba(255,209,102,.28);
-    font:600 11px/1 ui-monospace,monospace; letter-spacing:.1em; color:#ffe49e;
+    display:inline-flex; align-items:center; gap:8px; padding:6px 13px; border-radius:999px;
+    background:rgba(255,216,117,.10); border:1px solid rgba(255,216,117,.28);
+    font:600 11px/1 ui-monospace,monospace; letter-spacing:.1em; color:#ffe59e;
   }
-  .badge i{width:5px;height:5px;border-radius:50%;background:var(--gold);box-shadow:0 0 8px var(--gold)}
+  .badge i{width:6px;height:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 8px var(--gold)}
 
-  .head-row{display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:16px}
-  h1{margin:0; font-size:clamp(26px,5vw,36px); line-height:1.1; letter-spacing:-.02em; font-weight:800}
-  h1 em{font-style:normal; color:var(--gold)}
-  .lead{margin:0; font-size:13px; color:var(--dim)}
+  .story-head{
+    display:flex; align-items:center; justify-content:space-between; gap:18px;
+    padding:12px 18px; margin-bottom:12px; border-radius:18px;
+    border:1px solid var(--line); background:var(--card);
+    box-shadow:0 20px 50px -30px rgba(0,0,0,.85);
+  }
+  .sh-copy h1{margin:0; font-size:clamp(24px,4vw,34px); font-weight:900; letter-spacing:-.02em; display:flex; align-items:center; gap:10px; flex-wrap:wrap}
+  .sh-copy h1 em{font-style:normal; color:var(--gold)}
+  .sh-copy .quote{margin:6px 0 0; font-size:13px; color:#ffefb8; opacity:.88}
+  .sh-art{width:82px; height:68px; flex:0 0 82px; overflow:visible}
 
-  .calc{
+  .mode-tabs{display:none; gap:8px; margin-bottom:16px}
+  .m-tab{
+    flex:1; appearance:none; border:1px solid rgba(255,224,140,.22); background:rgba(13,18,32,.84);
+    color:#b8c2d4; font:800 13.5px/1 inherit; padding:12px 10px; border-radius:14px; cursor:pointer;
+    transition:all .2s;
+  }
+  .m-tab.on{background:linear-gradient(180deg,#ffe494,#ffc654); color:#181002; border-color:var(--gold)}
+
+  .main-grid{display:grid; grid-template-columns:1.12fr .88fr; gap:20px; align-items:start}
+
+  .panel-card{
     border:1px solid var(--line); border-radius:22px; overflow:hidden;
-    background:var(--glass); box-shadow:0 26px 60px -36px #000;
+    background:var(--card); box-shadow:0 26px 60px -34px rgba(0,0,0,.9);
   }
+  .p-head{
+    display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;
+    padding:16px 20px; border-bottom:1px solid rgba(255,255,255,.07);
+    background:rgba(255,216,117,.04);
+  }
+  .p-head h2{margin:0; font-size:17px; font-weight:800; color:#fff; display:flex; align-items:center; gap:8px}
+  .p-head h2 span{color:var(--gold)}
+  .p-head small{font-size:11.5px; color:var(--dim)}
+
+  .shop-body{padding:12px 16px 14px}
+  .preset-bar{display:flex; align-items:center; gap:6px; flex-wrap:wrap; margin-bottom:8px}
+  .preset-bar .lbl{font-size:11.5px; font-weight:700; color:var(--gold); margin-right:2px}
+  .p-chip{
+    appearance:none; border:1px solid rgba(255,216,117,.24); background:rgba(255,216,117,.08);
+    color:#ffe6a3; font:600 11.5px/1 inherit; padding:6px 10px; border-radius:999px; cursor:pointer;
+    transition:all .16s;
+  }
+  .p-chip:hover,.p-chip.on{background:var(--gold); color:#181002; border-color:var(--gold); font-weight:700}
+
+  .sec-lbl{display:flex; align-items:center; justify-content:space-between; font-size:12px; font-weight:700; color:#d5deed; margin:8px 0 6px}
+  .add-btn{
+    appearance:none; border:1px dashed rgba(126,242,184,.45); background:rgba(126,242,184,.08);
+    color:var(--mint); font:700 11.5px/1 inherit; padding:5px 10px; border-radius:8px; cursor:pointer;
+  }
+  .add-btn:hover{background:rgba(126,242,184,.18)}
+
+  .cart-list{display:grid; gap:5px; margin-bottom:8px}
+  .cart-row{
+    display:grid; grid-template-columns:auto 1fr 110px auto; gap:8px; align-items:center;
+    padding:5px 8px; border-radius:10px; background:rgba(255,255,255,.035); border:1px solid rgba(255,255,255,.07);
+  }
+  .role-tag{
+    appearance:none; border:1px solid rgba(255,141,161,.35); background:rgba(255,141,161,.12);
+    color:#ffb3c1; font:700 11px/1 inherit; padding:5px 8px; border-radius:7px; cursor:pointer; white-space:nowrap;
+  }
+  .role-tag.filler{border-color:rgba(140,224,255,.35); background:rgba(140,224,255,.10); color:var(--blue)}
+  .c-input{
+    width:100%; background:rgba(7,10,18,.65); border:1px solid rgba(255,255,255,.12); color:#fff;
+    font:600 13.5px/1 inherit; padding:7px 10px; border-radius:8px; outline:none;
+  }
+  .c-input:focus{border-color:var(--gold)}
+  .c-price{text-align:right; font-family:ui-monospace,monospace}
+  .del-btn{
+    appearance:none; border:0; background:rgba(255,255,255,.06); color:#9aa5b8;
+    width:26px; height:26px; border-radius:7px; cursor:pointer; font-size:13px; display:grid; place-items:center;
+  }
+  .del-btn:hover{background:rgba(255,107,139,.2); color:#ff9ebb}
+
+  .rules-grid{display:grid; grid-template-columns:1fr 1fr; gap:7px; margin-bottom:10px}
+  .rule-box{
+    padding:7px 10px; border-radius:11px; background:rgba(255,255,255,.03);
+    border:1px solid rgba(255,255,255,.07); display:flex; flex-direction:column; gap:6px;
+  }
+  .rule-box.wide{grid-column:1 / -1}
+  .rule-box label{font-size:11.5px; font-weight:700; color:#a9b4c8; display:flex; align-items:center; justify-content:space-between}
+  .inline-inputs{display:flex; align-items:center; gap:6px; flex-wrap:wrap; font-size:12.5px; color:#d5deed}
+  .inline-inputs input, .inline-inputs select{
+    background:rgba(7,10,18,.75); border:1px solid rgba(255,255,255,.14); color:#ffe6a3;
+    font:700 13px/1 ui-monospace,monospace; padding:6px 8px; border-radius:8px; width:74px; text-align:center; outline:none;
+  }
+  .inline-inputs select{width:100%; font-family:inherit; text-align:left}
+  .chk-row{display:flex; align-items:center; gap:6px; font-size:12px; color:#ffe6a3; cursor:pointer; user-select:none}
+  .chk-row input{accent-color:var(--gold); cursor:pointer}
+
+  .receipt{
+    border-radius:14px; padding:12px 14px;
+    background:linear-gradient(160deg,rgba(255,216,117,.12),rgba(126,242,184,.06) 60%,rgba(14,19,34,.9));
+    border:1px solid rgba(255,216,117,.32);
+  }
+  .rc-top{display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap; padding-bottom:10px; border-bottom:1px dashed rgba(255,224,140,.22)}
+  .rc-pay .lbl{font-size:12px; color:#ffefb8; display:block}
+  .rc-pay .val{font:900 clamp(28px,4.5vw,38px)/1.1 ui-monospace,monospace; color:var(--gold)}
+  .rc-save{text-align:right}
+  .rc-save .tag-save{display:inline-block; padding:4px 10px; border-radius:999px; background:rgba(126,242,184,.16); border:1px solid rgba(126,242,184,.36); color:var(--mint); font:700 12px/1 inherit}
+  .rc-save .sub-rate{display:block; font-size:11.5px; color:#b8c4d8; margin-top:4px}
+
+  .nudge{
+    margin:10px 0; padding:8px 11px; border-radius:10px;
+    background:rgba(140,224,255,.10); border:1px solid rgba(140,224,255,.26);
+    color:#c8f1ff; font-size:12px; line-height:1.45;
+  }
+  .rc-steps{font-size:12px; color:#b8c4d8; display:grid; gap:4px; margin:8px 0}
+  .rc-steps div{display:flex; justify-content:space-between}
+  .rc-steps b{color:#fff; font-family:ui-monospace,monospace}
+
+  .split-list{margin-top:10px; padding-top:10px; border-top:1px dashed rgba(255,224,140,.2); display:grid; gap:6px}
+  .split-item{display:flex; align-items:center; justify-content:space-between; font-size:12.5px; background:rgba(7,10,18,.48); padding:6px 10px; border-radius:8px}
+  .split-item .s-name{display:flex; align-items:center; gap:6px; color:#e6ecf8}
+  .split-item .s-price{font:700 13px/1 ui-monospace,monospace; color:var(--gold)}
+  .send-calc-btn{
+    width:100%; margin-top:12px; padding:10px; border-radius:10px; border:1px solid rgba(255,216,117,.35);
+    background:rgba(255,216,117,.14); color:#ffe6a3; font:700 12.5px/1 inherit; cursor:pointer; transition:.18s;
+  }
+  .send-calc-btn:hover{background:var(--gold); color:#181002}
+
   .screen{padding:18px 20px 14px; text-align:right; border-bottom:1px solid rgba(255,255,255,.07)}
   .expr{
     min-height:24px; font:500 14.5px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;
@@ -52,15 +169,14 @@
   }
   .expr .caret{color:var(--gold)}
   .result{
-    margin-top:4px; font-weight:800; font-size:clamp(30px,7vw,44px); line-height:1.15;
+    margin-top:4px; font-weight:800; font-size:clamp(30px,5.5vw,42px); line-height:1.15;
     letter-spacing:-.02em; word-break:break-all; color:#fff;
   }
-  .result.err{color:#ff9d9d; font-size:clamp(20px,4vw,26px)}
+  .result.err{color:#ff9d9d; font-size:22px}
   .sub-row{display:flex; align-items:center; justify-content:space-between; gap:8px; margin-top:8px; min-height:22px}
   .cn-upper{font-size:12px; color:#ffd980; text-align:left; word-break:break-all; flex:1}
   .sub{font:600 11.5px/1.4 ui-monospace,monospace; color:#7b8698}
 
-  /* 实用速算快捷栏：折扣、AA均摊、税率 */
   .quick-ops{
     display:flex; align-items:center; gap:6px; padding:10px 14px; overflow-x:auto; scrollbar-width:none;
     border-bottom:1px solid rgba(255,255,255,.06); background:rgba(255,255,255,.02);
@@ -68,61 +184,61 @@
   .quick-ops::-webkit-scrollbar{display:none}
   .q-lbl{font:700 11px/1 inherit; color:#758094; white-space:nowrap; margin-right:2px}
   .q-btn{
-    appearance:none; border:1px solid rgba(255,209,102,.2); background:rgba(255,209,102,.07);
+    appearance:none; border:1px solid rgba(255,216,117,.22); background:rgba(255,216,117,.07);
     color:#ffe299; font:600 11.5px/1 inherit; padding:6px 10px; border-radius:8px; cursor:pointer;
     white-space:nowrap; transition:all .15s ease;
   }
-  .q-btn:hover{background:rgba(255,209,102,.18); border-color:rgba(255,209,102,.45); color:#fff}
+  .q-btn:hover{background:rgba(255,216,117,.2); color:#fff}
 
-  .keys{display:grid; grid-template-columns:repeat(4,1fr); gap:9px; padding:14px}
+  .keys{display:grid; grid-template-columns:repeat(4,1fr); gap:8px; padding:14px}
   .key{
     appearance:none; border:1px solid rgba(255,255,255,.08); background:rgba(255,255,255,.045);
-    color:#eef2f8; font:600 19px/1 inherit; padding:0; height:54px; border-radius:14px; cursor:pointer;
-    transition:background .15s ease, transform .08s ease, border-color .15s ease;
+    color:#eef2f8; font:600 18px/1 inherit; padding:0; height:50px; border-radius:13px; cursor:pointer;
+    transition:background .15s ease, transform .08s ease;
     display:grid; place-items:center; user-select:none; -webkit-tap-highlight-color:transparent;
   }
-  .key:hover{background:rgba(255,255,255,.1); border-color:rgba(255,255,255,.18)}
+  .key:hover{background:rgba(255,255,255,.1)}
   .key:active{transform:scale(.97)}
-  .key.op{color:#ffe299; background:rgba(255,209,102,.08); border-color:rgba(255,209,102,.2)}
-  .key.op:hover{background:rgba(255,209,102,.16)}
-  .key.fn{color:#9ca7b8; font-size:15px; background:rgba(255,255,255,.03)}
+  .key.op{color:#ffe299; background:rgba(255,216,117,.08); border-color:rgba(255,216,117,.2)}
+  .key.fn{color:#9ca7b8; font-size:14.5px; background:rgba(255,255,255,.03)}
   .key.eq{
     grid-column:span 2; background:linear-gradient(180deg,#ffe082,#ffc247); color:#181102;
-    border-color:transparent; box-shadow:0 14px 30px -18px rgba(255,209,102,.9); font-weight:800; font-size:21px;
+    border-color:transparent; font-weight:800; font-size:20px;
   }
-  .key.eq:hover{filter:brightness(1.05)}
 
   .toolrow{display:flex; gap:8px; padding:0 14px 14px; flex-wrap:wrap}
   .tbtn{
     appearance:none; border:1px solid rgba(255,255,255,.1); background:rgba(255,255,255,.04);
-    color:#c0c9d8; font:600 12px/1 inherit; padding:8px 11px; border-radius:9px; cursor:pointer;
-    transition:all .18s ease;
+    color:#c0c9d8; font:600 11.5px/1 inherit; padding:7px 10px; border-radius:8px; cursor:pointer;
   }
-  .tbtn:hover{color:#fff; border-color:rgba(255,209,102,.45); background:rgba(255,209,102,.1)}
+  .tbtn:hover{color:#fff; border-color:rgba(255,216,117,.45); background:rgba(255,216,117,.1)}
   .spacer{flex:1}
 
-  /* 历史账本 + 自动累计求和 */
-  .hist{margin-top:18px; border:1px solid var(--line); border-radius:18px; background:var(--glass); padding:14px 16px}
+  .hist{padding:14px 16px; border-top:1px solid rgba(255,255,255,.07)}
   .hist-head{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px; flex-wrap:wrap}
-  .hist-head h2{font:700 12.5px/1 inherit; color:#9ba6b8; margin:0}
-  .hist-sum{font:700 12.5px/1 ui-monospace,monospace; color:var(--gold); cursor:pointer; padding:4px 9px; border-radius:7px; background:rgba(255,209,102,.1); border:1px solid rgba(255,209,102,.24)}
-  .hist-sum:hover{background:rgba(255,209,102,.2)}
+  .hist-head h3{font:700 12px/1 inherit; color:#9ba6b8; margin:0}
+  .hist-sum{font:700 12px/1 ui-monospace,monospace; color:var(--gold); cursor:pointer; padding:4px 9px; border-radius:7px; background:rgba(255,216,117,.1); border:1px solid rgba(255,216,117,.24)}
   .hitem{
     display:flex; align-items:center; gap:12px; width:100%; text-align:left;
     border:1px solid rgba(255,255,255,.07); background:rgba(255,255,255,.03);
-    border-radius:11px; padding:9px 13px; margin-bottom:6px; cursor:pointer; color:inherit;
-    transition:all .15s ease; font:inherit;
+    border-radius:10px; padding:8px 12px; margin-bottom:6px; cursor:pointer; color:inherit; font:inherit;
   }
-  .hitem:hover{border-color:rgba(255,209,102,.35); background:rgba(255,209,102,.06)}
-  .hitem .e{flex:1; min-width:0; color:#8b95a6; font:500 12.5px/1.4 ui-monospace,monospace; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
-  .hitem .r{font-weight:700; font-size:14px; color:#fff; max-width:48%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
-  .empty{color:#626d7e; font-size:12.5px; padding:4px 0}
+  .hitem:hover{border-color:rgba(255,216,117,.35)}
+  .hitem .e{flex:1; min-width:0; color:#8b95a6; font:500 12px/1.4 ui-monospace,monospace; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+  .hitem .r{font-weight:700; font-size:13.5px; color:#fff}
+  .empty{color:#626d7e; font-size:12px; padding:4px 0}
 
+  @media(max-width:900px){
+    .mode-tabs{display:flex}
+    .main-grid{grid-template-columns:1fr}
+    .panel-card.hide-m{display:none}
+    .story-head{padding:14px 16px}
+    .sh-art{width:64px; height:54px; flex:0 0 64px}
+  }
   @media(max-width:560px){
     body{background-attachment:scroll}
-    .wrap{padding:18px 0 48px}
-    .key{height:50px; font-size:18px; border-radius:12px}
-    .keys{gap:8px; padding:12px}
+    .rules-grid{grid-template-columns:1fr}
+    .cart-row{grid-template-columns:auto 1fr 88px auto}
   }
 </style>
 </head>
@@ -131,93 +247,417 @@
 
   <div class="topbar">
     <a class="back" href="/">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
-      返回空间站
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+      返回 B612 空间站
     </a>
-    <span class="badge"><i></i>CALCULATOR</span>
+    <span class="badge"><i></i>ASTEROID B612 · 星球账房</span>
   </div>
 
-  <div class="head-row">
-    <h1>实用<em>计算器</em></h1>
-    <p class="lead">支持括号算式 · 折扣与 AA 均摊 · 大写金额 · 账本自动求和</p>
+  <div class="story-head">
+    <div class="sh-copy">
+      <h1>✦ 星球<em>计算器</em> · 网购凑单与日常账本</h1>
+      <p class="quote">“大人们总是喜欢数字……那就把双十一那些满减、打折和凑单算得明明白白。”</p>
+    </div>
+    <svg class="sh-art" viewBox="0 0 120 96" fill="none" aria-hidden="true">
+      <ellipse cx="60" cy="70" rx="48" ry="12" transform="rotate(-10 60 70)" stroke="#ffe294" stroke-width="1.3" stroke-dasharray="4 5" opacity=".7"/>
+      <path d="M22 80 C30 58 90 58 98 80 C84 90 36 90 22 80 Z" fill="#233154" stroke="#ffd875" stroke-width="1.5"/>
+      <rect x="42" y="24" width="36" height="26" rx="5" fill="#16203a" stroke="#ffd875" stroke-width="1.5"/>
+      <circle cx="51" cy="33" r="2.5" fill="#ffd875"/><circle cx="60" cy="33" r="2.5" fill="#7ef2b8"/><circle cx="69" cy="33" r="2.5" fill="#ff8da1"/>
+      <circle cx="51" cy="41" r="2.5" fill="#8ce0ff"/><circle cx="60" cy="41" r="2.5" fill="#ffd875"/><circle cx="69" cy="41" r="2.5" fill="#ffd875"/>
+      <path d="M22 24 C23 30 25 32 31 33 C25 34 23 36 22 42 C21 36 19 34 13 33 C19 32 21 30 22 24 Z" fill="#ffd875"/>
+      <path d="M98 16 C99 21 100.5 22.5 105.5 23.5 C100.5 24.5 99 26 98 31 C97 26 95.5 24.5 90.5 23.5 C95.5 22.5 97 21 98 16 Z" fill="#8ce0ff"/>
+    </svg>
   </div>
 
-  <div class="calc">
-    <div class="screen">
-      <div class="expr" id="expr">&nbsp;</div>
-      <div class="result" id="result" aria-live="polite">0</div>
-      <div class="sub-row">
-        <div class="cn-upper" id="cnUpper">零元整</div>
-        <div class="sub" id="sub"></div>
+  <div class="mode-tabs" id="modeTabs">
+    <button class="m-tab on" type="button" data-tab="shop">🛍️ 网购满减凑单</button>
+    <button class="m-tab" type="button" data-tab="std">🧮 标准计算与大写</button>
+  </div>
+
+  <div class="main-grid">
+    <!-- 面板一：双11 / 网购满减凑单分摊计算器 -->
+    <section class="panel-card" id="shopPanel">
+      <div class="p-head">
+        <h2><span>🛍️</span> 网购满减 · 双11凑单分摊算价</h2>
+        <small>自动算跨店每满减、叠加券与每件商品分摊到手价</small>
       </div>
-    </div>
+      <div class="shop-body">
+        <div class="preset-bar" id="presetBar">
+          <span class="lbl">一键规则:</span>
+          <button class="p-chip on" type="button" data-every="300" data-minus="50" data-disc="10" data-vip="1">淘宝双11 (每满300-50 + 88VIP)</button>
+          <button class="p-chip" type="button" data-every="200" data-minus="30" data-disc="10" data-vip="0">京东/天猫 (每满200-30)</button>
+          <button class="p-chip" type="button" data-every="300" data-minus="40" data-disc="8.5" data-vip="1">服饰大促 (85折 + 满300-40)</button>
+          <button class="p-chip" type="button" data-every="0" data-minus="0" data-disc="10" data-vip="0">仅算券与折扣</button>
+        </div>
 
-    <!-- 实用速算栏 -->
-    <div class="quick-ops" id="quickOps">
-      <span class="q-lbl">速算:</span>
-      <button class="q-btn" type="button" data-mul="*0.9" title="打九折">9折</button>
-      <button class="q-btn" type="button" data-mul="*0.88" title="打八八折">88折</button>
-      <button class="q-btn" type="button" data-mul="*0.85" title="打八五折">85折</button>
-      <button class="q-btn" type="button" data-mul="*0.8" title="打八折">8折</button>
-      <button class="q-btn" type="button" data-mul="/2" title="2人AA均摊">÷2人</button>
-      <button class="q-btn" type="button" data-mul="/3" title="3人AA均摊">÷3人</button>
-      <button class="q-btn" type="button" data-mul="/4" title="4人AA均摊">÷4人</button>
-      <button class="q-btn" type="button" data-mul="*1.06" title="含6%税">+6%税</button>
-      <button class="q-btn" type="button" data-mul="*1.13" title="含13%税">+13%税</button>
-    </div>
+        <div class="sec-lbl">
+          <span>1. 购物车商品（点击左侧标签可切换「主买 / 凑单」）</span>
+          <button class="add-btn" id="addItemBtn" type="button">+ 添加商品 / 凑单品</button>
+        </div>
+        <div class="cart-list" id="cartList"></div>
 
-    <div class="keys" id="keys">
-      <button class="key fn" data-k="clear" type="button">AC</button>
-      <button class="key fn" data-k="back" type="button">⌫</button>
-      <button class="key fn" data-k="(" type="button">(</button>
-      <button class="key fn" data-k=")" type="button">)</button>
+        <div class="sec-lbl"><span>2. 叠加满减、打折、优惠券与定金膨胀</span></div>
+        <div class="rules-grid">
+          <div class="rule-box">
+            <label><span>跨店满减 / 平台满减</span></label>
+            <div class="inline-inputs">
+              每满 <input type="number" id="rEvery" value="300" min="0" step="10"> 减 <input type="number" id="rMinus" value="50" min="0" step="5">
+            </div>
+            <label class="chk-row"><input type="checkbox" id="rLoop" checked> 上不封顶（每满减）</label>
+          </div>
 
-      <button class="key" data-k="7" type="button">7</button>
-      <button class="key" data-k="8" type="button">8</button>
-      <button class="key" data-k="9" type="button">9</button>
-      <button class="key op" data-k="/" type="button">÷</button>
+          <div class="rule-box">
+            <label><span>店铺打折 &amp; 88VIP</span></label>
+            <div class="inline-inputs">
+              <select id="rDisc">
+                <option value="10">不打折 (原价)</option>
+                <option value="9.5">95 折</option>
+                <option value="9">9 折</option>
+                <option value="8.8">88 折</option>
+                <option value="8.5">85 折</option>
+                <option value="8">8 折</option>
+                <option value="7.5">75 折</option>
+                <option value="7">7 折</option>
+                <option value="5">5 折 (半价)</option>
+              </select>
+            </div>
+            <label class="chk-row"><input type="checkbox" id="rVip" checked> 叠加 88VIP / 会员 95 折</label>
+          </div>
 
-      <button class="key" data-k="4" type="button">4</button>
-      <button class="key" data-k="5" type="button">5</button>
-      <button class="key" data-k="6" type="button">6</button>
-      <button class="key op" data-k="*" type="button">×</button>
+          <div class="rule-box">
+            <label><span>店铺券 / 品类满减券</span><span>立减 ¥</span></label>
+            <div class="inline-inputs">
+              券减 <input type="number" id="rCoupon" value="20" min="0" step="5" style="width:90px"> 元
+            </div>
+          </div>
 
-      <button class="key" data-k="1" type="button">1</button>
-      <button class="key" data-k="2" type="button">2</button>
-      <button class="key" data-k="3" type="button">3</button>
-      <button class="key op" data-k="-" type="button">−</button>
+          <div class="rule-box">
+            <label><span>红包 / 淘金币 / 立减金</span><span>抵扣 ¥</span></label>
+            <div class="inline-inputs">
+              红包 <input type="number" id="rRed" value="0" min="0" step="1" style="width:90px"> 元
+            </div>
+          </div>
 
-      <button class="key" data-k="0" type="button">0</button>
-      <button class="key" data-k="00" type="button">00</button>
-      <button class="key" data-k="." type="button">.</button>
-      <button class="key op" data-k="+" type="button">+</button>
+          <div class="rule-box wide">
+            <label><span>预售定金膨胀（选填：如付定金 50 抵 100，自动多抵 50 元）</span></label>
+            <div class="inline-inputs">
+              已付定金 <input type="number" id="rDepPaid" value="0" min="0" step="10"> 元，膨胀抵用 <input type="number" id="rDepWorth" value="0" min="0" step="10"> 元
+            </div>
+          </div>
+        </div>
 
-      <button class="key fn" data-k="%" type="button">%</button>
-      <button class="key fn" data-k="neg" type="button">±</button>
-      <button class="key eq" data-k="=" type="button">=</button>
-    </div>
+        <div class="receipt">
+          <div class="rc-top">
+            <div class="rc-pay">
+              <span class="lbl">最终实付总计（含主买+凑单）</span>
+              <span class="val" id="shopFinal">¥0.00</span>
+            </div>
+            <div class="rc-save">
+              <span class="tag-save" id="shopSaved">共省 ¥0.00</span>
+              <span class="sub-rate" id="shopRate">相当于原价 10.0 折</span>
+            </div>
+          </div>
 
-    <div class="toolrow">
-      <button class="tbtn" id="copy" type="button">复制数字</button>
-      <button class="tbtn" id="copyCn" type="button">复制大写金额</button>
-      <button class="tbtn" id="useResult" type="button">用结果继续算</button>
-      <span class="spacer"></span>
-      <button class="tbtn" id="clearHist" type="button">清空账本</button>
-    </div>
-  </div>
+          <div class="nudge" id="shopNudge"></div>
+          <div class="rc-steps" id="shopSteps"></div>
 
-  <div class="hist">
-    <div class="hist-head">
-      <h2>算式历史账本（点击任意记录可回填）</h2>
-      <button class="hist-sum" id="histSumBtn" type="button" title="点击把账本合计金额填入计算器">账本合计：0</button>
-    </div>
-    <div id="histList"><div class="empty">还没有计算记录，按 = 号会自动记入账本并求和</div></div>
+          <div class="split-list" id="shopSplit"></div>
+          <button class="send-calc-btn" id="sendToStdBtn" type="button">👉 把主买商品实付金额带入标准计算器继续算</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 面板二：日常括号计算器 + 人民币大写 + 历史求和账本 -->
+    <section class="panel-card" id="stdPanel">
+      <div class="p-head">
+        <h2><span>🧮</span> 标准计算 · 大写金额与账本</h2>
+        <small>支持键盘输入 · 实时预览 · 账本自动求和</small>
+      </div>
+
+      <div class="screen">
+        <div class="expr" id="expr">&nbsp;</div>
+        <div class="result" id="result" aria-live="polite">0</div>
+        <div class="sub-row">
+          <div class="cn-upper" id="cnUpper">零元整</div>
+          <div class="sub" id="sub"></div>
+        </div>
+      </div>
+
+      <div class="quick-ops" id="quickOps">
+        <span class="q-lbl">速算:</span>
+        <button class="q-btn" type="button" data-mul="*0.9">9折</button>
+        <button class="q-btn" type="button" data-mul="*0.88">88折</button>
+        <button class="q-btn" type="button" data-mul="*0.85">85折</button>
+        <button class="q-btn" type="button" data-mul="*0.8">8折</button>
+        <button class="q-btn" type="button" data-mul="/2">÷2人</button>
+        <button class="q-btn" type="button" data-mul="/3">÷3人</button>
+        <button class="q-btn" type="button" data-mul="/4">÷4人</button>
+        <button class="q-btn" type="button" data-mul="*1.06">+6%税</button>
+        <button class="q-btn" type="button" data-mul="*1.13">+13%税</button>
+      </div>
+
+      <div class="keys" id="keys">
+        <button class="key fn" data-k="clear" type="button">AC</button>
+        <button class="key fn" data-k="back" type="button">⌫</button>
+        <button class="key fn" data-k="(" type="button">(</button>
+        <button class="key fn" data-k=")" type="button">)</button>
+
+        <button class="key" data-k="7" type="button">7</button>
+        <button class="key" data-k="8" type="button">8</button>
+        <button class="key" data-k="9" type="button">9</button>
+        <button class="key op" data-k="/" type="button">÷</button>
+
+        <button class="key" data-k="4" type="button">4</button>
+        <button class="key" data-k="5" type="button">5</button>
+        <button class="key" data-k="6" type="button">6</button>
+        <button class="key op" data-k="*" type="button">×</button>
+
+        <button class="key" data-k="1" type="button">1</button>
+        <button class="key" data-k="2" type="button">2</button>
+        <button class="key" data-k="3" type="button">3</button>
+        <button class="key op" data-k="-" type="button">−</button>
+
+        <button class="key" data-k="0" type="button">0</button>
+        <button class="key" data-k="00" type="button">00</button>
+        <button class="key" data-k="." type="button">.</button>
+        <button class="key op" data-k="+" type="button">+</button>
+
+        <button class="key fn" data-k="%" type="button">%</button>
+        <button class="key fn" data-k="neg" type="button">±</button>
+        <button class="key eq" data-k="=" type="button">=</button>
+      </div>
+
+      <div class="toolrow">
+        <button class="tbtn" id="copy" type="button">复制数字</button>
+        <button class="tbtn" id="copyCn" type="button">复制大写金额</button>
+        <button class="tbtn" id="useResult" type="button">用结果继续算</button>
+        <span class="spacer"></span>
+        <button class="tbtn" id="clearHist" type="button">清空账本</button>
+      </div>
+
+      <div class="hist">
+        <div class="hist-head">
+          <h3>算式历史账本（点击回填）</h3>
+          <button class="hist-sum" id="histSumBtn" type="button">账本合计：0</button>
+        </div>
+        <div id="histList"><div class="empty">还没有计算记录，按 = 号会自动记入账本并求和</div></div>
+      </div>
+    </section>
   </div>
 
 </div>
 
 <script>
 (function(){
+  var shopPanel = document.getElementById('shopPanel');
+  var stdPanel = document.getElementById('stdPanel');
+  var tabs = [].slice.call(document.querySelectorAll('#modeTabs .m-tab'));
+  function setTab(mode){
+    tabs.forEach(function(b){ b.classList.toggle('on', b.dataset.tab === mode); });
+    if (mode === 'shop'){
+      shopPanel.classList.remove('hide-m');
+      stdPanel.classList.add('hide-m');
+    } else {
+      stdPanel.classList.remove('hide-m');
+      shopPanel.classList.add('hide-m');
+    }
+  }
+  stdPanel.classList.add('hide-m');
+  tabs.forEach(function(b){
+    b.addEventListener('click', function(){ setTab(b.dataset.tab); });
+  });
+
+  var items = [
+    { name: '主买商品 1', price: 249, filler: false },
+    { name: '主买商品 2', price: 129, filler: false },
+    { name: '凑单小物（可退）', price: 62, filler: true }
+  ];
+
+  var cartListEl = document.getElementById('cartList');
+  var rEvery = document.getElementById('rEvery');
+  var rMinus = document.getElementById('rMinus');
+  var rLoop = document.getElementById('rLoop');
+  var rDisc = document.getElementById('rDisc');
+  var rVip = document.getElementById('rVip');
+  var rCoupon = document.getElementById('rCoupon');
+  var rRed = document.getElementById('rRed');
+  var rDepPaid = document.getElementById('rDepPaid');
+  var rDepWorth = document.getElementById('rDepWorth');
+
+  var shopFinalEl = document.getElementById('shopFinal');
+  var shopSavedEl = document.getElementById('shopSaved');
+  var shopRateEl = document.getElementById('shopRate');
+  var shopNudgeEl = document.getElementById('shopNudge');
+  var shopStepsEl = document.getElementById('shopSteps');
+  var shopSplitEl = document.getElementById('shopSplit');
+  var mainKeepPay = 0;
+
+  function renderCart(){
+    cartListEl.innerHTML = '';
+    items.forEach(function(it, idx){
+      var row = document.createElement('div');
+      row.className = 'cart-row';
+
+      var roleBtn = document.createElement('button');
+      roleBtn.type = 'button';
+      roleBtn.className = 'role-tag' + (it.filler ? ' filler' : '');
+      roleBtn.textContent = it.filler ? '凑单品' : '主买';
+      roleBtn.title = '点击切换「主买」或「凑单品」';
+      roleBtn.addEventListener('click', function(){
+        it.filler = !it.filler;
+        renderCart();
+        calcShop();
+      });
+
+      var nameInp = document.createElement('input');
+      nameInp.type = 'text';
+      nameInp.className = 'c-input';
+      nameInp.value = it.name;
+      nameInp.placeholder = '商品名称';
+      nameInp.addEventListener('input', function(){
+        it.name = nameInp.value;
+        calcShop();
+      });
+
+      var priceInp = document.createElement('input');
+      priceInp.type = 'number';
+      priceInp.className = 'c-input c-price';
+      priceInp.value = it.price;
+      priceInp.min = '0';
+      priceInp.step = '1';
+      priceInp.placeholder = '原价 ¥';
+      priceInp.addEventListener('input', function(){
+        it.price = Math.max(0, parseFloat(priceInp.value) || 0);
+        calcShop();
+      });
+
+      var delBtn = document.createElement('button');
+      delBtn.type = 'button';
+      delBtn.className = 'del-btn';
+      delBtn.textContent = '✕';
+      delBtn.title = '删除此商品';
+      delBtn.addEventListener('click', function(){
+        if (items.length <= 1){ it.price = 0; }
+        else { items.splice(idx, 1); }
+        renderCart();
+        calcShop();
+      });
+
+      row.appendChild(roleBtn);
+      row.appendChild(nameInp);
+      row.appendChild(priceInp);
+      row.appendChild(delBtn);
+      cartListEl.appendChild(row);
+    });
+  }
+
+  function calcShop(){
+    var totalOrig = 0;
+    items.forEach(function(it){ totalOrig += (Number(it.price) || 0); });
+
+    var discRate = (parseFloat(rDisc.value) || 10) / 10;
+    var afterDisc = totalOrig * discRate;
+    var discCut = totalOrig - afterDisc;
+
+    var depPaid = Math.max(0, parseFloat(rDepPaid.value) || 0);
+    var depWorth = Math.max(depPaid, parseFloat(rDepWorth.value) || 0);
+    var depBonus = depWorth - depPaid;
+
+    var every = Math.max(0, parseFloat(rEvery.value) || 0);
+    var minus = Math.max(0, parseFloat(rMinus.value) || 0);
+    var tiers = 0;
+    var fullCut = 0;
+    if (every > 0 && minus > 0 && afterDisc >= every){
+      tiers = rLoop.checked ? Math.floor(afterDisc / every) : 1;
+      fullCut = tiers * minus;
+    }
+
+    var couponCut = Math.max(0, parseFloat(rCoupon.value) || 0);
+    var subBeforeVip = Math.max(0, afterDisc - depBonus - fullCut - couponCut);
+    var vipCut = rVip.checked ? (subBeforeVip * 0.05) : 0;
+    var redCut = Math.max(0, parseFloat(rRed.value) || 0);
+
+    var finalPay = Math.max(0, subBeforeVip - vipCut - redCut);
+    var totalSaved = Math.max(0, totalOrig - finalPay);
+    var eqRate = totalOrig > 0 ? ((finalPay / totalOrig) * 10) : 10;
+
+    shopFinalEl.textContent = '¥' + finalPay.toFixed(2);
+    shopSavedEl.textContent = '共省 ¥' + totalSaved.toFixed(2);
+    shopRateEl.textContent = totalOrig > 0 ? ('综合相当于原价 ' + eqRate.toFixed(2) + ' 折') : '请输入商品原价';
+
+    if (every > 0 && minus > 0){
+      var rem = afterDisc % every;
+      var gap = parseFloat((every - rem).toFixed(2));
+      if (gap > 0 && gap <= every){
+        shopNudgeEl.innerHTML = '💡 <b>凑单提醒</b>：当前折后总额 <b>¥' + afterDisc.toFixed(2) + '</b>（已触发 <b>' + tiers + '</b> 档满减 -¥' + fullCut.toFixed(0) + '），再凑 <b>¥' + gap.toFixed(2) + '</b> 即可多减 <b>¥' + minus.toFixed(0) + '</b>！';
+      } else {
+        shopNudgeEl.innerHTML = '🎉 <b>完美卡点</b>：刚好卡满 <b>' + tiers + '</b> 档满减（立减 <b>¥' + fullCut.toFixed(0) + '</b>），一分钱没浪费！';
+      }
+    } else {
+      shopNudgeEl.innerHTML = '💡 当前为纯折扣 + 优惠券模式，未开启跨店满减。';
+    }
+
+    shopStepsEl.innerHTML =
+      '<div><span>商品原价合计</span><b>¥' + totalOrig.toFixed(2) + '</b></div>' +
+      (discCut > 0.005 ? '<div><span>店铺打折立减</span><b>-¥' + discCut.toFixed(2) + '</b></div>' : '') +
+      (fullCut > 0.005 ? '<div><span>跨店满减（共 ' + tiers + ' 档）</span><b>-¥' + fullCut.toFixed(2) + '</b></div>' : '') +
+      (couponCut > 0.005 ? '<div><span>店铺券 / 品类券</span><b>-¥' + couponCut.toFixed(2) + '</b></div>' : '') +
+      (depBonus > 0.005 ? '<div><span>预售定金膨胀抵扣</span><b>-¥' + depBonus.toFixed(2) + '</b></div>' : '') +
+      (vipCut > 0.005 ? '<div><span>88VIP / 会员 95 折</span><b>-¥' + vipCut.toFixed(2) + '</b></div>' : '') +
+      (redCut > 0.005 ? '<div><span>红包 / 淘金币抵扣</span><b>-¥' + redCut.toFixed(2) + '</b></div>' : '');
+
+    shopSplitEl.innerHTML = '';
+    var keepSum = 0;
+    items.forEach(function(it){
+      var p = Number(it.price) || 0;
+      var ratio = totalOrig > 0 ? (p / totalOrig) : 0;
+      var realPay = finalPay * ratio;
+      if (!it.filler) keepSum += realPay;
+
+      var div = document.createElement('div');
+      div.className = 'split-item';
+      div.innerHTML =
+        '<span class="s-name"><em style="font-style:normal;font-size:11px;padding:2px 6px;border-radius:5px;background:' +
+        (it.filler ? 'rgba(140,224,255,.15);color:#8ce0ff">凑单' : 'rgba(255,141,161,.18);color:#ffb3c1">主买') +
+        '</em> ' + (it.name || '商品') + ' <small style="color:#7d889c">(原价¥' + p.toFixed(0) + ')</small></span>' +
+        '<span class="s-price">分摊到手 ¥' + realPay.toFixed(2) + '</span>';
+      shopSplitEl.appendChild(div);
+    });
+
+    mainKeepPay = parseFloat(keepSum.toFixed(2));
+    var summaryDiv = document.createElement('div');
+    summaryDiv.className = 'split-item';
+    summaryDiv.style.background = 'rgba(255,216,117,.12)';
+    summaryDiv.style.border = '1px solid rgba(255,216,117,.28)';
+    summaryDiv.innerHTML =
+      '<span class="s-name">✨ <b>只留【主买商品】实际花费</b>（退掉凑单品后）</span>' +
+      '<span class="s-price" style="font-size:15px;color:#ffd875">¥' + keepSum.toFixed(2) + '</span>';
+    shopSplitEl.appendChild(summaryDiv);
+  }
+
+  document.getElementById('addItemBtn').addEventListener('click', function(){
+    items.push({ name: '商品 ' + (items.length + 1), price: 100, filler: false });
+    renderCart();
+    calcShop();
+  });
+
+  [rEvery, rMinus, rLoop, rDisc, rVip, rCoupon, rRed, rDepPaid, rDepWorth].forEach(function(el){
+    el.addEventListener('input', calcShop);
+    el.addEventListener('change', calcShop);
+  });
+
+  document.getElementById('presetBar').addEventListener('click', function(e){
+    var b = e.target.closest('.p-chip');
+    if (!b) return;
+    [].slice.call(document.querySelectorAll('#presetBar .p-chip')).forEach(function(x){ x.classList.toggle('on', x === b); });
+    rEvery.value = b.dataset.every;
+    rMinus.value = b.dataset.minus;
+    rDisc.value = b.dataset.disc;
+    rVip.checked = (b.dataset.vip === '1');
+    rLoop.checked = true;
+    calcShop();
+  });
+
   var exprEl = document.getElementById('expr');
   var resEl = document.getElementById('result');
   var subEl = document.getElementById('sub');
@@ -232,7 +672,6 @@
   var lastResult = '';
   var currentVal = 0;
 
-  /* ---------- 人民币大写金额转换 ---------- */
   function toChineseRMB(num){
     if (!isFinite(num) || Math.abs(num) >= 1e12) return '';
     var neg = num < 0 ? '负' : '';
@@ -278,7 +717,6 @@
     return neg + out;
   }
 
-  /* ---------- 解析与求值 ---------- */
   function tokenize(s){
     var t = [], i = 0, prev = 'start';
     while (i < s.length){
@@ -463,7 +901,6 @@
       var r = document.createElement('span');
       r.className = 'r'; r.textContent = x.r;
       b.appendChild(e); b.appendChild(r);
-      b.title = '点击回填该算式';
       b.addEventListener('click', function(){
         expr = x.e; justEq = false; render();
       });
@@ -476,6 +913,13 @@
     expr = String(lastSum);
     justEq = false;
     render();
+  });
+
+  document.getElementById('sendToStdBtn').addEventListener('click', function(){
+    expr = String(mainKeepPay || 0);
+    justEq = false;
+    setTab('std');
+    doEqual();
   });
 
   function press(k){
@@ -534,7 +978,7 @@
       cnUpperEl.textContent = toChineseRMB(v);
       justEq = true;
       pushHistory(expr, fmt(v), v);
-      exprEl.innerHTML = prettyExpr(expr) + ' <span style="color:#ffd166">=</span>';
+      exprEl.innerHTML = prettyExpr(expr) + ' <span style="color:#ffd875">=</span>';
       subEl.textContent = '已记入下方账本';
     } catch(e){
       resEl.textContent = e.message || '算式有误';
@@ -549,7 +993,6 @@
     b.blur();
   });
 
-  /* 速算按钮：9折 / 88折 / AA均摊 / 税率 */
   document.getElementById('quickOps').addEventListener('click', function(e){
     var b = e.target.closest('.q-btn');
     if (!b) return;
@@ -592,6 +1035,7 @@
   });
 
   document.addEventListener('keydown', function(e){
+    if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT')) return;
     if (e.ctrlKey || e.metaKey || e.altKey) return;
     var k = e.key;
     if (k >= '0' && k <= '9'){ e.preventDefault(); press(k); }
@@ -603,6 +1047,8 @@
     else if (k === 'Escape'){ e.preventDefault(); press('clear'); }
   });
 
+  renderCart();
+  calcShop();
   renderHist();
   render();
 })();
