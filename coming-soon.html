@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="zh-CN" style="background:#070912">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#070912">
+<title>敬请期待 · B612 星球工坊 · WM的空间站</title>
+<meta name="description" content="WM的空间站 · B612 星球新工具正在打磨中，敬请期待。">
+<link rel="preload" as="image" href="assets/sky-b612.webp">
+<style>
+  :root{
+    --bg:#070912; --ink:#f5f7fc; --dim:#a0acc2; --gold:#ffd875; --mint:#7ef2b8; --blue:#7fe3ff; --rose:#ff9ebb;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0; background:var(--bg); overscroll-behavior-y:none}
+  body{
+    min-height:100svh; color:var(--ink);
+    font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    -webkit-font-smoothing:antialiased;
+    background:var(--bg) url(assets/sky-b612.webp) center/cover no-repeat fixed;
+    display:flex; flex-direction:column;
+  }
+  body::before{
+    content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+    background:radial-gradient(circle at 50% 22%, rgba(255,216,117,.14), transparent 56%),
+               linear-gradient(180deg,rgba(7,9,18,.62),rgba(7,9,18,.88) 58%,#070912 100%);
+  }
+  .wrap{position:relative; z-index:1; width:min(760px,92vw); margin:0 auto; padding:22px 0 64px; flex:1; display:flex; flex-direction:column}
+
+  .topbar{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:24px}
+  .back{
+    display:inline-flex; align-items:center; gap:8px; text-decoration:none; color:#ffe6a3;
+    font-weight:700; font-size:13.5px; padding:8px 15px; border-radius:999px;
+    background:rgba(14,19,34,.84); border:1px solid rgba(255,224,140,.26); transition:transform .2s, background .2s;
+  }
+  .back:hover{background:var(--gold); color:#181002; transform:translate3d(-2px,0,0)}
+  .back svg{width:15px;height:15px}
+  .badge{
+    display:inline-flex; align-items:center; gap:8px; padding:6px 13px; border-radius:999px;
+    background:rgba(255,216,117,.12); border:1px solid rgba(255,216,117,.32);
+    font:600 11px/1 ui-monospace,monospace; letter-spacing:.08em; color:var(--gold);
+  }
+  .badge i{width:6px;height:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 8px var(--gold)}
+
+  .stage-card{
+    margin:auto 0; padding:32px 28px 34px; border-radius:26px; text-align:center;
+    background:linear-gradient(165deg,rgba(16,22,40,.92),rgba(9,13,26,.96));
+    border:1px solid rgba(255,224,140,.24);
+    box-shadow:0 28px 70px -30px rgba(0,0,0,.92);
+  }
+  .art-frame{
+    width:min(480px,100%); aspect-ratio:16/10; margin:0 auto 22px; border-radius:18px; overflow:hidden;
+    border:1px solid rgba(255,224,140,.28); position:relative; background:#0b1020;
+    box-shadow:0 18px 44px -18px rgba(0,0,0,.85);
+  }
+  .art-frame img{width:100%; height:100%; object-fit:cover; display:block}
+  .soon-pill{
+    display:inline-flex; align-items:center; gap:8px; padding:6px 16px; border-radius:999px;
+    background:linear-gradient(90deg,rgba(255,216,117,.18),rgba(127,227,255,.16));
+    border:1px solid rgba(255,216,117,.42); color:var(--gold);
+    font:800 12px/1 ui-monospace,monospace; letter-spacing:.16em; margin-bottom:14px;
+  }
+  h1{margin:0 0 10px; font-size:clamp(26px,4.5vw,38px); font-weight:900; letter-spacing:-.02em; color:#fff}
+  h1 em{font-style:normal; color:var(--gold)}
+  .desc{margin:0 auto 20px; max-width:30em; color:#d2dced; font-size:15.5px}
+  .quote{
+    margin:0 auto 26px; max-width:32em; padding:12px 18px; border-radius:14px;
+    background:rgba(255,255,255,.04); border:1px dashed rgba(255,224,140,.24);
+    color:#ffefb8; font-size:13.5px;
+  }
+
+  .switcher{display:flex; justify-content:center; gap:10px; flex-wrap:wrap; margin-bottom:24px}
+  .sw-btn{
+    appearance:none; border:1px solid rgba(255,255,255,.14); background:rgba(255,255,255,.05);
+    color:#c6d0e4; font:700 12.5px/1 inherit; padding:9px 15px; border-radius:999px; cursor:pointer;
+    transition:all .18s ease;
+  }
+  .sw-btn:hover{border-color:var(--gold); color:#fff}
+  .sw-btn.on{background:var(--gold); border-color:var(--gold); color:#181002}
+
+  .home-btn{
+    display:inline-flex; align-items:center; gap:8px; padding:12px 26px; border-radius:999px;
+    background:linear-gradient(180deg,#ffe494,#ffc247); color:#181002;
+    font-weight:800; font-size:14px; text-decoration:none;
+    box-shadow:0 14px 32px -12px rgba(255,216,117,.65); transition:transform .18s;
+  }
+  .home-btn:hover{transform:translateY(-2px)}
+
+  @media(max-width:560px){
+    body{background-attachment:scroll}
+    .stage-card{padding:22px 18px 26px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <a class="back" href="/">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+      返回 B612 空间站
+    </a>
+    <span class="badge"><i></i>ASTEROID B612 · COMING SOON</span>
+  </div>
+
+  <div class="stage-card">
+    <div class="art-frame">
+      <img id="toolImg" src="assets/card-b612-star.webp" alt="B612 新工具插画">
+    </div>
+    <div class="soon-pill">✦ 敬请期待 · COMING SOON ✦</div>
+    <h1 id="toolTitle">B612 观星台 · <em>敬请期待</em></h1>
+    <p class="desc" id="toolDesc">小王子与小狐狸正在 B612 星球连夜组装这台新工具，打磨好每一颗齿轮后很快就会正式开放！</p>
+    <div class="quote" id="toolQuote">“如果你说你在下午四点来，从三点钟开始，我就开始感觉很快乐。”</div>
+
+    <div class="switcher" id="switcher">
+      <button class="sw-btn" type="button" data-k="star">🔭 B612 观星台</button>
+      <button class="sw-btn" type="button" data-k="box">🏮 星光百宝箱</button>
+      <button class="sw-btn" type="button" data-k="gate">✈️ 星际任意门</button>
+    </div>
+
+    <a class="home-btn" href="/">← 先去空间站逛逛其他工具</a>
+  </div>
+</div>
+
+<script>
+(function(){
+  var TOOLS = {
+    star: {
+      title: 'B612 观星台',
+      img: 'assets/card-b612-star.webp',
+      desc: '小王子正架起黄铜天文望远镜校准星图——这里即将上线全新的星空探索与灵感观测小工具，敬请期待！',
+      quote: '“星星发亮，是为了让每一个人有一天都能找到属于自己的星。”'
+    },
+    box: {
+      title: '星光百宝箱',
+      img: 'assets/card-b612-lantern.webp',
+      desc: '小王子提着星星灯笼打开了木制百宝箱——更多实用的收纳、书签与随手小工具正在往箱子里装填，敬请期待！',
+      quote: '“真正重要的东西，用眼睛是看不见的，要用心去感受。”'
+    },
+    gate: {
+      title: '星际任意门',
+      img: 'assets/card-b612-plane.webp',
+      desc: '小王子正驾驶红色双翼小飞机环绕 B612 星球试飞——通往更多新奇世界（含海绵宝宝比奇堡空间站）的任意门即将开启，敬请期待！',
+      quote: '“走得再远，也别忘了当初出发时仰望的那片星空。”'
+    }
+  };
+
+  var params = new URLSearchParams(location.search);
+  var cur = params.get('tool') || 'star';
+  if (!TOOLS[cur]) cur = 'star';
+
+  var imgEl = document.getElementById('toolImg');
+  var titleEl = document.getElementById('toolTitle');
+  var descEl = document.getElementById('toolDesc');
+  var quoteEl = document.getElementById('toolQuote');
+  var btns = [].slice.call(document.querySelectorAll('#switcher .sw-btn'));
+
+  function apply(k){
+    var item = TOOLS[k] || TOOLS.star;
+    imgEl.src = item.img;
+    titleEl.innerHTML = item.title + ' · <em>敬请期待</em>';
+    descEl.textContent = item.desc;
+    quoteEl.textContent = item.quote;
+    btns.forEach(function(b){ b.classList.toggle('on', b.getAttribute('data-k') === k); });
+  }
+
+  document.getElementById('switcher').addEventListener('click', function(e){
+    var b = e.target.closest('[data-k]');
+    if (!b) return;
+    apply(b.getAttribute('data-k'));
+  });
+
+  apply(cur);
+})();
+</script>
+</body>
+</html>
