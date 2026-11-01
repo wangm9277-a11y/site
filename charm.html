@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="zh-CN" style="background:#070912">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#070912">
+<title>如何才能变得像猛哥一样有魅力 · B612绝密教程 · WM的空间站</title>
+<meta name="description" content="WM的空间站独门秘籍教程：如何才能变得像猛哥一样有魅力。">
+<style>
+  :root{
+    --bg:#070912; --ink:#f5f7fc; --dim:#9ba6b8; --line:rgba(255,224,148,.22);
+    --gold:#ffd875; --rose:#ff8da1; --mint:#7ef2b8; --blue:#8ce0ff;
+    --card:linear-gradient(165deg,rgba(18,22,42,.92),rgba(10,13,26,.96));
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0; background:var(--bg); overscroll-behavior-y:none}
+  body{
+    min-height:100svh; color:var(--ink);
+    font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    -webkit-font-smoothing:antialiased;
+    background:var(--bg) url(assets/sky-b612.webp) center/cover no-repeat fixed;
+    display:flex; flex-direction:column;
+  }
+  body::before{
+    content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+    background:radial-gradient(circle at 50% 24%, rgba(255,141,161,.16), rgba(255,216,117,.10) 38%, transparent 68%),
+               linear-gradient(180deg,rgba(7,9,18,.62),rgba(7,9,18,.88) 58%,#070912 100%);
+  }
+  .wrap{position:relative; z-index:1; width:min(940px,92vw); margin:0 auto; padding:22px 0 60px; flex:1; display:flex; flex-direction:column}
+
+  .topbar{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:20px}
+  .back{
+    display:inline-flex; align-items:center; gap:8px; text-decoration:none; color:#ffe6a3;
+    font-weight:700; font-size:13px; padding:7px 14px; border-radius:999px;
+    background:rgba(14,19,34,.84); border:1px solid rgba(255,224,140,.24); transition:transform .2s, background .2s;
+  }
+  .back:hover{background:var(--gold); color:#161004; transform:translate3d(-2px,0,0)}
+  .back svg{width:14px;height:14px}
+  .badge{
+    display:inline-flex; align-items:center; gap:8px; padding:6px 13px; border-radius:999px;
+    background:rgba(255,141,161,.12); border:1px solid rgba(255,141,161,.32);
+    font:600 11px/1 ui-monospace,monospace; letter-spacing:.1em; color:#ffc2ce;
+  }
+  .badge i{width:6px;height:6px;border-radius:50%;background:var(--rose);box-shadow:0 0 8px var(--rose)}
+
+  .stage-card{
+    margin:auto 0; padding:clamp(20px,3.2vw,34px) clamp(18px,4vw,40px);
+    border-radius:28px; border:1px solid var(--line); background:var(--card);
+    box-shadow:0 30px 80px -30px rgba(0,0,0,.92), 0 0 60px rgba(255,216,117,.08);
+    text-align:center; position:relative; overflow:hidden;
+  }
+  .art-ring{
+    width:min(210px,50vw); aspect-ratio:16/10; margin:0 auto 12px; border-radius:18px;
+    overflow:hidden; border:1px solid rgba(255,224,148,.32);
+    box-shadow:0 16px 36px rgba(0,0,0,.55);
+  }
+  .art-ring img{width:100%; height:100%; object-fit:cover; display:block}
+
+  .tut-kicker{
+    display:inline-flex; align-items:center; gap:8px; padding:5px 14px; border-radius:999px;
+    background:rgba(255,216,117,.12); border:1px solid rgba(255,216,117,.28);
+    color:var(--gold); font:700 12px/1 ui-monospace,monospace; letter-spacing:.14em; margin-bottom:12px;
+  }
+  .tut-title{
+    margin:0 0 14px; font-size:clamp(17px,2.2vw,23px); font-weight:800; color:#d8e2f4; letter-spacing:.02em;
+  }
+
+  /* 核心超大字醒目宣言 */
+  .mega-truth{
+    margin:6px auto 16px; padding:20px 18px; border-radius:20px;
+    background:radial-gradient(ellipse at 50% 50%, rgba(255,216,117,.16), rgba(255,141,161,.08) 65%, rgba(10,14,26,.6));
+    border:1.5px solid rgba(255,216,117,.42);
+    font-weight:900; font-size:clamp(26px,4.6vw,54px); line-height:1.22; letter-spacing:-.015em;
+    background-image:linear-gradient(135deg,#fff8de 10%,#ffd875 48%,#ff9ebb 90%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    text-shadow:0 12px 42px rgba(255,205,100,.22);
+    user-select:none;
+  }
+
+  .progress-wrap{
+    max-width:460px; margin:0 auto 20px; padding:12px 16px; border-radius:14px;
+    background:rgba(7,10,18,.68); border:1px solid rgba(255,255,255,.08);
+  }
+  .p-top{display:flex; justify-content:space-between; font-size:12px; color:#b8c4d8; margin-bottom:7px}
+  .p-top b{color:var(--rose); font-family:ui-monospace,monospace}
+  .p-bar{height:6px; border-radius:999px; background:rgba(255,255,255,.08); overflow:hidden}
+  .p-fill{height:100%; width:1%; background:linear-gradient(90deg,var(--gold),var(--rose)); transition:width .3s ease}
+
+  .egg-msg{
+    min-height:28px; margin:0 auto 22px; max-width:34em;
+    font-size:14.5px; color:#ffefb8; font-weight:600; transition:transform .2s;
+  }
+  .shake{animation:shake .38s ease}
+  @keyframes shake{
+    0%,100%{transform:translate3d(0,0,0)}
+    20%{transform:translate3d(-7px,0,0)}
+    40%{transform:translate3d(7px,0,0)}
+    60%{transform:translate3d(-4px,0,0)}
+    80%{transform:translate3d(4px,0,0)}
+  }
+
+  .btn-row{display:flex; align-items:center; justify-content:center; gap:12px; flex-wrap:wrap}
+  .btn-try{
+    appearance:none; border:1px solid rgba(255,216,117,.45);
+    background:linear-gradient(180deg,#ffe494,#ffc247); color:#181002;
+    font:800 14.5px/1 inherit; padding:14px 22px; border-radius:999px; cursor:pointer;
+    box-shadow:0 14px 32px -14px rgba(255,216,117,.75); transition:transform .15s;
+  }
+  .btn-try:hover{transform:translateY(-2px)}
+  .btn-try:active{transform:scale(.97)}
+  .btn-home{
+    display:inline-flex; align-items:center; gap:6px; padding:13px 20px; border-radius:999px;
+    border:1px solid rgba(255,255,255,.2); background:rgba(255,255,255,.06);
+    color:#fff; font:700 14px/1 inherit; text-decoration:none; transition:background .2s, border-color .2s;
+  }
+  .btn-home:hover{background:rgba(255,255,255,.14); border-color:var(--gold)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <a class="back" href="/">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+      返回 B612 空间站
+    </a>
+    <span class="badge"><i></i>ASTEROID B612 · 绝密教程</span>
+  </div>
+
+  <section class="stage-card" id="card">
+    <div class="art-ring">
+      <img src="assets/card-charm.webp" alt="B612星球绝密魅力卷轴">
+    </div>
+    <div class="tut-kicker">✦ SECRET TUTORIAL · 独门秘籍 第01卷 ✦</div>
+    <h1 class="tut-title">《如何才能变得像猛哥一样有魅力》</h1>
+
+    <div class="mega-truth" id="megaTruth">
+      放弃吧，<br>猛哥的魅力你是学不来的！
+    </div>
+
+    <div class="progress-wrap">
+      <div class="p-top">
+        <span>当前模仿修炼进度</span>
+        <b id="pctTxt">0.00%（天赋壁垒已锁死）</b>
+      </div>
+      <div class="p-bar"><div class="p-fill" id="pFill"></div></div>
+    </div>
+
+    <p class="egg-msg" id="eggMsg">“小王子翻遍了整颗 B612 星球的卷轴，最后合上书叹了口气。”</p>
+
+    <div class="btn-row">
+      <button class="btn-try" id="tryBtn" type="button">🔥 我不信，强行修炼试试</button>
+      <a class="btn-home" href="/">🚀 乖乖服气 · 返回空间站</a>
+    </div>
+  </section>
+</div>
+
+<script>
+(function(){
+  var TIPS = [
+    '⚠️ 系统警告：检测到与猛哥的魅力值差距高达 999,999,999 点，B612 星球算力已过载！',
+    '🦊 小狐狸摇了摇头：“别费劲了，猛哥这属于出厂自带的满级被动技能，没法后天加点。”',
+    '🌹 玻璃罩里的玫瑰叹了口气：“连小王子都抄不到猛哥的作业，听姐一句劝，早点死心吧！”',
+    '📜 秘籍最后一页写着：与其苦练十年，不如直接去找猛哥交个朋友沾沾帅气！',
+    '💫 第 N 次强行冲击失败：猛哥的魅力受宇宙基本法保护，禁止任何形式的复制与山寨！'
+  ];
+  var idx = 0;
+  var tryBtn = document.getElementById('tryBtn');
+  var eggMsg = document.getElementById('eggMsg');
+  var pctTxt = document.getElementById('pctTxt');
+  var pFill = document.getElementById('pFill');
+  var card = document.getElementById('card');
+
+  tryBtn.addEventListener('click', function(){
+    eggMsg.textContent = TIPS[idx % TIPS.length];
+    idx++;
+    card.classList.remove('shake');
+    void card.offsetWidth;
+    card.classList.add('shake');
+    pFill.style.width = '18%';
+    pctTxt.textContent = '0.01% → 检测到猛哥光环，自动清零';
+    setTimeout(function(){ pFill.style.width = '1%'; }, 420);
+  });
+})();
+</script>
+</body>
+</html>
