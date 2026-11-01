@@ -16,6 +16,9 @@
 <link rel="preload" as="image" href="assets/card-calc.webp" fetchpriority="high">
 <link rel="preload" as="image" href="assets/card-ktv.webp" fetchpriority="high">
 <link rel="preload" as="image" href="assets/card-charm.webp" fetchpriority="high">
+<link rel="preload" as="image" href="assets/card-b612-star.webp" fetchpriority="high">
+<link rel="preload" as="image" href="assets/card-b612-lantern.webp" fetchpriority="high">
+<link rel="preload" as="image" href="assets/card-b612-plane.webp" fetchpriority="high">
 <link rel="prefetch" href="/ktv.html">
 <link rel="prefetch" href="/translate.html">
 <link rel="prefetch" href="/calc.html">
@@ -51,7 +54,7 @@
                var(--tint,transparent);
     transition:background .55s ease; pointer-events:none}
 
-  /* ---------- 顶部胶囊导航（去除耗时 backdrop-filter，保证 120Hz 零掉帧） ---------- */
+  /* ---------- 顶部胶囊导航 ---------- */
   .rail{position:fixed; z-index:40; top:18px; left:50%; transform:translate3d(-50%,0,0);
     width:min(1240px,94vw); display:flex; align-items:center; gap:18px; padding:8px 12px 8px 9px;
     border-radius:999px; border:1px solid rgba(255,255,255,.14);
@@ -105,7 +108,7 @@
     color:var(--lime); letter-spacing:.02em; transform:rotate(-6deg); pointer-events:none; opacity:.95; transition:color .35s}
   .lede{margin:24px 0 0; color:rgba(240,244,252,.86); font-size:clamp(14.5px,1.15vw,17.5px); max-width:34em}
 
-  /* ---------- 右侧：小王子 B612 星球场景 + 随卡片轮转切换的《小王子》经典名言 ---------- */
+  /* ---------- 右侧：小王子 B612 星球 7 幕场景 + 随卡片轮转切换的《小王子》经典名言 ---------- */
   .scene{position:relative; flex:1 1 460px; max-width:600px; height:clamp(340px,45vh,464px); z-index:2;
     transform:translate3d(0,clamp(8px,2vh,24px),0); pointer-events:none; user-select:none}
   .island{position:absolute; left:50%; bottom:24px; width:102%; transform:translate3d(-50%,0,0);
@@ -132,7 +135,7 @@
   .b612-quote.fade{opacity:0; transform:translate3d(-50%,4px,0)}
   @keyframes islandBob{0%,100%{transform:translate3d(-50%,0,0)}50%{transform:translate3d(-50%,-7px,0)}}
 
-  /* ---------- 首屏底部：120帧物理阻尼连续轮转工具卡带 ---------- */
+  /* ---------- 首屏底部：120帧物理阻尼连续轮转工具卡带（含新增 3 张小王子插画卡，共 8 张） ---------- */
   .deck-wrap{position:absolute; left:0; right:0; bottom:0; z-index:4; padding:0 0 20px}
   .deck{position:relative; overflow:hidden; padding:16px 0 14px; cursor:grab; user-select:none; -webkit-user-select:none;
     touch-action:pan-y; contain:layout paint}
@@ -172,7 +175,7 @@
   .js .rise{opacity:0; transform:translate3d(0,20px,0); transition:opacity .55s var(--ease), transform .55s var(--ease); will-change:opacity, transform}
   .js .rise.in{opacity:1; transform:translate3d(0,0,0)}
 
-  /* ---------- SELECTED WORKS 沉浸式 Bento 作品网格（已移至核心功能上方） ---------- */
+  /* ---------- SELECTED WORKS 沉浸式 Bento 作品网格（已移至核心功能上方，含新小王子插画） ---------- */
   .works-grid{display:grid; grid-template-columns:1.15fr .85fr; gap:18px}
   .work{position:relative; border-radius:22px; overflow:hidden; border:1px solid rgba(255,255,255,.11);
     background:#0a0d14; cursor:pointer; transition:transform .38s var(--ease), border-color .3s; height:242px; display:block;
@@ -333,7 +336,6 @@
     .hero-copy{max-width:100%}
     .hero h1 .sp-stars{right:-38px; top:-6px; width:34px; height:30px}
     .lede{margin-top:12px}
-    /* 手机端小王子场景紧凑精致，不抢占卡片空间 */
     .scene{flex:0 0 auto; width:100%; max-width:none; height:236px; margin:4px 0 2px; transform:none}
     .island{width:96%; bottom:22px}
     .b612-slide{width:76%}
@@ -341,7 +343,6 @@
     .deck-wrap{position:relative; padding:2px 0 8px; margin:0 -5vw}
     .deck{padding:14px 0 14px}
     .deck-track{gap:13px; padding-left:4.5vw}
-    /* 手机端功能卡片放大（43.5vw，画面与字号更饱满清晰） */
     .card{width:clamp(168px,43.5vw,224px); border-radius:15px}
     .card img{aspect-ratio:15/10}
     .card.on{transform:translate3d(0,-6px,0) scale(1.03)}
@@ -461,12 +462,15 @@
           <img class="b612-slide" src="assets/b612-s2.webp" loading="eager" decoding="async" alt="B612星球：小王子与小狐狸背影仰望星空">
           <img class="b612-slide" src="assets/b612-s3.webp" loading="eager" decoding="async" alt="B612星球：小王子俯身轻嗅红玫瑰">
           <img class="b612-slide" src="assets/b612-s4.webp" loading="eager" decoding="async" alt="B612星球：玫瑰、小王子与小狐狸并肩背影">
+          <img class="b612-slide" src="assets/b612-s5.webp" loading="eager" decoding="async" alt="B612星球：小王子用天文望远镜观测星云">
+          <img class="b612-slide" src="assets/b612-s6.webp" loading="eager" decoding="async" alt="B612星球：小王子提着星星灯笼打开齿轮百宝箱">
+          <img class="b612-slide" src="assets/b612-s7.webp" loading="eager" decoding="async" alt="B612星球：小王子驾驶双翼飞机环游星球">
         </div>
       </div>
       <div class="b612-quote" id="b612Quote">“真正重要的东西，用眼睛是看不见的，要用心去感受。”</div>
     </div>
 
-    <!-- 底部：120帧物理阻尼连续轮转工具卡带 -->
+    <!-- 底部：120帧物理阻尼连续轮转工具卡带（已实装新绘制的 3 张小王子插画卡，共 8 张） -->
     <div class="deck-wrap">
       <div class="deck" id="deck" aria-label="工具轮转长廊">
         <div class="deck-track" id="deckTrack">
@@ -490,12 +494,24 @@
             <em class="c-tag">教程 · 独门秘籍</em>
             <img src="assets/card-charm.webp" loading="eager" fetchpriority="high" decoding="async" alt="如何才能变得像猛哥一样有魅力"><span class="cap">如何才能变得像猛哥一样有魅力</span>
           </a>
+          <a class="card" href="#lab" data-idx="5" data-bg="#0b1324" data-ac="#ffe082" data-tint="rgba(255,224,130,.20)" style="--c-ac:#ffe082">
+            <em class="c-tag">天文望远镜 · 探索</em>
+            <img src="assets/card-b612-star.webp" loading="eager" fetchpriority="high" decoding="async" alt="B612 观星台"><span class="cap">B612 观星台</span>
+          </a>
+          <a class="card" href="#stack" data-idx="6" data-bg="#151109" data-ac="#ffd166" data-tint="rgba(255,209,102,.20)" style="--c-ac:#ffd166">
+            <em class="c-tag">星星提灯 · 宝盒</em>
+            <img src="assets/card-b612-lantern.webp" loading="eager" fetchpriority="high" decoding="async" alt="星光百宝箱"><span class="cap">星光百宝箱</span>
+          </a>
+          <a class="card" href="#works" data-idx="7" data-bg="#120c1c" data-ac="#ff9ebb" data-tint="rgba(255,158,187,.22)" style="--c-ac:#ff9ebb">
+            <em class="c-tag">双翼飞机 · 巡航</em>
+            <img src="assets/card-b612-plane.webp" loading="eager" fetchpriority="high" decoding="async" alt="星际任意门"><span class="cap">星际任意门</span>
+          </a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- 精选作品（已移至核心功能上方） -->
+  <!-- 精选作品（已移至核心功能上方，含新绘制的 3 张小王子插画作品卡） -->
   <section class="sec" id="works">
     <div class="wrap">
       <div class="sec-head rise">
@@ -523,6 +539,18 @@
           <img src="assets/card-charm.webp" loading="eager" decoding="async" alt="如何才能变得像猛哥一样有魅力">
           <div class="wb"><div><h3>教程：如何才能变得像猛哥一样有魅力 <small>独门秘籍 · 必看</small></h3><p>B612 星球绝密修炼卷轴 / 点击揭晓终极答案</p></div><span class="go">揭秘 →</span></div>
         </a>
+        <a class="work rise" href="#lab">
+          <img src="assets/card-b612-star.webp" loading="eager" decoding="async" alt="B612 观星台">
+          <div class="wb"><div><h3>B612 观星台 <small>天文望远镜 · 探索</small></h3><p>小王子与小狐狸观测星座连线 / 硬件实验与本地工具入口</p></div><span class="go">查看 →</span></div>
+        </a>
+        <a class="work rise" href="#stack">
+          <img src="assets/card-b612-lantern.webp" loading="eager" decoding="async" alt="星光百宝箱">
+          <div class="wb"><div><h3>星光百宝箱 <small>星星提灯 · 宝盒</small></h3><p>提着星星灯笼开启齿轮与罗盘宝箱 / 空间站核心技术栈</p></div><span class="go">查看 →</span></div>
+        </a>
+        <a class="work rise wide" href="#top">
+          <img src="assets/card-b612-plane.webp" loading="eager" decoding="async" alt="星际任意门">
+          <div class="wb"><div><h3>星际任意门 <small>双翼飞机 · B612巡航</small></h3><p>小王子驾驶双翼飞机环绕 B612 星球与玫瑰花 / 更多新脑洞即将降落</p></div><span class="go">巡航 →</span></div>
+        </a>
       </div>
     </div>
   </section>
@@ -541,7 +569,7 @@
           <p>不套模板、不引臃肿依赖，用原生 CSS 与绘本插画直接构景。</p>
           <div class="sk-pills">
             <span class="sk-pill p1">原生 HTML / CSS 零框架</span>
-            <span class="sk-pill p2">B612 小王子四幕等比切换</span>
+            <span class="sk-pill p2">B612 小王子七幕等比切换</span>
             <span class="sk-pill p3">全站统一治愈星空绘本风</span>
           </div>
           <svg class="sk-art" viewBox="0 0 100 100" fill="none" aria-hidden="true">
@@ -684,11 +712,17 @@
     'assets/b612-s2.webp',
     'assets/b612-s3.webp',
     'assets/b612-s4.webp',
+    'assets/b612-s5.webp',
+    'assets/b612-s6.webp',
+    'assets/b612-s7.webp',
     'assets/card-yi.webp',
     'assets/card-tr.webp',
     'assets/card-calc.webp',
     'assets/card-ktv.webp',
-    'assets/card-charm.webp'
+    'assets/card-charm.webp',
+    'assets/card-b612-star.webp',
+    'assets/card-b612-lantern.webp',
+    'assets/card-b612-plane.webp'
   ];
 
   var loadedCount = 0;
@@ -718,7 +752,6 @@
     if (skip){
       intro.remove();
     } else {
-      /* 最短动画时长 1250ms，最长安全兜底 4800ms；只有当 loadedCount >= totalAssets 时才允许到达 100%！ */
       var MIN_DUR = 1250, MAX_WAIT = 4800, t0 = performance.now();
       var displayPct = 0;
       (function frame(now){
@@ -727,7 +760,6 @@
         var realRatio = loadedCount / totalAssets;
         var allReady = (loadedCount >= totalAssets) || (elapsed >= MAX_WAIT);
 
-        /* 在图片未全部解码完成前，进度最高卡在 96%，全部解码完成且满足最短顺滑过渡后立即冲到 100% */
         var targetPct;
         if (allReady && timeProgress >= 1){
           targetPct = 100;
@@ -1042,7 +1074,7 @@
   }
   tickClock(); setInterval(tickClock, 20000);
 
-  /* ---------- 加密版浪漫流星雨（多连发、丰富尾迹） ---------- */
+  /* ---------- 加密版浪漫流星雨 ---------- */
   var meteorBox = document.getElementById('meteors');
   if (meteorBox && !reduce){
     function spawnOneMeteor(xPct, yPct){
