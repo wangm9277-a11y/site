@@ -23,6 +23,7 @@
 <link rel="prefetch" href="/translate.html">
 <link rel="prefetch" href="/calc.html">
 <link rel="prefetch" href="/charm.html">
+<link rel="prefetch" href="/coming-soon.html">
 <link rel="prefetch" href="/tools/qianqian.html">
 <style>
   :root{
@@ -111,12 +112,12 @@
   /* ---------- 右侧：小王子 B612 星球 7 幕场景 + 随卡片轮转切换的《小王子》经典名言 ---------- */
   .scene{position:relative; flex:1 1 460px; max-width:600px; height:clamp(340px,45vh,464px); z-index:2;
     transform:translate3d(0,clamp(8px,2vh,24px),0); pointer-events:none; user-select:none}
-  .island{position:absolute; left:50%; bottom:24px; width:102%; transform:translate3d(-50%,0,0);
+  .island{position:absolute; left:50%; bottom:24px; width:104%; transform:translate3d(-50%,0,0);
     will-change:transform; backface-visibility:hidden; animation:islandBob 9s ease-in-out infinite}
   .b612-stage{position:relative; width:100%; aspect-ratio:720/540; contain:layout style}
   .b612-deco{position:absolute; inset:-4% -3% 0; width:106%; height:104%; overflow:visible; pointer-events:none; z-index:1}
   .b612-slide{
-    position:absolute; inset:0; width:90%; height:100%; margin:0 auto; object-fit:contain; z-index:2;
+    position:absolute; inset:0; width:94%; height:100%; margin:0 auto; object-fit:contain; z-index:2;
     opacity:0; transform:translate3d(0,6px,0) scale(.965);
     transition:opacity .52s var(--ease), transform .58s var(--ease);
     will-change:opacity, transform; backface-visibility:hidden; -webkit-backface-visibility:hidden;
@@ -336,9 +337,9 @@
     .hero-copy{max-width:100%}
     .hero h1 .sp-stars{right:-38px; top:-6px; width:34px; height:30px}
     .lede{margin-top:12px}
-    .scene{flex:0 0 auto; width:100%; max-width:none; height:236px; margin:4px 0 2px; transform:none}
-    .island{width:96%; bottom:22px}
-    .b612-slide{width:76%}
+    .scene{flex:0 0 auto; width:100%; max-width:none; height:242px; margin:4px 0 2px; transform:none}
+    .island{width:98%; bottom:22px}
+    .b612-slide{width:82%}
     .b612-quote{bottom:-2px; font-size:11.5px; padding:4px 12px; max-width:92vw}
     .deck-wrap{position:relative; padding:2px 0 8px; margin:0 -5vw}
     .deck{padding:14px 0 14px}
@@ -354,7 +355,7 @@
     .stack-grid{grid-template-columns:1fr}
     .rail{top:10px; padding:7px 8px}
     .brand{font-size:12.5px; padding:6px 12px 6px 6px}
-    .scene{height:226px; margin:2px 0 2px}
+    .scene{height:232px; margin:2px 0 2px}
   }
   @media (prefers-reduced-motion:reduce){
     html{scroll-behavior:auto}
@@ -470,7 +471,7 @@
       <div class="b612-quote" id="b612Quote">“真正重要的东西，用眼睛是看不见的，要用心去感受。”</div>
     </div>
 
-    <!-- 底部：120帧物理阻尼连续轮转工具卡带（已实装新绘制的 3 张小王子插画卡，共 8 张） -->
+    <!-- 底部：120帧物理阻尼连续轮转工具卡带（新增的 3 张卡片点开均跳转至专属「敬请期待」页） -->
     <div class="deck-wrap">
       <div class="deck" id="deck" aria-label="工具轮转长廊">
         <div class="deck-track" id="deckTrack">
@@ -494,16 +495,16 @@
             <em class="c-tag">教程 · 独门秘籍</em>
             <img src="assets/card-charm.webp" loading="eager" fetchpriority="high" decoding="async" alt="如何才能变得像猛哥一样有魅力"><span class="cap">如何才能变得像猛哥一样有魅力</span>
           </a>
-          <a class="card" href="#lab" data-idx="5" data-bg="#0b1324" data-ac="#ffe082" data-tint="rgba(255,224,130,.20)" style="--c-ac:#ffe082">
-            <em class="c-tag">天文望远镜 · 探索</em>
+          <a class="card" href="/coming-soon.html?tool=star" data-idx="5" data-bg="#0b1324" data-ac="#ffe082" data-tint="rgba(255,224,130,.20)" style="--c-ac:#ffe082">
+            <em class="c-tag">敬请期待 · 探索</em>
             <img src="assets/card-b612-star.webp" loading="eager" fetchpriority="high" decoding="async" alt="B612 观星台"><span class="cap">B612 观星台</span>
           </a>
-          <a class="card" href="#stack" data-idx="6" data-bg="#151109" data-ac="#ffd166" data-tint="rgba(255,209,102,.20)" style="--c-ac:#ffd166">
-            <em class="c-tag">星星提灯 · 宝盒</em>
+          <a class="card" href="/coming-soon.html?tool=box" data-idx="6" data-bg="#151109" data-ac="#ffd166" data-tint="rgba(255,209,102,.20)" style="--c-ac:#ffd166">
+            <em class="c-tag">敬请期待 · 宝盒</em>
             <img src="assets/card-b612-lantern.webp" loading="eager" fetchpriority="high" decoding="async" alt="星光百宝箱"><span class="cap">星光百宝箱</span>
           </a>
-          <a class="card" href="#works" data-idx="7" data-bg="#120c1c" data-ac="#ff9ebb" data-tint="rgba(255,158,187,.22)" style="--c-ac:#ff9ebb">
-            <em class="c-tag">双翼飞机 · 巡航</em>
+          <a class="card" href="/coming-soon.html?tool=gate" data-idx="7" data-bg="#120c1c" data-ac="#ff9ebb" data-tint="rgba(255,158,187,.22)" style="--c-ac:#ff9ebb">
+            <em class="c-tag">敬请期待 · 巡航</em>
             <img src="assets/card-b612-plane.webp" loading="eager" fetchpriority="high" decoding="async" alt="星际任意门"><span class="cap">星际任意门</span>
           </a>
         </div>
@@ -511,7 +512,7 @@
     </div>
   </section>
 
-  <!-- 精选作品（已移至核心功能上方，含新绘制的 3 张小王子插画作品卡） -->
+  <!-- 精选作品（已移至核心功能上方，新工具卡片点击进入「敬请期待」页） -->
   <section class="sec" id="works">
     <div class="wrap">
       <div class="sec-head rise">
@@ -539,17 +540,17 @@
           <img src="assets/card-charm.webp" loading="eager" decoding="async" alt="如何才能变得像猛哥一样有魅力">
           <div class="wb"><div><h3>教程：如何才能变得像猛哥一样有魅力 <small>独门秘籍 · 必看</small></h3><p>B612 星球绝密修炼卷轴 / 点击揭晓终极答案</p></div><span class="go">揭秘 →</span></div>
         </a>
-        <a class="work rise" href="#lab">
+        <a class="work rise" href="/coming-soon.html?tool=star">
           <img src="assets/card-b612-star.webp" loading="eager" decoding="async" alt="B612 观星台">
-          <div class="wb"><div><h3>B612 观星台 <small>天文望远镜 · 探索</small></h3><p>小王子与小狐狸观测星座连线 / 硬件实验与本地工具入口</p></div><span class="go">查看 →</span></div>
+          <div class="wb"><div><h3>B612 观星台 <small>敬请期待 · COMING SOON</small></h3><p>小王子与小狐狸观测星座连线 / 新工具正在打磨中</p></div><span class="go">敬请期待 →</span></div>
         </a>
-        <a class="work rise" href="#stack">
+        <a class="work rise" href="/coming-soon.html?tool=box">
           <img src="assets/card-b612-lantern.webp" loading="eager" decoding="async" alt="星光百宝箱">
-          <div class="wb"><div><h3>星光百宝箱 <small>星星提灯 · 宝盒</small></h3><p>提着星星灯笼开启齿轮与罗盘宝箱 / 空间站核心技术栈</p></div><span class="go">查看 →</span></div>
+          <div class="wb"><div><h3>星光百宝箱 <small>敬请期待 · COMING SOON</small></h3><p>提着星星灯笼开启齿轮与罗盘宝箱 / 新工具正在打磨中</p></div><span class="go">敬请期待 →</span></div>
         </a>
-        <a class="work rise wide" href="#top">
+        <a class="work rise wide" href="/coming-soon.html?tool=gate">
           <img src="assets/card-b612-plane.webp" loading="eager" decoding="async" alt="星际任意门">
-          <div class="wb"><div><h3>星际任意门 <small>双翼飞机 · B612巡航</small></h3><p>小王子驾驶双翼飞机环绕 B612 星球与玫瑰花 / 更多新脑洞即将降落</p></div><span class="go">巡航 →</span></div>
+          <div class="wb"><div><h3>星际任意门 <small>敬请期待 · COMING SOON</small></h3><p>小王子驾驶双翼飞机环绕 B612 星球 / 更多新世界即将开启</p></div><span class="go">敬请期待 →</span></div>
         </a>
       </div>
     </div>
