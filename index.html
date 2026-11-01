@@ -9,8 +9,18 @@
 <meta property="og:title" content="WM的空间站 · wmv587">
 <meta property="og:description" content="一个私人的小站，放工具、作品和入口。">
 <meta property="og:image" content="https://www.wmv587.asia/assets/sky.jpg">
-<link rel="preload" as="image" href="assets/sky-b612.webp">
-<link rel="preload" as="image" href="assets/b612-s1.webp">
+<link rel="preload" as="image" href="assets/sky-b612.webp" fetchpriority="high">
+<link rel="preload" as="image" href="assets/b612-s1.webp" fetchpriority="high">
+<link rel="preload" as="image" href="assets/card-yi.webp" fetchpriority="high">
+<link rel="preload" as="image" href="assets/card-tr.webp" fetchpriority="high">
+<link rel="preload" as="image" href="assets/card-calc.webp" fetchpriority="high">
+<link rel="preload" as="image" href="assets/card-ktv.webp" fetchpriority="high">
+<link rel="preload" as="image" href="assets/card-charm.webp" fetchpriority="high">
+<link rel="prefetch" href="/ktv.html">
+<link rel="prefetch" href="/translate.html">
+<link rel="prefetch" href="/calc.html">
+<link rel="prefetch" href="/charm.html">
+<link rel="prefetch" href="/tools/qianqian.html">
 <style>
   :root{
     --lime:#c8f830;
@@ -55,19 +65,19 @@
   .brand i{width:25px; height:25px; border-radius:50%; background:#0a0d05; display:grid; place-items:center; color:var(--lime); font-style:normal; flex:0 0 25px; transition:color .35s}
   .brand i svg{width:15px; height:15px; display:block; overflow:visible}
 
-  /* ---------- 偶发流星特效（纯 GPU transform 合成） ---------- */
+  /* ---------- 丰沛流星雨特效（纯 GPU transform 合成，多角度与双色星尾） ---------- */
   #meteors{position:fixed; inset:0; z-index:-1; pointer-events:none; overflow:hidden; contain:strict}
-  .meteor{position:absolute; width:clamp(90px,11vw,150px); height:1.8px; border-radius:999px;
-    background:linear-gradient(90deg, rgba(255,253,232,1) 0%, rgba(255,230,142,.75) 26%, rgba(168,202,255,.22) 68%, transparent 100%);
+  .meteor{position:absolute; width:var(--mw, 135px); height:2px; border-radius:999px;
+    background:linear-gradient(90deg, rgba(255,253,235,1) 0%, rgba(255,228,132,.85) 28%, rgba(145,212,255,.32) 68%, transparent 100%);
     opacity:0; transform-origin:left center; will-change:transform, opacity; backface-visibility:hidden;
-    animation:meteorFly 1.15s cubic-bezier(.16,.68,.32,1) forwards}
-  .meteor::before{content:""; position:absolute; left:-1px; top:50%; width:4px; height:4px; border-radius:50%;
-    transform:translateY(-50%); background:#fffdf0}
+    animation:meteorFly var(--md, 1.15s) cubic-bezier(.16,.68,.32,1) forwards}
+  .meteor::before{content:""; position:absolute; left:-1px; top:50%; width:4.5px; height:4.5px; border-radius:50%;
+    transform:translateY(-50%); background:#fffdf2; box-shadow:0 0 10px 2px rgba(255,236,160,.85)}
   @keyframes meteorFly{
-    0%{opacity:0; transform:rotate(-26deg) translate3d(0,0,0) scaleX(.35)}
-    18%{opacity:.96; transform:rotate(-26deg) translate3d(-28px,0,0) scaleX(1)}
-    82%{opacity:.78}
-    100%{opacity:0; transform:rotate(-26deg) translate3d(-240px,0,0) scaleX(.65)}
+    0%{opacity:0; transform:rotate(var(--ma, -26deg)) translate3d(0,0,0) scaleX(.35)}
+    16%{opacity:.98; transform:rotate(var(--ma, -26deg)) translate3d(-34px,0,0) scaleX(1)}
+    80%{opacity:.82}
+    100%{opacity:0; transform:rotate(var(--ma, -26deg)) translate3d(-290px,0,0) scaleX(.65)}
   }
 
   .rail-links{display:flex; gap:6px; margin-inline:auto}
@@ -103,7 +113,7 @@
   .b612-stage{position:relative; width:100%; aspect-ratio:720/540; contain:layout style}
   .b612-deco{position:absolute; inset:-4% -3% 0; width:106%; height:104%; overflow:visible; pointer-events:none; z-index:1}
   .b612-slide{
-    position:absolute; inset:0; width:94%; height:100%; margin:0 auto; object-fit:contain; z-index:2;
+    position:absolute; inset:0; width:90%; height:100%; margin:0 auto; object-fit:contain; z-index:2;
     opacity:0; transform:translate3d(0,6px,0) scale(.965);
     transition:opacity .52s var(--ease), transform .58s var(--ease);
     will-change:opacity, transform; backface-visibility:hidden; -webkit-backface-visibility:hidden;
@@ -122,7 +132,7 @@
   .b612-quote.fade{opacity:0; transform:translate3d(-50%,4px,0)}
   @keyframes islandBob{0%,100%{transform:translate3d(-50%,0,0)}50%{transform:translate3d(-50%,-7px,0)}}
 
-  /* ---------- 首屏底部：120帧物理阻尼连续轮转工具卡带（悬停/触摸平滑减速，不死停） ---------- */
+  /* ---------- 首屏底部：120帧物理阻尼连续轮转工具卡带 ---------- */
   .deck-wrap{position:absolute; left:0; right:0; bottom:0; z-index:4; padding:0 0 20px}
   .deck{position:relative; overflow:hidden; padding:16px 0 14px; cursor:grab; user-select:none; -webkit-user-select:none;
     touch-action:pan-y; contain:layout paint}
@@ -131,16 +141,16 @@
     -webkit-backface-visibility:hidden; transform:translate3d(0,0,0); padding-left:5vw}
   .card{position:relative; flex:0 0 auto; width:clamp(218px,21.5vw,284px); border-radius:16px;
     overflow:hidden; border:1px solid rgba(255,255,255,.15); background:#0b0e16; cursor:pointer;
-    opacity:.74; transform:translate3d(0,2px,0) scale(.97);
+    opacity:.76; transform:translate3d(0,2px,0) scale(.97);
     transition:opacity .38s var(--ease), border-color .35s, transform .42s var(--ease);
     will-change:transform, opacity; backface-visibility:hidden; -webkit-backface-visibility:hidden; contain:layout paint}
   .card img{display:block; width:100%; aspect-ratio:16/10; object-fit:cover; object-position:center; pointer-events:none;
     transform:translate3d(0,0,0); backface-visibility:hidden}
   .card::after{content:""; position:absolute; inset:0;
-    background:linear-gradient(180deg,rgba(4,6,12,.04) 0%,rgba(4,6,12,.16) 48%,rgba(4,6,12,.86) 100%); pointer-events:none}
-  .card .cap{position:absolute; left:14px; bottom:11px; z-index:2; font:800 14.5px/1.1 inherit; letter-spacing:.02em; color:#fff;
+    background:linear-gradient(180deg,rgba(4,6,12,.04) 0%,rgba(4,6,12,.18) 44%,rgba(4,6,12,.88) 100%); pointer-events:none}
+  .card .cap{position:absolute; left:12px; right:10px; bottom:10px; z-index:2; font:800 14px/1.2 inherit; letter-spacing:.01em; color:#fff;
     display:flex; align-items:center; gap:6px}
-  .card .cap::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--c-ac,#fff)}
+  .card .cap::before{content:""; width:6px; height:6px; flex:0 0 6px; border-radius:50%; background:var(--c-ac,#fff)}
   .card .c-tag{position:absolute; right:9px; top:8px; z-index:2; font:600 9.5px/1 ui-monospace,monospace; font-style:normal;
     letter-spacing:.04em; padding:4px 8px; border-radius:999px; background:rgba(8,10,18,.82); border:1px solid rgba(255,255,255,.16);
     color:rgba(255,255,255,.88); transition:border-color .3s, color .3s}
@@ -161,6 +171,32 @@
   .sec-head h2{margin:0; font-size:15px; font-weight:600; color:var(--muted); letter-spacing:.04em}
   .js .rise{opacity:0; transform:translate3d(0,20px,0); transition:opacity .55s var(--ease), transform .55s var(--ease); will-change:opacity, transform}
   .js .rise.in{opacity:1; transform:translate3d(0,0,0)}
+
+  /* ---------- SELECTED WORKS 沉浸式 Bento 作品网格（已移至核心功能上方） ---------- */
+  .works-grid{display:grid; grid-template-columns:1.15fr .85fr; gap:18px}
+  .work{position:relative; border-radius:22px; overflow:hidden; border:1px solid rgba(255,255,255,.11);
+    background:#0a0d14; cursor:pointer; transition:transform .38s var(--ease), border-color .3s; height:242px; display:block;
+    backface-visibility:hidden; contain:layout paint}
+  .work.wide{grid-column:1 / -1; height:258px}
+  .work.wide img{object-position:center 46%}
+  .work.tall{grid-row:span 2; height:502px}
+  .work img{width:100%; height:100%; object-fit:cover; object-position:center;
+    opacity:.92; transition:transform .5s var(--ease), opacity .35s; backface-visibility:hidden}
+  .work::after{content:""; position:absolute; inset:0;
+    background:linear-gradient(180deg,rgba(5,7,10,.06) 0%,rgba(5,7,10,.22) 45%,rgba(5,7,10,.88) 100%); pointer-events:none}
+  .work .wb{position:absolute; left:22px; right:22px; bottom:20px; z-index:2;
+    display:flex; justify-content:space-between; align-items:flex-end; gap:12px}
+  .work h3{margin:0; font-size:clamp(19px,2vw,24px); font-weight:800; color:#fff; letter-spacing:-.01em;
+    display:flex; align-items:center; gap:9px; flex-wrap:wrap}
+  .work h3 small{font:600 10px/1 ui-monospace,monospace; padding:4px 9px; border-radius:999px;
+    background:rgba(10,13,18,.78); border:1px solid rgba(255,255,255,.18); color:var(--lime)}
+  .work p{margin:6px 0 0; color:rgba(235,240,248,.74); font-size:13px; letter-spacing:.02em}
+  .work .go{font:600 11.5px/1 ui-monospace,monospace; color:rgba(255,255,255,.82); letter-spacing:.08em;
+    padding:7px 12px; border-radius:999px; background:rgba(12,16,26,.78); border:1px solid rgba(255,255,255,.16);
+    transition:.25s; white-space:nowrap}
+  .work:hover, .work.m-lit{border-color:var(--lime); transform:translate3d(0,-4px,0)}
+  .work:hover img, .work.m-lit img{transform:scale(1.03); opacity:1}
+  .work:hover .go, .work.m-lit .go{background:var(--lime); border-color:var(--lime); color:#0a0d05}
 
   /* ---------- CORE STRENGTHS 核心功能 Bento 卡片 ---------- */
   .stack-grid{display:grid; grid-template-columns:repeat(6,1fr); gap:16px}
@@ -190,32 +226,6 @@
   .sk.lit p, .sk:hover p{color:rgba(10,13,5,.66)}
   .sk.lit .sk-pills, .sk:hover .sk-pills{opacity:1; transform:translate3d(0,0,0)}
   .sk.lit .sk-art, .sk:hover .sk-art{transform:scale(1.08) rotate(6deg); opacity:.32}
-
-  /* ---------- SELECTED WORKS 沉浸式 Bento 作品网格 ---------- */
-  .works-grid{display:grid; grid-template-columns:1.15fr .85fr; gap:18px}
-  .work{position:relative; border-radius:22px; overflow:hidden; border:1px solid rgba(255,255,255,.11);
-    background:#0a0d14; cursor:pointer; transition:transform .38s var(--ease), border-color .3s; height:242px; display:block;
-    backface-visibility:hidden; contain:layout paint}
-  .work.wide{grid-column:1 / -1; height:258px}
-  .work.wide img{object-position:center 46%}
-  .work.tall{grid-row:span 2; height:502px}
-  .work img{width:100%; height:100%; object-fit:cover; object-position:center;
-    opacity:.92; transition:transform .5s var(--ease), opacity .35s; backface-visibility:hidden}
-  .work::after{content:""; position:absolute; inset:0;
-    background:linear-gradient(180deg,rgba(5,7,10,.06) 0%,rgba(5,7,10,.22) 45%,rgba(5,7,10,.88) 100%); pointer-events:none}
-  .work .wb{position:absolute; left:22px; right:22px; bottom:20px; z-index:2;
-    display:flex; justify-content:space-between; align-items:flex-end; gap:12px}
-  .work h3{margin:0; font-size:clamp(19px,2vw,24px); font-weight:800; color:#fff; letter-spacing:-.01em;
-    display:flex; align-items:center; gap:9px}
-  .work h3 small{font:600 10px/1 ui-monospace,monospace; padding:4px 9px; border-radius:999px;
-    background:rgba(10,13,18,.78); border:1px solid rgba(255,255,255,.18); color:var(--lime)}
-  .work p{margin:6px 0 0; color:rgba(235,240,248,.74); font-size:13px; letter-spacing:.02em}
-  .work .go{font:600 11.5px/1 ui-monospace,monospace; color:rgba(255,255,255,.82); letter-spacing:.08em;
-    padding:7px 12px; border-radius:999px; background:rgba(12,16,26,.78); border:1px solid rgba(255,255,255,.16);
-    transition:.25s; white-space:nowrap}
-  .work:hover, .work.m-lit{border-color:var(--lime); transform:translate3d(0,-4px,0)}
-  .work:hover img, .work.m-lit img{transform:scale(1.03); opacity:1}
-  .work:hover .go, .work.m-lit .go{background:var(--lime); border-color:var(--lime); color:#0a0d05}
 
   /* ---------- 工作台列表 ---------- */
   .lab-list{border-top:1px solid var(--line)}
@@ -265,11 +275,11 @@
     border:1px solid rgba(255,255,255,.25); background:rgba(0,0,0,.5); color:#fff; font-size:16px;
     display:grid; place-items:center; cursor:pointer}
 
-  /* ---------- 全新重做：小王子 B612 治愈星空绘本风开屏（手机端视觉中心上移 + 同步预加载） ---------- */
+  /* ---------- 小王子 B612 治愈星空绘本风开屏（真实资源解码同步进度条） ---------- */
   #intro{
     position:fixed; inset:0; z-index:90; display:grid; place-items:center; overflow:hidden;
     background:radial-gradient(ellipse at 50% 38%, #182342 0%, #0b1124 52%, #060913 100%);
-    transition:opacity .42s cubic-bezier(.22,.61,.36,1), transform .48s cubic-bezier(.22,.61,.36,1);
+    transition:opacity .38s cubic-bezier(.22,.61,.36,1), transform .42s cubic-bezier(.22,.61,.36,1);
     will-change:opacity, transform; backface-visibility:hidden;
   }
   #intro .center{
@@ -284,7 +294,7 @@
   @keyframes introFloat{from{transform:translate3d(0,3px,0)}to{transform:translate3d(0,-5px,0)}}
   #intro .label{
     display:inline-flex; align-items:center; gap:8px;
-    font:600 11px/1 ui-monospace,monospace; letter-spacing:.28em;
+    font:600 11px/1 ui-monospace,monospace; letter-spacing:.24em;
     color:#ffe294; margin-bottom:10px; text-transform:uppercase;
   }
   #intro .num{
@@ -294,53 +304,56 @@
   }
   #intro .num i{font-style:normal; font-size:.42em; color:#ffd875; vertical-align:.38em; margin-left:3px}
   #intro .bar-track{
-    width:min(240px,68vw); height:4px; border-radius:999px; margin:16px 0 14px;
+    width:min(250px,70vw); height:4.5px; border-radius:999px; margin:16px 0 14px;
     background:rgba(255,255,255,.10); overflow:hidden; position:relative;
   }
   #intro .bar-fill{
     height:100%; width:0%; border-radius:999px;
     background:linear-gradient(90deg,#7fe3ff 0%,#ffe082 65%,#ff9ebb 100%);
-    transition:width .08s linear;
+    transition:width .06s linear;
   }
   #intro .whisper{
-    font-size:12.5px; color:rgba(255,244,214,.74); letter-spacing:.03em; line-height:1.5; max-width:26em;
+    font-size:12.5px; color:rgba(255,244,214,.78); letter-spacing:.03em; line-height:1.5; max-width:26em;
   }
   #intro.cut{opacity:0; transform:scale(1.03); pointer-events:none}
 
-  /* ---------- 响应式与手机端三卡同屏布局 ---------- */
+  /* ---------- 响应式与手机端放大版功能卡片布局 ---------- */
   @media (max-width:900px){
     #intro .center{transform:translate3d(0,-9vh,0)}
     #intro .b612-emblem{width:122px; height:104px}
     .works-grid{grid-template-columns:1fr}
-    .work, .work.wide, .work.tall{grid-row:auto; height:220px}
+    .work, .work.wide, .work.tall{grid-row:auto; height:228px}
     .stack-grid{grid-template-columns:repeat(2,1fr)}
     .sk, .sk.wide-sk{grid-column:span 1}
     .outro-grid{grid-template-columns:1fr}
     .rail-links{display:none}
     .rail .clock{display:none}
     .contact{margin-left:auto}
-    .hero{flex-direction:column; align-items:stretch; justify-content:flex-start; gap:0; min-height:auto; padding:80px 5vw 10px}
+    .hero{flex-direction:column; align-items:stretch; justify-content:flex-start; gap:0; min-height:auto; padding:78px 5vw 12px}
     .hero-copy{max-width:100%}
     .hero h1 .sp-stars{right:-38px; top:-6px; width:34px; height:30px}
-    .lede{margin-top:14px}
-    .scene{flex:0 0 auto; width:100%; max-width:none; height:260px; margin:6px 0 4px; transform:none}
-    .island{width:100%; bottom:24px}
-    .b612-slide{width:84%}
+    .lede{margin-top:12px}
+    /* 手机端小王子场景紧凑精致，不抢占卡片空间 */
+    .scene{flex:0 0 auto; width:100%; max-width:none; height:236px; margin:4px 0 2px; transform:none}
+    .island{width:96%; bottom:22px}
+    .b612-slide{width:76%}
     .b612-quote{bottom:-2px; font-size:11.5px; padding:4px 12px; max-width:92vw}
-    .deck-wrap{position:relative; padding:0 0 4px; margin:0 -5vw}
-    .deck{padding:10px 0 10px}
-    .deck-track{gap:10px; padding-left:3.5vw}
-    .card{width:clamp(102px,28.2vw,146px); border-radius:12px}
-    .card.on{transform:translate3d(0,-5px,0) scale(1.03)}
-    .card .cap{left:8px; bottom:6px; font-size:11.5px; gap:4px}
-    .card .cap::before{width:4.5px; height:4.5px}
-    .card .c-tag{right:5px; top:5px; font-size:7.5px; padding:2px 5px}
+    .deck-wrap{position:relative; padding:2px 0 8px; margin:0 -5vw}
+    .deck{padding:14px 0 14px}
+    .deck-track{gap:13px; padding-left:4.5vw}
+    /* 手机端功能卡片放大（43.5vw，画面与字号更饱满清晰） */
+    .card{width:clamp(168px,43.5vw,224px); border-radius:15px}
+    .card img{aspect-ratio:15/10}
+    .card.on{transform:translate3d(0,-6px,0) scale(1.03)}
+    .card .cap{left:11px; right:9px; bottom:9px; font-size:13px; line-height:1.22; gap:5px}
+    .card .cap::before{width:5.5px; height:5.5px; flex:0 0 5.5px}
+    .card .c-tag{right:7px; top:7px; font-size:9px; padding:3.5px 7px}
   }
   @media (max-width:560px){
     .stack-grid{grid-template-columns:1fr}
     .rail{top:10px; padding:7px 8px}
     .brand{font-size:12.5px; padding:6px 12px 6px 6px}
-    .scene{height:248px; margin:4px 0 4px}
+    .scene{height:226px; margin:2px 0 2px}
   }
   @media (prefers-reduced-motion:reduce){
     html{scroll-behavior:auto}
@@ -352,7 +365,6 @@
 <body>
 <script>document.documentElement.classList.add('js');</script>
 
-<!-- 小王子 B612 治愈星空绘本开屏（视觉位置居中偏高 + 同步预加载图片资源） -->
 <div id="intro" aria-hidden="true">
   <div class="center">
     <svg class="b612-emblem" viewBox="0 0 180 150" fill="none">
@@ -378,7 +390,7 @@
       <circle cx="126" cy="56" r="2" fill="#ffe484"/>
       <circle cx="56" cy="36" r="1.8" fill="#fff"/>
     </svg>
-    <div class="label">✦ ASTEROID B612 · 正在穿越星海 ✦</div>
+    <div class="label" id="introLabel">✦ ASTEROID B612 · 正在同步星图与卡片 ✦</div>
     <div class="num"><span id="pct">0</span><i>%</i></div>
     <div class="bar-track"><div class="bar-fill" id="introBar"></div></div>
     <div class="whisper">“星星发亮，是为了让每一个人有一天都能找到属于自己的星。”</div>
@@ -392,8 +404,8 @@
 <header class="rail" id="rail">
   <a class="brand" href="/"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 7.2 L6.3 16.8 L10.1 7.2 L13.9 16.8 L17.7 7.2 L21.5 16.8"/></svg></i>WM的空间站</a>
   <nav class="rail-links">
-    <a href="#stack">核心功能</a>
     <a href="#works">精选作品</a>
+    <a href="#stack">核心功能</a>
     <a href="#lab">工作台</a>
   </nav>
   <span class="clock" id="clock">在线</span>
@@ -445,39 +457,77 @@
             </g>
           </svg>
 
-          <img class="b612-slide on" src="assets/b612-s1.webp" decoding="async" alt="B612星球：小王子、玻璃罩玫瑰与小狐狸">
-          <img class="b612-slide" src="assets/b612-s2.webp" decoding="async" alt="B612星球：小王子与小狐狸背影仰望星空">
-          <img class="b612-slide" src="assets/b612-s3.webp" decoding="async" alt="B612星球：小王子俯身轻嗅红玫瑰">
-          <img class="b612-slide" src="assets/b612-s4.webp" decoding="async" alt="B612星球：玫瑰、小王子与小狐狸并肩背影">
+          <img class="b612-slide on" src="assets/b612-s1.webp" loading="eager" fetchpriority="high" decoding="async" alt="B612星球：小王子、玻璃罩玫瑰与小狐狸">
+          <img class="b612-slide" src="assets/b612-s2.webp" loading="eager" decoding="async" alt="B612星球：小王子与小狐狸背影仰望星空">
+          <img class="b612-slide" src="assets/b612-s3.webp" loading="eager" decoding="async" alt="B612星球：小王子俯身轻嗅红玫瑰">
+          <img class="b612-slide" src="assets/b612-s4.webp" loading="eager" decoding="async" alt="B612星球：玫瑰、小王子与小狐狸并肩背影">
         </div>
       </div>
       <div class="b612-quote" id="b612Quote">“真正重要的东西，用眼睛是看不见的，要用心去感受。”</div>
     </div>
 
+    <!-- 底部：120帧物理阻尼连续轮转工具卡带 -->
     <div class="deck-wrap">
       <div class="deck" id="deck" aria-label="工具轮转长廊">
         <div class="deck-track" id="deckTrack">
           <a class="card" href="/tools/qianqian.html" data-idx="0" data-ext="qianqian" data-bg="#120e1e" data-ac="#b9a4ff" data-tint="rgba(150,120,255,.24)" style="--c-ac:#b9a4ff">
             <em class="c-tag">六十四卦 · 罗盘</em>
-            <img src="assets/card-yi.webp" decoding="async" alt="学易经"><span class="cap">学易经</span>
+            <img src="assets/card-yi.webp" loading="eager" fetchpriority="high" decoding="async" alt="学易经"><span class="cap">学易经</span>
           </a>
           <a class="card" href="/translate.html" data-idx="1" data-bg="#08141d" data-ac="#7fe3ff" data-tint="rgba(110,214,255,.22)" style="--c-ac:#7fe3ff">
             <em class="c-tag">中·英·日·俄·维</em>
-            <img src="assets/card-tr.webp" decoding="async" alt="翻译"><span class="cap">翻译</span>
+            <img src="assets/card-tr.webp" loading="eager" fetchpriority="high" decoding="async" alt="翻译"><span class="cap">翻译</span>
           </a>
           <a class="card" href="/calc.html" data-idx="2" data-bg="#161006" data-ac="#ffc46b" data-tint="rgba(255,190,110,.20)" style="--c-ac:#ffc46b">
-            <em class="c-tag">双11满减 · 凑单算价</em>
-            <img src="assets/card-calc.webp" decoding="async" alt="计算"><span class="cap">计算</span>
+            <em class="c-tag">双11凑单 · 规格比价</em>
+            <img src="assets/card-calc.webp" loading="eager" fetchpriority="high" decoding="async" alt="计算"><span class="cap">计算</span>
           </a>
           <a class="card" href="/ktv.html" data-idx="3" data-bg="#091512" data-ac="#7ef2b8" data-tint="rgba(110,238,180,.20)" style="--c-ac:#7ef2b8">
-            <em class="c-tag">随身曲库 · 随机点歌</em>
-            <img src="assets/card-ktv.webp" decoding="async" alt="私人歌单"><span class="cap">私人歌单</span>
+            <em class="c-tag">随机1-5首 · 待点/已点</em>
+            <img src="assets/card-ktv.webp" loading="eager" fetchpriority="high" decoding="async" alt="私人歌单"><span class="cap">私人歌单</span>
+          </a>
+          <a class="card" href="/charm.html" data-idx="4" data-bg="#180d18" data-ac="#ff8da1" data-tint="rgba(255,141,161,.22)" style="--c-ac:#ff8da1">
+            <em class="c-tag">教程 · 独门秘籍</em>
+            <img src="assets/card-charm.webp" loading="eager" fetchpriority="high" decoding="async" alt="如何才能变得像猛哥一样有魅力"><span class="cap">如何才能变得像猛哥一样有魅力</span>
           </a>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- 精选作品（已移至核心功能上方） -->
+  <section class="sec" id="works">
+    <div class="wrap">
+      <div class="sec-head rise">
+        <div class="en-title">SELECTED WORKS <span class="arr">↘</span></div>
+        <h2>精选作品</h2>
+      </div>
+      <div class="works-grid">
+        <a class="work rise wide" href="/tools/qianqian.html" data-ext="qianqian">
+          <img src="assets/card-yi.webp" loading="eager" decoding="async" alt="学易经">
+          <div class="wb"><div><h3>学易经 <small>六十四卦 · 罗盘</small></h3><p>六十四卦经传研读 / 双环星象罗盘 / 上下卦推演</p></div><span class="go">打开 →</span></div>
+        </a>
+        <a class="work rise" href="/translate.html">
+          <img src="assets/card-tr.webp" loading="eager" decoding="async" alt="翻译">
+          <div class="wb"><div><h3>翻译 <small>中·英·日·俄·维</small></h3><p>支持中英日俄维五种语言 / 默认自动转英语 / 语音朗读</p></div><span class="go">打开 →</span></div>
+        </a>
+        <a class="work rise tall" href="/ktv.html">
+          <img src="assets/card-ktv.webp" loading="eager" decoding="async" alt="私人歌单">
+          <div class="wb"><div><h3>私人歌单 <small>83首精选 · 随机1-5首</small></h3><p>陈奕迅51首+周杰伦/BEYOND/李健等 / 随机来1-5首 / 待点与已点极简切换</p></div><span class="go">打开 →</span></div>
+        </a>
+        <a class="work rise" href="/calc.html">
+          <img src="assets/card-calc.webp" loading="eager" decoding="async" alt="计算">
+          <div class="wb"><div><h3>计算 <small>双11自动凑单 · 规格比价</small></h3><p>跨店每满减自动凑单 / 净含量单价PK / 凑单分摊到手价 / 大写账本</p></div><span class="go">打开 →</span></div>
+        </a>
+        <a class="work rise wide" href="/charm.html">
+          <img src="assets/card-charm.webp" loading="eager" decoding="async" alt="如何才能变得像猛哥一样有魅力">
+          <div class="wb"><div><h3>教程：如何才能变得像猛哥一样有魅力 <small>独门秘籍 · 必看</small></h3><p>B612 星球绝密修炼卷轴 / 点击揭晓终极答案</p></div><span class="go">揭秘 →</span></div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 核心功能 -->
   <section class="sec" id="stack">
     <div class="wrap">
       <div class="sec-head rise">
@@ -491,7 +541,7 @@
           <p>不套模板、不引臃肿依赖，用原生 CSS 与绘本插画直接构景。</p>
           <div class="sk-pills">
             <span class="sk-pill p1">原生 HTML / CSS 零框架</span>
-            <span class="sk-pill p2">B612 小王子四幕丝滑切换</span>
+            <span class="sk-pill p2">B612 小王子四幕等比切换</span>
             <span class="sk-pill p3">全站统一治愈星空绘本风</span>
           </div>
           <svg class="sk-art" viewBox="0 0 100 100" fill="none" aria-hidden="true">
@@ -534,11 +584,11 @@
 
         <div class="sk rise">
           <div class="sk-top"><span class="k-num">04</span><span class="k">SHOPPING CALC</span></div>
-          <h3>网购满减与凑单精算<span class="dot">.</span></h3>
-          <p>双11跨店每满减、多券叠加、定金膨胀与凑单品按比例分摊到手价。</p>
+          <h3>网购凑单与规格比价<span class="dot">.</span></h3>
+          <p>双11跨店每满减、一键自动凑单、多规格克重比价与凑单退货分摊到手价。</p>
           <div class="sk-pills">
-            <span class="sk-pill p1">每满300-50 / 200-30 一键套用</span>
-            <span class="sk-pill p2">主买与凑单品真实到手价分摊</span>
+            <span class="sk-pill p1">一键自动填入最佳凑单品</span>
+            <span class="sk-pill p2">大包 vs 小包净含量单价 PK</span>
             <span class="sk-pill p3">人民币大写与账本自动求和</span>
           </div>
           <svg class="sk-art" viewBox="0 0 100 100" fill="none" aria-hidden="true">
@@ -552,42 +602,15 @@
           <h3>数据分片与静态发版<span class="dot">.</span></h3>
           <p>古籍经传结构化索引、JSON 拆包懒加载与 API 同步部署。</p>
           <div class="sk-pills">
-            <span class="sk-pill p1">学易经 338KB 首屏秒开</span>
+            <span class="sk-pill p1">全站图片解码完才满100%揭幕</span>
             <span class="sk-pill p2">GitHub API 双分支直推</span>
-            <span class="sk-pill p3">四页全自动冒烟巡检</span>
+            <span class="sk-pill p3">全站自动冒烟巡检</span>
           </div>
           <svg class="sk-art" viewBox="0 0 100 100" fill="none" aria-hidden="true">
             <path d="M24 66 A28 28 0 1 1 78 52 L60 76 Z" fill="#c8f830" opacity=".52"/>
             <circle cx="52" cy="52" r="12" fill="#0b0e12"/>
           </svg>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="sec" id="works">
-    <div class="wrap">
-      <div class="sec-head rise">
-        <div class="en-title">SELECTED WORKS <span class="arr">↘</span></div>
-        <h2>精选作品</h2>
-      </div>
-      <div class="works-grid">
-        <a class="work rise wide" href="/tools/qianqian.html" data-ext="qianqian">
-          <img src="assets/card-yi.webp" decoding="async" alt="学易经">
-          <div class="wb"><div><h3>学易经 <small>六十四卦 · 罗盘</small></h3><p>六十四卦经传研读 / 双环星象罗盘 / 上下卦推演</p></div><span class="go">打开 →</span></div>
-        </a>
-        <a class="work rise" href="/translate.html">
-          <img src="assets/card-tr.webp" decoding="async" alt="翻译">
-          <div class="wb"><div><h3>翻译 <small>中·英·日·俄·维</small></h3><p>支持中英日俄维五种语言 / 默认自动转英语 / 语音朗读</p></div><span class="go">打开 →</span></div>
-        </a>
-        <a class="work rise tall" href="/ktv.html">
-          <img src="assets/card-ktv.webp" decoding="async" alt="私人歌单">
-          <div class="wb"><div><h3>私人歌单 <small>随身曲库</small></h3><p>随机抽歌 🎲 / 曲风与歌手快筛 / 本场已唱标记 / 批量导入</p></div><span class="go">打开 →</span></div>
-        </a>
-        <a class="work rise" href="/calc.html">
-          <img src="assets/card-calc.webp" decoding="async" alt="计算">
-          <div class="wb"><div><h3>计算 <small>双11满减凑单 · 大写账本</small></h3><p>跨店每满减 / 折扣券与定金膨胀叠加 / 凑单分摊到手价 / 大写金额</p></div><span class="go">打开 →</span></div>
-        </a>
       </div>
     </div>
   </section>
@@ -653,7 +676,7 @@
 (function(){
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* ---------- 小王子 B612 绘本风开屏倒计时（同步预加载并 GPU 解码核心图片资源） ---------- */
+  /* ---------- 小王子 B612 开屏倒计时：同时并行加载+GPU解码全部卡片与背景，100%加载完进度条才走满 ---------- */
   var intro = document.getElementById('intro');
   var PRELOAD_ASSETS = [
     'assets/sky-b612.webp',
@@ -664,15 +687,22 @@
     'assets/card-yi.webp',
     'assets/card-tr.webp',
     'assets/card-calc.webp',
-    'assets/card-ktv.webp'
+    'assets/card-ktv.webp',
+    'assets/card-charm.webp'
   ];
 
   var loadedCount = 0;
   var totalAssets = PRELOAD_ASSETS.length;
   PRELOAD_ASSETS.forEach(function(src){
     var im = new Image();
+    im.decoding = 'async';
     im.src = src;
-    var done = function(){ loadedCount++; };
+    var done = function(){
+      if (!im._counted){
+        im._counted = true;
+        loadedCount++;
+      }
+    };
     if (im.decode){
       im.decode().then(done, done);
     } else {
@@ -684,37 +714,41 @@
   if (intro){
     var pctEl = document.getElementById('pct');
     var barEl = document.getElementById('introBar');
-    var force = /[?&]intro\b/.test(location.search);
-    var skip = reduce || /[?&]nointro\b/.test(location.search) || (sessionStorage.getItem('wmv-intro') === '1' && !force);
+    var skip = reduce || /[?&]nointro\b/.test(location.search);
     if (skip){
       intro.remove();
     } else {
-      sessionStorage.setItem('wmv-intro', '1');
-      var DUR = 2150, t0 = performance.now();
-      var CURVE = [[0,0],[.20,18],[.42,46],[.65,74],[.84,91],[1,100]];
-      function curveVal(t){
-        for (var i = 1; i < CURVE.length; i++){
-          if (t <= CURVE[i][0]){
-            var a = CURVE[i-1], b = CURVE[i], k = (t - a[0]) / (b[0] - a[0]);
-            return a[1] + (b[1] - a[1]) * k;
-          }
-        }
-        return 100;
-      }
+      /* 最短动画时长 1250ms，最长安全兜底 4800ms；只有当 loadedCount >= totalAssets 时才允许到达 100%！ */
+      var MIN_DUR = 1250, MAX_WAIT = 4800, t0 = performance.now();
+      var displayPct = 0;
       (function frame(now){
         var elapsed = now - t0;
-        var t = Math.min(1, elapsed / DUR);
-        var timePct = curveVal(t);
-        var assetPct = (loadedCount / totalAssets) * 100;
-        var val = Math.round(timePct * 0.72 + Math.max(timePct, assetPct) * 0.28);
-        if (t >= 1) val = 100;
-        pctEl.textContent = val;
-        if (barEl) barEl.style.width = val + '%';
-        if (t < 1) requestAnimationFrame(frame);
-        else setTimeout(function(){
-          intro.classList.add('cut');
-          setTimeout(function(){ intro.remove(); }, 420);
-        }, 180);
+        var timeProgress = Math.min(1, elapsed / MIN_DUR);
+        var realRatio = loadedCount / totalAssets;
+        var allReady = (loadedCount >= totalAssets) || (elapsed >= MAX_WAIT);
+
+        /* 在图片未全部解码完成前，进度最高卡在 96%，全部解码完成且满足最短顺滑过渡后立即冲到 100% */
+        var targetPct;
+        if (allReady && timeProgress >= 1){
+          targetPct = 100;
+        } else {
+          var combined = timeProgress * 0.45 + realRatio * 0.55;
+          targetPct = Math.min(96, Math.round(combined * 98));
+        }
+
+        displayPct += (targetPct - displayPct) * (targetPct === 100 ? 0.45 : 0.24);
+        var shown = targetPct === 100 && displayPct > 98.5 ? 100 : Math.round(displayPct);
+        pctEl.textContent = shown;
+        if (barEl) barEl.style.width = shown + '%';
+
+        if (shown < 100){
+          requestAnimationFrame(frame);
+        } else {
+          setTimeout(function(){
+            intro.classList.add('cut');
+            setTimeout(function(){ intro.remove(); }, 380);
+          }, 120);
+        }
       })(t0);
     }
   }
@@ -769,7 +803,7 @@
     }
   }
 
-  /* ---------- 全局 120Hz 物理阻尼连续轮转（触摸/滑动不死停，平滑减速+惯性过渡） ---------- */
+  /* ---------- 全局 120Hz 物理阻尼连续轮转 ---------- */
   var theme = document.getElementById('theme');
   var sky = document.getElementById('sky');
   var deck = document.getElementById('deck');
@@ -816,7 +850,7 @@
       deckWidth = deck.clientWidth || innerWidth;
       var isMob = innerWidth <= 900;
       focalOffset = deckWidth * (isMob ? 0.36 : 0.28);
-      baseSpeed = isMob ? 56 : 70;
+      baseSpeed = isMob ? 58 : 70;
       cardCenters = new Array(allCards.length);
       for (var i = 0; i < allCards.length; i++){
         var c = allCards[i];
@@ -1008,6 +1042,7 @@
   }
   tickClock(); setInterval(tickClock, 20000);
 
+  /* ---------- 加密版浪漫流星雨（多连发、丰富尾迹） ---------- */
   var meteorBox = document.getElementById('meteors');
   if (meteorBox && !reduce){
     function spawnOneMeteor(xPct, yPct){
@@ -1015,27 +1050,36 @@
       m.className = 'meteor';
       m.style.left = xPct.toFixed(1) + '%';
       m.style.top = yPct.toFixed(1) + '%';
+      var len = Math.round(110 + Math.random() * 95);
+      var dur = (0.95 + Math.random() * 0.55).toFixed(2);
+      var ang = (-22 - Math.random() * 10).toFixed(1);
+      m.style.setProperty('--mw', len + 'px');
+      m.style.setProperty('--md', dur + 's');
+      m.style.setProperty('--ma', ang + 'deg');
       meteorBox.appendChild(m);
-      setTimeout(function(){ m.remove(); }, 1250);
+      setTimeout(function(){ m.remove(); }, 1600);
+    }
+    function spawnShowerBurst(){
+      var count = Math.random() < 0.65 ? 2 : 3;
+      for (var i = 0; i < count; i++){
+        (function(k){
+          setTimeout(function(){
+            var x = 18 + Math.random() * 74;
+            var y = 4 + Math.random() * 38;
+            spawnOneMeteor(x, y);
+          }, k * (260 + Math.random() * 320));
+        })(i);
+      }
     }
     function scheduleMeteor(){
       setTimeout(function(){
-        if (document.hidden || scrollY > innerHeight * 0.85){
-          scheduleMeteor();
-          return;
-        }
-        var x = 28 + Math.random() * 58;
-        var y = 6 + Math.random() * 28;
-        spawnOneMeteor(x, y);
-        if (Math.random() < 0.35){
-          setTimeout(function(){
-            spawnOneMeteor(Math.min(92, x + 6 + Math.random() * 10), Math.max(4, y - 3 + Math.random() * 8));
-          }, 420 + Math.random() * 380);
+        if (!document.hidden && scrollY < innerHeight * 1.1){
+          spawnShowerBurst();
         }
         scheduleMeteor();
-      }, 5200 + Math.random() * 4600);
+      }, 1500 + Math.random() * 1400);
     }
-    setTimeout(function(){ spawnOneMeteor(68, 14); }, 1600);
+    setTimeout(spawnShowerBurst, 500);
     scheduleMeteor();
   }
 })();
